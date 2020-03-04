@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <SCRIPT src="https://java.com/js/dtjava.js"></SCRIPT><script>
+    function launchApplication(jnlpfile) {
+        dtjava.launch(            {
+                url : 'MedicalMineFx.jnlp',
+                jnlp_content : 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48am5scCBzcGVjPSIxLjAiIHhtbG5zOmpmeD0iaHR0cDovL2phdmFmeC5jb20iIGhyZWY9Ik1lZGljYWxNaW5lRnguam5scCI+DQogICAgPGluZm9ybWF0aW9uPg0KICAgICAgICA8dGl0bGU+TWVkaWNhbE1pbmVGeDwvdGl0bGU+DQogICAgICAgIDx2ZW5kb3I+UlcgU2ltbW9uczwvdmVuZG9yPg0KICAgICAgICA8ZGVzY3JpcHRpb24+bnVsbDwvZGVzY3JpcHRpb24+DQogICAgICAgIDxvZmZsaW5lLWFsbG93ZWQvPg0KICAgIDwvaW5mb3JtYXRpb24+DQogICAgPHVwZGF0ZSBjaGVjaz0iYWx3YXlzIi8+DQogICAgPHJlc291cmNlcz4NCiAgICAgICAgPGoyc2UgdmVyc2lvbj0iMTArIiBocmVmPSJodHRwOi8vamF2YS5zdW4uY29tL3Byb2R1Y3RzL2F1dG9kbC9qMnNlIi8+DQogICAgICAgIDxqYXIgaHJlZj0iTWVkaWNhbE1pbmVGeC5qYXIiIHNpemU9IjkwMzkiIGRvd25sb2FkPSJlYWdlciIvPg0KICAgIDwvcmVzb3VyY2VzPg0KICAgIDxqZng6amF2YWZ4LWRlc2Mgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIG1haW4tY2xhc3M9Ik1lZGljYWxNaW5lRnhNYWluLk1lZGljYWxNaW5lRngiIG5hbWU9Ik1lZGljYWxNaW5lRngiLz4NCjwvam5scD4NCg0K'
+            },
+            {
+                javafx : '10+'
+            },
+            {}
+        );
+        return false;
+    }
+</script><script>
+    function javafxEmbedMedicalMineFxMain() {
+        dtjava.embed(
+            {
+                id : 'MedicalMineFxMain',
+                url : 'MedicalMineFx.jnlp',
+                placeholder : 'javafx-app-placeholder',
+                width : '800',
+                height : '600',
+                jnlp_content : 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48am5scCBzcGVjPSIxLjAiIHhtbG5zOmpmeD0iaHR0cDovL2phdmFmeC5jb20iIGhyZWY9Ik1lZGljYWxNaW5lRnguam5scCI+DQogICAgPGluZm9ybWF0aW9uPg0KICAgICAgICA8dGl0bGU+TWVkaWNhbE1pbmVGeDwvdGl0bGU+DQogICAgICAgIDx2ZW5kb3I+UlcgU2ltbW9uczwvdmVuZG9yPg0KICAgICAgICA8ZGVzY3JpcHRpb24+bnVsbDwvZGVzY3JpcHRpb24+DQogICAgICAgIDxvZmZsaW5lLWFsbG93ZWQvPg0KICAgIDwvaW5mb3JtYXRpb24+DQogICAgPHVwZGF0ZSBjaGVjaz0iYWx3YXlzIi8+DQogICAgPHJlc291cmNlcz4NCiAgICAgICAgPGoyc2UgdmVyc2lvbj0iMTArIiBocmVmPSJodHRwOi8vamF2YS5zdW4uY29tL3Byb2R1Y3RzL2F1dG9kbC9qMnNlIi8+DQogICAgICAgIDxqYXIgaHJlZj0iTWVkaWNhbE1pbmVGeC5qYXIiIHNpemU9IjkwMzkiIGRvd25sb2FkPSJlYWdlciIvPg0KICAgIDwvcmVzb3VyY2VzPg0KICAgIDxqZng6amF2YWZ4LWRlc2Mgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIG1haW4tY2xhc3M9Ik1lZGljYWxNaW5lRnhNYWluLk1lZGljYWxNaW5lRngiIG5hbWU9Ik1lZGljYWxNaW5lRngiLz4NCjwvam5scD4NCg0K'
+            },
+            {
+                javafx : '10+'
+            },
+            {}
+        );
+    }
+    
+            <!-- Embed FX application into web page once page is loaded -->
+    dtjava.addOnloadCallback(javafxEmbedMedicalMineFxMain);
+</script>
+    </head>
+    <body>
+        <h2>
+            Test page for <b>MedicalMineFx</b>
+        </h2>
+        <b>Webstart:</b><a href="MedicalMineFx.jnlp" onclick="return launchApplication('MedicalMineFx.jnlp');">click to launch this app as webstart</a>
+        <br>
+        <hr>
+        <br>
+        
+        <!-- Applet will be inserted here -->
+        <div id="javafx-app-placeholder"></div>
+    </body>
+</html>

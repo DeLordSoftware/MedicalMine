@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="350.0" prefWidth="499.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MedicalMineFxMain.StartMainScreenController">
+   <children>
+      <Button fx:id="btnExit" layoutX="216.0" layoutY="234.0" mnemonicParsing="false" onAction="#btnExitAction" prefHeight="34.0" prefWidth="67.0" text="Exit">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnLoad" layoutX="307.0" layoutY="158.0" mnemonicParsing="false" onAction="#btnLoadAction" prefHeight="34.0" prefWidth="67.0" text="Load">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnCreate" layoutX="127.0" layoutY="158.0" mnemonicParsing="false" onAction="#BtnCreateAction" prefHeight="34.0" prefWidth="67.0" text="Create">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="157.0" layoutY="69.0" text="Medical Mine">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

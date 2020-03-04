@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="MedicalMineFx.jnlp">
+    <information>
+        <title>MedicalMineFx</title>
+        <vendor>RW Simmons</vendor>
+        <description>null</description>
+        <offline-allowed/>
+    </information>
+    <update check="always"/>
+    <resources>
+        <j2se version="10+" href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="MedicalMineFx.jar" size="8817" download="eager"/>
+    </resources>
+    <jfx:javafx-desc width="800" height="600" main-class="MedicalMineFxMain.MedicalMineFx" name="MedicalMineFx"/>
+</jnlp>
+
