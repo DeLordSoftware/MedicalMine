@@ -17,11 +17,11 @@ import javafx.stage.Stage;
 public class MedicalMineFx extends Application {
     
     public static String MainScreen = "main";
-    public static String MainResource = "StartMainScreen.fxml";
+    public static String MainResource = "/FxmlDisplays/StartMainScreen.fxml";
     public static String CategoryScreen = "category";
-    public static String CategoryResource = "CategoryScreen.fxml";
+    public static String CategoryResource = "/FxmlDisplays/CategoryScreen.fxml";
     public static String KeyScreen = "keys";
-    public static String KeyResourse = "KeywordScreen.fxml";
+    public static String KeyResourse = "/FxmlDisplays/KeywordScreen.fxml";
     public static String LoadScreen = "load";
     @Override
     public void start(Stage stage) throws Exception {        

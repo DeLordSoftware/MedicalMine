@@ -20,20 +20,9 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author RW Simmons
  */
-public class KeywordScreenController implements Initializable, ControlledScreen {
-
-    
+public class KeywordScreenController implements Initializable, ControlledScreen {    
      ScreenController screenController;
-    @FXML
-    private AnchorPane btnAcceptKeywory;
-    @FXML
-    private Button btnAcceptKeyword;
-    @FXML
-    private Button btnBack;
-    @FXML
-    private TextArea txtArKeyword;
-    @FXML
-    private TextField txtKeyword;
+   
     /**
      * Initializes the controller class.
      */
@@ -56,5 +45,14 @@ public class KeywordScreenController implements Initializable, ControlledScreen 
     private void btnBackAction(ActionEvent event) {
         screenController.setScreen(MedicalMineFx.CategoryScreen);
     }
-    
+     @FXML
+    private AnchorPane btnAcceptKeywory;
+    @FXML
+    private Button btnAcceptKeyword;
+    @FXML
+    private Button btnBack;
+    @FXML
+    private TextArea txtArKeyword;
+    @FXML
+    private TextField txtKeyword;
 }

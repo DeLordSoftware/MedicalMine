@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="idCategoryPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragDropped="#dragDropCategoryPg" onDragOver="#dragOverCategoryPg" prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MedicalMineFxMain.CategoryScreenController">
+   <children>
+      <Label layoutX="41.0" layoutY="43.0" prefHeight="39.0" prefWidth="420.0" text="Drag and Drop csv file with category and keywords" AnchorPane.bottomAnchor="268.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="43.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnKeyword" layoutX="199.0" layoutY="289.0" mnemonicParsing="false" onAction="#btnKeywordAction" prefHeight="33.0" prefWidth="103.0" text="Accept File" />
+      <Button fx:id="btnBack" layoutX="394.0" layoutY="305.0" mnemonicParsing="false" onAction="#btnBackAction" prefHeight="25.0" prefWidth="53.0" text="Back" />
+      <Label fx:id="lblAcceptFile" layoutX="165.0" layoutY="243.0" prefHeight="17.0" prefWidth="174.0" />
+      <ImageView fx:id="idImageViewer" fitHeight="150.0" fitWidth="200.0" layoutX="150.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>
