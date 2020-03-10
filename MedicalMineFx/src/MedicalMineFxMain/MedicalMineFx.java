@@ -23,6 +23,14 @@ public class MedicalMineFx extends Application {
     public static String KeyScreen = "keys";
     public static String KeyResourse = "/FxmlDisplays/KeywordScreen.fxml";
     public static String LoadScreen = "load";
+    
+    private static Stage currentStage;
+    
+    public static Stage getStage(){
+        return currentStage;
+    }
+    
+    
     @Override
     public void start(Stage stage) throws Exception {        
         try{
@@ -30,8 +38,7 @@ public class MedicalMineFx extends Application {
             ScreenController screenController = new ScreenController();
             screenController.loadScreen(CategoryScreen, CategoryResource);
             screenController.loadScreen(MainScreen, MainResource);
-            screenController.loadScreen(KeyScreen, KeyResourse);
-            
+            screenController.loadScreen(KeyScreen, KeyResourse);            
             screenController.setScreen(MainScreen);
 
             Group group = new Group();
@@ -39,6 +46,7 @@ public class MedicalMineFx extends Application {
             Scene scene = new Scene(group);  
             stage.setScene(scene);
             stage.show();
+            currentStage = stage;
         } catch(Exception e) {
             System.out.println("ERROR 2: " + e.getMessage());
         }       

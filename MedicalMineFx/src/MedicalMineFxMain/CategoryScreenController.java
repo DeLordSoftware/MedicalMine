@@ -64,8 +64,8 @@ public class CategoryScreenController implements Initializable, ControlledScreen
                     idImageViewer.setImage(image);
                     Scanner scan = new Scanner(file);
                     
-                    while(scan.hasNext()){                          
-                        System.out.println(scan.next());
+                    while(scan.hasNext()){                           
+                        System.out.println(scan.nextLine());
                     }
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(CategoryScreenController.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,6 +97,7 @@ public class CategoryScreenController implements Initializable, ControlledScreen
     
     @FXML
     private void btnKeywordAction(ActionEvent event) {
+       
         screenController.setScreen(MedicalMineFx.KeyScreen);
     }
     

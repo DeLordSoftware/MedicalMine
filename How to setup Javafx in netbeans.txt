@@ -18,3 +18,6 @@ add the following text in the VM Options text box.
 Youtube video
 https://www.youtube.com/watch?v=IdTc_ZIGlMg
 note: Place \javafx-sdk-11.0.2\ directly on C drive... no sub folders
+
+*Images check and X
+https://www.cleanpng.com/png-red-x-x-mark-computer-icons-clip-art-red-x-png-615626/download-png.html
