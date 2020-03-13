@@ -6,15 +6,22 @@
 package MedicalMineFxMain;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -26,7 +33,8 @@ import javax.swing.JOptionPane;
  * Created : 3/30/2018
  */
 public class ParseInputFiles extends ProcessInputFiles {
-
+    
+    private static Map<String,List<String>> mpTierOne;
  
     private static int count = 1;
     private static boolean bCheckFileExistOnce = true;
@@ -42,7 +50,7 @@ public class ParseInputFiles extends ProcessInputFiles {
      */
     ParseInputFiles(boolean check)
     {
-        bDebug = check;    
+        bDebug = check;            
     }
     
     /*****************************************
@@ -51,7 +59,7 @@ public class ParseInputFiles extends ProcessInputFiles {
      * Return : Map 
      * Purpose: Get search data from text files
      ****************************************/
-    public Map<String, String> TextParsing(File flFileName)throws IOException 
+    public Map<String, String> TextParsing(File flFileName) throws IOException 
     {
         Map<String, String> mpSaveToExcel = new LinkedHashMap(); 
         FileReader flInputFile = null;
@@ -100,8 +108,11 @@ public class ParseInputFiles extends ProcessInputFiles {
             Pattern pattern = Pattern.compile(strLookForPeriod, Pattern.CASE_INSENSITIVE);
             String[] strArray = pattern.split(strData);
             
-            // Get data for search words and phrases in a map
-            Map<String,List<String>> mpTierOne = SearchData.GetSearchWordsAndPhrases(); 
+            // Verify that seach data isn't null
+            if(mpTierOne == null){
+                displayMsg("Search data is null.",JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
             
             List<String> aryTier1Search;
             int CategoryCounter = 1; 
@@ -513,8 +524,38 @@ public class ParseInputFiles extends ProcessInputFiles {
         mpExcel.replace(PATIENT_ID, strFinalDate);
     
         return mpExcel;
-    }   
+    }  
+    /*****************************************
+    * Method : 
+    * Input  : 
+    * Return :  
+    * Purpose:  
+     * @param file
+    ****************************************/
+    @SuppressWarnings("null")
+    public static void setSearchData(File file){
+        try {
+            mpTierOne = new HashMap();    
+            Scanner scan = new Scanner(file); 
+            while(scan.hasNext()){            
+                List<String> lstSearchData = new ArrayList<String>();
+                String[] aryData = scan.nextLine().split(",");                               
+                if(lstSearchData.addAll(Arrays.asList(aryData))){
+                    String strCategoryKey = lstSearchData.get(0);
+                    lstSearchData.remove(0);
+                    mpTierOne.put(strCategoryKey, lstSearchData);
+                    System.out.println("strCategoryKey " + strCategoryKey + " -- lstSearchData -- " +lstSearchData);
+                }
+                
+               
+            }             
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CategoryScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
+
+
 /*****************************************
 * Method : 
 * Input  : 

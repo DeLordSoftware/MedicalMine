@@ -44,14 +44,14 @@ public class ProcessInputFiles {
                 mpFinalSaveToExcel.put(iFileNum, mpSaveToExcel);
             }
 
-//            Write data to Excel spreadsheet
-//            WriteDataToExcel writeDataToExcel = new WriteDataToExcel();
-//            String strReturnExcelLoc = writeDataToExcel.SaveExcelSpreadSheet(mpFinalSaveToExcel);
-//            
-//            // Create Gui message
-//            strDisplayMessage = "Number of files searched: " + iFileNum  + ".\nProcess complete...\nExcel file located at " + strReturnExcelLoc;
-//           
-//            //displayMsg("Data Collected",JOptionPane.INFORMATION_MESSAGE);
+            //Write data to Excel spreadsheet
+            WriteDataToExcel writeDataToExcel = new WriteDataToExcel();
+            String strReturnExcelLoc = writeDataToExcel.SaveExcelSpreadSheet(mpFinalSaveToExcel);
+            
+            // Create Gui message
+            strDisplayMessage = "Number of files searched: " + iFileNum  + ".\nProcess complete...\nExcel file located at " + strReturnExcelLoc;
+           
+            //displayMsg("Data Collected",JOptionPane.INFORMATION_MESSAGE);
         } catch(IOException e) {
             System.out.println("IOException " + e.getMessage());
             displayMsg(e.getMessage(),JOptionPane.ERROR_MESSAGE);
@@ -109,31 +109,6 @@ public class ProcessInputFiles {
             //JFileChooser fileChooser = null;
             FileChooser fileChooser = new FileChooser();
             int iTryCount = 0;
-            
-//            do{
-//                fileChooser =  new FileChooser();
-//                //fileChooser.setMultiSelectionEnabled(true);// enable multiple files
-//                File file = new File(strFolderOriginalLocation);
-//                //fileChooser.setCurrentDirectory(file);
-//                showOpenDialog = fileChooser.showOpenMultipleDialog(stage); // Open dialog box for file selection
-//                
-//                // Check if file has txt extention
-//                String checkFileExtention = fileChooser.getSelectedFile().toString();
-//                bcheckExtention = checkFileExtention.endsWith(".txt");                
-//                if(!bcheckExtention)
-//                {                
-//                    displayMsg("Incorrect file extention selected.\nPlease select file with 'txt' extention.",JOptionPane.WARNING_MESSAGE);
-//                    iTryCount++;
-//                    
-//                    // Exit if max number of tries reached
-//                    if(iTryCount > 3)
-//                    {
-//                        displayMsg("Max number of tries. Exiting program",JOptionPane.ERROR_MESSAGE);
-//                        System.exit(0);
-//                    }
-//                }
-//                
-//            }while(!bcheckExtention);
            
             FileReturned = fileChooser.showOpenMultipleDialog(stage); // Open dialog box for file selection
             String strLocationOfSelectedFiles = FileReturned.get(0).toString();

@@ -49,8 +49,7 @@ public class StartMainScreenController implements Initializable, ControlledScree
 
     @FXML
     private void btnLoadAction(ActionEvent event) {
-        ProcessInputFiles processInputFiles = new ProcessInputFiles();
-        processInputFiles.processFiles(MedicalMineFx.getStage());
+        screenController.setScreen(MedicalMineFx.CategoryScreen);        
     }
 
     @FXML

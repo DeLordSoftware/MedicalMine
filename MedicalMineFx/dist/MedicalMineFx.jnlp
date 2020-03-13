@@ -8,7 +8,10 @@
   </information>
   <resources>
     <j2se version="1.6+" java-vm-args="--module-path C:\javafx-sdk-11.0.2\lib --add-modules=javafx.controls,javafx.fxml -Dnashorn.args=--no-deprecation-warning "  href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="MedicalMineFx.jar" size="37375" download="eager" />
+    <jar href="MedicalMineFx.jar" size="46930" download="eager" />
+    <jar href="lib\commons-codec-1.10.jar" size="284184" download="eager" />
+    <jar href="lib\commons-collections4-4.1.jar" size="751238" download="eager" />
+    <jar href="lib\commons-logging-1.2.jar" size="61829" download="eager" />
     <jar href="lib\javafx-swt.jar" size="36811" download="eager" />
     <jar href="lib\javafx.base.jar" size="749889" download="eager" />
     <jar href="lib\javafx.controls.jar" size="2511137" download="eager" />
@@ -17,6 +20,15 @@
     <jar href="lib\javafx.media.jar" size="270594" download="eager" />
     <jar href="lib\javafx.swing.jar" size="119848" download="eager" />
     <jar href="lib\javafx.web.jar" size="714741" download="eager" />
+    <jar href="lib\junit-4.12.jar" size="314932" download="eager" />
+    <jar href="lib\log4j-1.2.17.jar" size="489884" download="eager" />
+    <jar href="lib\poi-3.17.jar" size="2701171" download="eager" />
+    <jar href="lib\poi-examples-3.17.jar" size="374509" download="eager" />
+    <jar href="lib\poi-excelant-3.17.jar" size="31218" download="eager" />
+    <jar href="lib\poi-ooxml-3.17.jar" size="1479023" download="eager" />
+    <jar href="lib\poi-ooxml-schemas-3.17.jar" size="5924600" download="eager" />
+    <jar href="lib\poi-scratchpad-3.17.jar" size="1390360" download="eager" />
+    <jar href="lib\xmlbeans-2.6.0.jar" size="2730866" download="eager" />
   </resources>
   <jfx:javafx-desc  width="800" height="600" main-class="MedicalMineFxMain.MedicalMineFx"  name="MedicalMineFx" />
   <update check="always"/>
