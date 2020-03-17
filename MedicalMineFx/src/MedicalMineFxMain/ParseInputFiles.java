@@ -64,8 +64,10 @@ public class ParseInputFiles extends ProcessInputFiles {
         Map<String, String> mpSaveToExcel = new LinkedHashMap(); 
         FileReader flInputFile = null;
         FileWriter flOutputFile = null;
-        String strResultFile = "Medical Mine Results.txt";
+        String strResultFile = "C:/MedicalMineResults/Medical Mine Results.txt";
         File file = new File(strResultFile);
+        file.mkdirs();
+        
         boolean bHasData = false;       
         
         try 
@@ -108,7 +110,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             Pattern pattern = Pattern.compile(strLookForPeriod, Pattern.CASE_INSENSITIVE);
             String[] strArray = pattern.split(strData);
             
-            // Verify that seach data isn't null
+            // Verify that search data map has been populate
             if(mpTierOne == null){
                 displayMsg("Search data is null.",JOptionPane.ERROR_MESSAGE);
                 return null;
@@ -117,7 +119,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             List<String> aryTier1Search;
             int CategoryCounter = 1; 
             
-            // Loop through map of word and phrase searches
+            // Loop through search data map of word and phrase searches
             for (Map.Entry<String,List<String>> itrCategory : mpTierOne.entrySet()) 
             {
                 bHasData = false;        
@@ -546,8 +548,6 @@ public class ParseInputFiles extends ProcessInputFiles {
                     mpTierOne.put(strCategoryKey, lstSearchData);
                     System.out.println("strCategoryKey " + strCategoryKey + " -- lstSearchData -- " +lstSearchData);
                 }
-                
-               
             }             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(CategoryScreenController.class.getName()).log(Level.SEVERE, null, ex);

@@ -116,13 +116,7 @@ public class CategoryScreenController implements Initializable, ControlledScreen
     
     @FXML
     private void actBtnProcess(ActionEvent event) {
-        // Parse Input file to create seach data
-        ParseInputFiles.setSearchData(fileInput);
-
-        ProcessInputFiles processInputFiles = new ProcessInputFiles();
-        processInputFiles.processFiles(MedicalMineFx.getStage());
-        btnProcess.setDisable(true);
-
+       
         // get a handle to the stage
         Scene stage = (Scene) btnProcess.getScene();
 
@@ -133,8 +127,10 @@ public class CategoryScreenController implements Initializable, ControlledScreen
     @FXML
     private void actBtnFIndCsv(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("c:/"));
+        fileChooser.setTitle("Select Search Criteria CSV");
         File file = fileChooser.showOpenDialog(MedicalMineFx.getStage());
-        //ParseInputFiles.setSearchData(file);        
+        ParseInputFiles.setSearchData(file);        
     }
     
     @FXML

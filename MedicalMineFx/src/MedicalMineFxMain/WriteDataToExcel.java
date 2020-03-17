@@ -74,9 +74,10 @@ public class WriteDataToExcel {
         // Write content to file in current directory and close workbook:
         File currDir = new File(".");
         String path = currDir.getAbsolutePath();
-        String fileLocation = path.substring(0, path.length() - 1) + "MedicalTest.xlsx";    
+        String fileLocation = "C:/MedicalMineResults/MedicalTest.xlsx";    
+        //String fileLocation = path.substring(0, path.length() - 1) + "C:/MedicalMineResults/MedicalTest.xlsx";    
         File flOrginalFile =  new File(fileLocation);
-         
+        flOrginalFile.mkdirs();
         // Delete Orginal Exile file
         if (flOrginalFile.exists())
         {

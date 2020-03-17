@@ -24,14 +24,14 @@ import javax.swing.JOptionPane;
  */
 public class ProcessInputFiles {    
 
-    private String strDisplayMessage;
+    private static String strDisplayMessage;
+    private static List<File> lstFileReturned; 
     
     /********************************
      * Process search
      *******************************/
-    public void processFiles(Stage stage){
+    public static void processFiles(){
         try{
-            List<File> lstFileReturned = selectFiles(stage); 
             Map<String, String> mpSaveToExcel = new LinkedHashMap() ;
             Map<Integer, Map<String,String> > mpFinalSaveToExcel = new LinkedHashMap(); 
             int iFileNum = 0; 
@@ -49,9 +49,8 @@ public class ProcessInputFiles {
             String strReturnExcelLoc = writeDataToExcel.SaveExcelSpreadSheet(mpFinalSaveToExcel);
             
             // Create Gui message
-            strDisplayMessage = "Number of files searched: " + iFileNum  + ".\nProcess complete...\nExcel file located at " + strReturnExcelLoc;
-           
-            //displayMsg("Data Collected",JOptionPane.INFORMATION_MESSAGE);
+            strDisplayMessage = "Number of files searched: " + iFileNum  + ".\nProcess complete...\nExcel file located at C:/MedicialMineResults";           
+            displayMsg(strDisplayMessage, JOptionPane.INFORMATION_MESSAGE);
         } catch(IOException e) {
             System.out.println("IOException " + e.getMessage());
             displayMsg(e.getMessage(),JOptionPane.ERROR_MESSAGE);
@@ -64,24 +63,23 @@ public class ProcessInputFiles {
     /********************************
      * Select files for search
      *******************************/
-    private List<File> selectFiles(Stage stage) throws IOException
+    public void selectFiles(Stage stage) throws IOException
     {        
-        final String strFilePath = "MedicalMineConf.txt";
+        final String strFilePath  = "MedicalMineConf.txt";
         String strFolderOriginalLocation = null;
         List <File> FileReturned = null;
         
-        try 
-        {
+        try {
             // Get current directory of application
             File currDir = new File(".");
             String path = currDir.getAbsolutePath();
             String strLocationOfConfigFile = path.substring(0, path.length() - 1) + strFilePath;    
 
-            // Check to see if configuration file exist
-            // Configuration file used to store pervious folder location of files selected.
+            // Check to see if configuration file exist            
             File flConfig = new File(strLocationOfConfigFile);
             boolean bFileExist = flConfig.exists();            
-             
+            
+            // Configuration file used to store pervious folder location of files selected.
             if(bFileExist)
             {
                 // If file exist, read info from config file
@@ -106,7 +104,6 @@ public class ProcessInputFiles {
             // Open file chooser with selected location
             boolean bcheckExtention = false;
             int showOpenDialog = -1;
-            //JFileChooser fileChooser = null;
             FileChooser fileChooser = new FileChooser();
             int iTryCount = 0;
            
@@ -136,16 +133,16 @@ public class ProcessInputFiles {
         catch (IOException e) 
         {
             e.printStackTrace();
-            displayMsg(e.getMessage(),JOptionPane.ERROR_MESSAGE);
+            //displayMsg(e.getMessage(),JOptionPane.ERROR_MESSAGE);
         }    
         
-        return FileReturned;
+        lstFileReturned =  FileReturned;
     }
     
     /********************************
      * Message dialog
      *******************************/   
-    public void displayMsg(String str, int iMessage)
+    public static void displayMsg(String str, int iMessage)
     {
         JFrame frame = null; 
         String strTitle = null;
@@ -165,15 +162,24 @@ public class ProcessInputFiles {
         JOptionPane.showMessageDialog(frame, str, strTitle, intMsg);
     }
     
-     /*****************************************
+    /*****************************************
     * Method : GetMessage
     * Input  : n/a
     * Return : String 
     * Purpose: Return message to main ui 
     ****************************************/
-    public String  getMessage()
-    {    
+    public String getMessage() {    
         return strDisplayMessage;
+    }
+    
+    /*****************************************
+    * Method : 
+    * Input  : 
+    * Return :  
+    * Purpose: 
+    ****************************************/
+    public static void setListSearchFiles(List<File> list){
+        lstFileReturned = list;
     }
 }
     

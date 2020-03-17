@@ -5,20 +5,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="Controllers.SelectInputDataController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SelectInputDataController">
    <children>
-      <Button layoutX="454.0" layoutY="125.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="84.0" text="Button" />
-      <Label layoutX="137.0" layoutY="125.0" prefHeight="36.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black;" text="csv files" />
+      <Button fx:id="btnCsvSelect" layoutX="454.0" layoutY="125.0" mnemonicParsing="false" onAction="#actBtnCsvSelect" prefHeight="36.0" prefWidth="84.0" text="Select CSV" />
+      <Label fx:id="lblShowCsv" layoutX="137.0" layoutY="125.0" prefHeight="36.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black;" />
       <Label layoutX="137.0" layoutY="108.0" text="Selected Input CSV File" />
-      <Button layoutX="454.0" layoutY="234.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="84.0" text="Button" />
-      <Label layoutX="137.0" layoutY="234.0" prefHeight="36.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black;" text="text files" />
+      <Button fx:id="btnFileSelect" layoutX="454.0" layoutY="234.0" mnemonicParsing="false" onAction="#actBtnFileSelect" prefHeight="36.0" prefWidth="84.0" text="Select FIles" />
+      <Label fx:id="lblShowText" layoutX="137.0" layoutY="234.0" prefHeight="36.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black;" />
       <Label layoutX="137.0" layoutY="217.0" text="Selected Input Search  Files" />
       <Label layoutX="192.0" layoutY="26.0" prefHeight="53.0" prefWidth="216.0" text="Medical Mine">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Button layoutX="454.0" layoutY="333.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="84.0" text="Button" />
+      <Button fx:id="btnExit" layoutX="524.0" layoutY="350.0" mnemonicParsing="false" onAction="#actBtnExit" prefHeight="30.0" prefWidth="56.0" text="Exit" />
+      <Button fx:id="btnProcess" disable="true" layoutX="227.0" layoutY="315.0" mnemonicParsing="false" onAction="#actBtnProcess" prefHeight="36.0" prefWidth="84.0" text="Process" />
    </children>
 </AnchorPane>
