@@ -44,12 +44,12 @@ public class StartMainScreenController implements Initializable, ControlledScree
 
     @FXML
     private void BtnCreateAction(ActionEvent event) {
-        screenController.setScreen(MedicalMineFx.CategoryScreen);
+        screenController.setScreen(MedicalMineFx.MainScreen);
     }
 
     @FXML
     private void btnLoadAction(ActionEvent event) {
-        screenController.setScreen(MedicalMineFx.CategoryScreen);        
+        screenController.setScreen(MedicalMineFx.MainScreen);        
     }
 
     @FXML

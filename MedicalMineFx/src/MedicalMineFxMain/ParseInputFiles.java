@@ -5,6 +5,7 @@
  */
 package MedicalMineFxMain;
 
+import Controllers.SelectInputDataController;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -73,8 +74,7 @@ public class ParseInputFiles extends ProcessInputFiles {
         try 
         {  
             // Remove output file if already created
-            if(file.exists() && bCheckFileExistOnce)
-            {
+            if(file.exists() && bCheckFileExistOnce) {
                 file.delete();
                 bCheckFileExistOnce = false;
             }            
@@ -550,7 +550,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                 }
             }             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(CategoryScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SelectInputDataController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

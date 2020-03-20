@@ -64,7 +64,8 @@ public class SelectInputDataController implements Initializable, ControlledScree
         // TODO
     }    
     
-    private String selectProcessFiles( final int isetValue) {
+    private String selectProcessFiles( final int isetValue) throws IOException {    
+        
         FileChooser fileChooser = new FileChooser();  
         String strFileName      = null;
         String strDialogTitle   = null;
@@ -72,6 +73,9 @@ public class SelectInputDataController implements Initializable, ControlledScree
         String strExtentionText = null;     
         Stage stageParent       = MedicalMineFx.getStage();
         File[] fileInput        = null;
+        String strDisplayFile   = null;
+        String strFilePath;
+        String strFilePathFromDoc = null;
         
         // Set String values according to selection
         switch (isetValue){
@@ -93,10 +97,7 @@ public class SelectInputDataController implements Initializable, ControlledScree
         }
         
         File fileCsv =  new File(strFileName);       
-        String strDisplayFile = null;
-        String strFilePath;
-        String strFilePathFromDoc = null;
-        
+       
         try {       
             fileChooser.setTitle(strDialogTitle);
             fileChooser.getExtensionFilters().addAll(new ExtensionFilter(strExtentionText, strExtention));
@@ -111,7 +112,7 @@ public class SelectInputDataController implements Initializable, ControlledScree
                     switch (isetValue){
                         case iCSV_FILE:
                             fileInput[0] = fileChooser.showOpenDialog(stageParent);    
-                            ParseInputFiles.setSearchData(fileInput[0]);   
+                            ParseInputFiles.setSearchData(fileInput[0]); 
                             break;
                         case iSEARCH_FILE:
                             List<File> fileList = fileChooser.showOpenMultipleDialog(stageParent);
@@ -125,7 +126,6 @@ public class SelectInputDataController implements Initializable, ControlledScree
                                 // Store search files in ProcessInputFiles class
                                 ProcessInputFiles.setListSearchFiles(fileList);
                             } 
-                            
                             break;
                     } 
                     scanCsv.close(); 
@@ -191,14 +191,12 @@ public class SelectInputDataController implements Initializable, ControlledScree
     
 
     @FXML
-    private void actBtnCsvSelect(ActionEvent event) {        
+    private void actBtnCsvSelect(ActionEvent event) throws IOException {        
         
         String strDisplay  = selectProcessFiles(iCSV_FILE);
-        
+        // Enable process button  
         if(strDisplay != null){
-            lblShowCsv.setText(strDisplay);
-
-            // Enable process button                
+            lblShowCsv.setText(strDisplay);                         
             if(bHasSearchFile && bHasCsvFile){
                 btnProcess.setDisable(false);
             } 
@@ -206,15 +204,15 @@ public class SelectInputDataController implements Initializable, ControlledScree
     }
 
     @FXML
-    private void actBtnFileSelect(ActionEvent event) {
+    private void actBtnFileSelect(ActionEvent event) throws IOException {      
         
         String strDisplay = selectProcessFiles(iSEARCH_FILE);
-        
+       
+        // Enable process button      
         if (strDisplay != null) {
-            lblShowText.setText(strDisplay);
-             // Enable process button                
+            lblShowText.setText(strDisplay);                      
             if(bHasSearchFile && bHasCsvFile){
-                btnProcess.setDisable(false);
+                 btnProcess.setDisable(false);
             } 
         }        
     }
@@ -225,8 +223,7 @@ public class SelectInputDataController implements Initializable, ControlledScree
     }
 
     @FXML
-    private void actBtnProcess(ActionEvent event) {
-        
+    private void actBtnProcess(ActionEvent event) {        
         ProcessInputFiles.processFiles();      
     }
 

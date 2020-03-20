@@ -18,10 +18,10 @@ public class MedicalMineFx extends Application {
     
     public static String MainScreen = "main";
     public static String MainResource = "/FxmlDisplays/SelectInputData.fxml";
-    public static String CategoryScreen = "category";
-    public static String CategoryResource = "/FxmlDisplays/CategoryScreen.fxml";
-    public static String KeyScreen = "keys";
-    public static String KeyResourse = "/FxmlDisplays/KeywordScreen.fxml";
+//    public static String CategoryScreen = "category";
+//    public static String CategoryResource = "/FxmlDisplays/CategoryScreen.fxml";
+//    public static String KeyScreen = "keys";
+//    public static String KeyResourse = "/FxmlDisplays/KeywordScreen.fxml";
     public static String LoadScreen = "load";
     
     private static Stage currentStage;
@@ -36,16 +36,16 @@ public class MedicalMineFx extends Application {
         try{
             //https://www.youtube.com/watch?v=5GsdaZWDcdY
             ScreenController screenController = new ScreenController();
-            screenController.loadScreen(CategoryScreen, CategoryResource);
-            screenController.loadScreen(MainScreen, MainResource);
-            screenController.loadScreen(KeyScreen, KeyResourse);            
+            screenController.loadScreen(MainScreen, MainResource);         
             screenController.setScreen(MainScreen);
 
             Group group = new Group();
             group.getChildren().addAll(screenController);
-            Scene scene = new Scene(group);  
+            Scene scene = new Scene(group);              
             stage.setScene(scene);
+            stage.setTitle("Medical Mine by DSC ver 1.0");
             stage.show();
+            
             currentStage = stage;
         } catch(Exception e) {
             System.out.println("ERROR 2: " + e.getMessage());
