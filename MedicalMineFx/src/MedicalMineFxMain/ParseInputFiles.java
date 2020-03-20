@@ -67,9 +67,7 @@ public class ParseInputFiles extends ProcessInputFiles {
         FileWriter flOutputFile = null;
         String strResultFile = "C:/MedicalMineResults/Medical Mine Results.txt";
         File file = new File(strResultFile);
-        file.mkdirs();
-        
-        boolean bHasData = false;       
+        file.mkdirs();       
         
         try 
         {  
@@ -100,8 +98,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             int iCharConverter;     
             
             // Collect each character from file and put in variable for processing
-            while ((iCharConverter = flInputFile.read()) != -1)
-            {               
+            while ((iCharConverter = flInputFile.read()) != -1) {               
                 strData += ((char)iCharConverter);
             }    
            
@@ -116,24 +113,27 @@ public class ParseInputFiles extends ProcessInputFiles {
                 return null;
             }
             
-            List<String> aryTier1Search;
+            // Populate first column with file name
+            strFileName = strFileName.replace(".txt", "");
+            mpSaveToExcel.put("File Name",strFileName);
+            
+            
+            List<String> lstTier1Search;
             int CategoryCounter = 1; 
             
             // Loop through search data map of word and phrase searches
-            for (Map.Entry<String,List<String>> itrCategory : mpTierOne.entrySet()) 
-            {
-                bHasData = false;        
+            for (Map.Entry<String,List<String>> itrCategory : mpTierOne.entrySet()) {               
                 String strCategory = itrCategory.getKey();
 
                 // Pre set map for Excel
                 mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, "");
-                
+                /*
                 // Use file name for patiend id
                 if (strCategory.equals(PATIENT_ID)) {
                     mpSaveToExcel.put(PATIENT_ID, strFileName.replaceAll(".txt", ""));
                     //mpSaveToExcel = GetAccountForExcel(mpSaveToExcel, strFind, strSearchLine, strValue);
                 }
-                
+                */
                 // Print category text to result file
                 flOutputFile.write(System.lineSeparator());// line feed
                 flOutputFile.write(CategoryCounter + ") Category - " + strCategory + ":");
@@ -145,11 +145,11 @@ public class ParseInputFiles extends ProcessInputFiles {
                 CategoryCounter++;
                 
                 // Collect data from map
-                aryTier1Search = itrCategory.getValue(); 
+                lstTier1Search = itrCategory.getValue(); 
                 
                 // Search for each search word and phrase in line
-                for(int ii = 0 ; ii < aryTier1Search.size() ; ii++) {            
-                    String strFind = aryTier1Search.get(ii);
+                for(int ii = 0 ; ii < lstTier1Search.size() ; ii++) {            
+                    String strFind = lstTier1Search.get(ii);
                     
                     // Make sure value is contained in string 
                     if(!strFind.isEmpty()) {
@@ -226,8 +226,6 @@ public class ParseInputFiles extends ProcessInputFiles {
                                         mpSaveToExcel = GetGender(mpSaveToExcel, strFind, strValue);
                                     }
                                 }
-                                
-                                bHasData = true;
                             }                   
                         }// For loop Search input file 
                     }    
@@ -336,29 +334,23 @@ public class ParseInputFiles extends ProcessInputFiles {
      * Return : Map 
      * Purpose: Set the values for the Excel map
      ****************************************/
-    private Map<String, String> SetMapForExcel(Map<String, String> mpExcel, String strCat, String strValue)
+    private Map<String, String> SetMapForExcel(Map<String, String> mpExcel, String strCategory, String strValue)
     {
         // Does map have category 
-        if(mpExcel.containsKey(strCat) && strValue.length() > 0)
-        {                           
-            String strCurrentValue = mpExcel.get(strCat);
+        if(mpExcel.containsKey(strCategory) && strValue.length() > 0) {                           
+            String strCurrentValue = mpExcel.get(strCategory);
             
             // Determine if value is already in map
-            if(!strCurrentValue.equals(strValue) && strCurrentValue.length() > 0)
-            {               
+            if(!strCurrentValue.equals(strValue) && strCurrentValue.length() > 0) {               
                 // Add new string value to string 
                 strCurrentValue += ", " + strValue;
-                mpExcel.put(strCat, strCurrentValue);                
-            }   
-            else
-            {
-                mpExcel.put(strCat, strValue);           
+                mpExcel.put(strCategory, strCurrentValue);                
+            } else {
+                mpExcel.put(strCategory, strValue);           
             }            
-        }
-        else
-        {
+        } else {
             // Create blank new key value
-            mpExcel.put(strCat,"");        
+            mpExcel.put(strCategory,"");        
         }
         
         return mpExcel;
