@@ -15,7 +15,7 @@ import javafx.scene.layout.StackPane;
  *
  * @author RW Simmons
  */
-public class ScreenController extends StackPane{
+public class ScreenController extends StackPane {
     
     private HashMap<String, Node> screens = new HashMap<>();
     
@@ -41,12 +41,12 @@ public class ScreenController extends StackPane{
     
     public boolean setScreen(final String name){    
         try{
-        screens.get(name);
-        if(getChildren().size() > 0){
-            getChildren().remove(0);
-        }
-        
-        getChildren().add(0, screens.get(name));
+            screens.get(name);
+            if(getChildren().size() > 0){
+                getChildren().remove(0);
+            }
+
+            getChildren().add(0, screens.get(name));
         } catch(Exception e){
             System.out.println("ERROR 3: " + e.getMessage());
             return false;
@@ -59,12 +59,12 @@ public class ScreenController extends StackPane{
         return true;
     }
     
-     public void addScreen(String name, Node screen) {
+    public void addScreen(String name, Node screen) {
         screens.put(name, screen);
     }
     
      // Returns the Node with the appropriate name
     public Node getScreen(String name){
         return screens.get(name);
-    }   
+    }
 }

@@ -1,12 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package MedicalMineFxMain;
 
+import static MedicalMineFxMain.MedicalMineFx.MainResource;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -16,37 +17,32 @@ import javafx.stage.Stage;
  */
 public class MedicalMineFx extends Application {
     
-    public static String MainScreen = "main";
-    public static String MainResource = "/FxmlDisplays/SelectInputData.fxml";
-//    public static String CategoryScreen = "category";
-//    public static String CategoryResource = "/FxmlDisplays/CategoryScreen.fxml";
-//    public static String KeyScreen = "keys";
-//    public static String KeyResourse = "/FxmlDisplays/KeywordScreen.fxml";
-    public static String LoadScreen = "load";
     
+     private static final String VERSION = "1.1";
+     
+    public static String MainScreen      = "main";
+    public static String MainResource    = "/FxmlDisplays/SelectInputData.fxml";
+    public static String ProgessScreen   = "progess";
+    public static String ProgessResource = "/FxmlDisplays/ProcessFileDisplay.fxml";
+    public static String LoadScreen      = "load";
+    
+    private static Stage mainStage;
+    private static Stage progessStage;
     private static Stage currentStage;
     
     public static Stage getStage(){
         return currentStage;
-    }
-    
+    }    
     
     @Override
     public void start(Stage stage) throws Exception {        
-        try{
-            //https://www.youtube.com/watch?v=5GsdaZWDcdY
-            ScreenController screenController = new ScreenController();
-            screenController.loadScreen(MainScreen, MainResource);         
-            screenController.setScreen(MainScreen);
-
-            Group group = new Group();
-            group.getChildren().addAll(screenController);
-            Scene scene = new Scene(group);              
-            stage.setScene(scene);
-            stage.setTitle("Medical Mine by DSC ver 1.0");
-            stage.show();
-            
+        try{           
+            CreateStage createStage = new CreateStage();
+           
             currentStage = stage;
+            mainStage = createStage.setStage(stage, MainResource, "Medical Mine by DSC ver " + VERSION);           
+            mainStage.show();                        
+          
         } catch(Exception e) {
             System.out.println("ERROR 2: " + e.getMessage());
         }       
@@ -58,5 +54,44 @@ public class MedicalMineFx extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    /**
+     * 
+     */
+    public static void showProgessPage(){
+        CreateStage createStage = new CreateStage();
+        progessStage = createStage.setStage(currentStage, ProgessResource, "");        
+        progessStage.show();
+    }
+    /**
+     * 
+     * @throws InterruptedException 
+     */
+    public static void closeProgessPage() throws InterruptedException{
+       CreateStage createStage = new CreateStage();
+       mainStage = createStage.setStage(currentStage, MainResource, "Medical Mine by DSC ver "  + VERSION);
+       mainStage.show();
+    }
+}
+
+/*****************************************
+* Class:
+* Purpose:  
+****************************************/
+class CreateStage{
     
+    public Stage setStage(Stage stage, String strResource, String title){
+        try {
+            FXMLLoader myLoader = new FXMLLoader(getClass().getResource(strResource));
+            Parent loadScreen =(Parent) myLoader.load();
+            Scene scene =  new Scene(loadScreen);
+            stage.setScene(scene);
+            stage.setTitle(title);           
+        } catch (IOException ex) {
+            Logger.getLogger(CreateStage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return stage;
+    }
+
+
 }
