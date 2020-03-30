@@ -26,112 +26,110 @@ import javafx.scene.control.Label;
  *
  * @author RW Simmons
  */
-public class SelectInputDataController implements Initializable, ControlledScreen  {
+public class SelectInputDataController implements Initializable, ControlledScreen {
 
-    private static ScreenController screenController;  
+    private static ScreenController screenController;
     //private ProcessInputFiles processInputFiles;
-    public static final int iCSV_FILE    = 0;
-    public static final int iSEARCH_FILE = 1;
-    public static boolean bHasCsvFile    = false;
+    public static final int CSV_FILE = 0;
+    public static final int SEARCH_FILE = 1;
+    public static boolean bHasCsvFile = false;
     public static boolean bHasSearchFile = false;
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
-    /*****************************************
-    * Method : 
-    * Input  : 
-    * Return :  
-    * Purpose:  
-    ****************************************/
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose:  
+    ***************************************
+     */
     @FXML
-    private void actBtnCsvSelect(ActionEvent event) throws IOException {        
-        
-        String strDisplay  = ProcessInputFiles.selectProcessFiles(iCSV_FILE);
-        
+    private void actBtnCsvSelect(ActionEvent event) throws IOException {
+
+        String strDisplay = ProcessInputFiles.selectProcessFiles(CSV_FILE);
+
         // Enable process button  
-        if(strDisplay != null){
-            lblShowCsv.setText(strDisplay);                         
-            if(bHasSearchFile && bHasCsvFile){
-                btnProcess.setDisable(false);
-            } 
+        if (strDisplay != null) {
+            lblShowCsv.setText(strDisplay);
+            if (bHasSearchFile && bHasCsvFile) {
+                btnProcess.setDisable(false);               
+            }
         }
     }
 
-    /*****************************************
-    * Method : 
-    * Input  : 
-    * Return :  
-    * Purpose:  
-    ****************************************/
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose:  
+    ***************************************
+     */
     @FXML
-    private void actBtnFileSelect(ActionEvent event) throws IOException {      
-        
-        String strDisplay = ProcessInputFiles.selectProcessFiles(iSEARCH_FILE);
-       
+    private void actBtnFileSelect(ActionEvent event) throws IOException {
+
+        String strDisplay = ProcessInputFiles.selectProcessFiles(SEARCH_FILE);
+
         // Enable process button      
         if (strDisplay != null) {
-            lblShowText.setText(strDisplay);                      
-            if(bHasSearchFile && bHasCsvFile) {
-                 btnProcess.setDisable(false);
-            } 
-        }        
+            lblShowText.setText(strDisplay);
+            if (bHasSearchFile && bHasCsvFile) {
+                btnProcess.setDisable(false);
+            }
+        }
     }
 
-    /*****************************************
-    * Method : 
-    * Input  : 
-    * Return :  
-    * Purpose:  
-    ****************************************/
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose:  
+    ***************************************
+     */
     @FXML
     private void actBtnExit(ActionEvent event) {
-        System.exit(0);    
+        System.exit(0);
     }
 
-    /*****************************************
-    * Method : 
-    * Input  : 
-    * Return :  
-    * Purpose:  
-    ****************************************/   
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose:  
+    ***************************************
+     */
     @FXML
-    private void actBtnProcess(ActionEvent event) throws InterruptedException {  
-       MedicalMineFx.showProgessPage();
-       Thread.sleep(10);            
-        
+    private void actBtnProcess(ActionEvent event) throws InterruptedException {
+        MedicalMineFx.showProgessPage();
+        Thread.sleep(10);
+
         Platform.runLater(new Runnable() {
             @Override
-            public void run() { 
+            public void run() {
                 ProcessInputFiles processInputFiles = new ProcessInputFiles();
                 processInputFiles.processFiles();
-                try {   
+                ProcessInputFiles.setJsonLocationFile();                
+                try {
                     MedicalMineFx.closeProgessPage();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(SelectInputDataController.class.getName()).log(Level.SEVERE, null, ex);
-                }               
+                }
+                
+                 // Reset process button
+                bHasSearchFile = false;
+                bHasCsvFile = false;
             }
         });
     }
 
-    /*****************************************
-    * Method : 
-    * Input  : 
-    * Return :  
-    * Purpose:  
-    ****************************************/
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose:  
+    ***************************************
+     */
     @Override
-    public void setScreenParent(ScreenController screenPage) {            
+    public void setScreenParent(ScreenController screenPage) {
         screenController = screenPage;
-    }  
+    }
 
-    
-     
     @FXML
     private Button btnCsvSelect;
     @FXML

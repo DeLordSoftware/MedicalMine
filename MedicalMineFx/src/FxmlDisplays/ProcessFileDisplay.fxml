@@ -6,15 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="Controllers.ProcessFileDisplayController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ProcessFileDisplayController">
    <children>
       <Label layoutX="168.0" layoutY="106.0" text="Processing Files ....">
          <font>
             <Font size="33.0" />
          </font>
       </Label>
-      <ProgressBar fx:id="progressBar" layoutX="188.0" layoutY="234.0" prefHeight="40.0" prefWidth="225.0" progress="0.0" />
-      <Button fx:id="btnClose" layoutX="458.0" layoutY="312.0" mnemonicParsing="false" onAction="#actBtnClose" text="Close" />
+      <ProgressBar fx:id="progressBar" blendMode="RED" layoutX="188.0" layoutY="234.0" prefHeight="40.0" prefWidth="225.0" progress="0.0" />
+      <Button fx:id="testBtn" layoutX="14.0" layoutY="371.0" mnemonicParsing="false" onAction="#actTestBtn" prefHeight="15.0" prefWidth="27.0" text="Test" />
    </children>
 </AnchorPane>

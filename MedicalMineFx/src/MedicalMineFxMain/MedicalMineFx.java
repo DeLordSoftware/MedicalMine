@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class MedicalMineFx extends Application {
     
     
-     private static final String VERSION = "1.1";
+    private static final String VERSION = "1.1";
      
     public static String MainScreen      = "main";
     public static String MainResource    = "/FxmlDisplays/SelectInputData.fxml";
@@ -37,15 +37,23 @@ public class MedicalMineFx extends Application {
     @Override
     public void start(Stage stage) throws Exception {        
         try{           
-            CreateStage createStage = new CreateStage();
            
+            CreateStage createStage = new CreateStage();           
             currentStage = stage;
             mainStage = createStage.setStage(stage, MainResource, "Medical Mine by DSC ver " + VERSION);           
             mainStage.show();                        
-          
+            //*/
+            /*
+            // testing progress bar
+            CreateStage createStage = new CreateStage();           
+            currentStage = stage;
+            progessStage = createStage.setStage(stage, ProgessResource, "test " + VERSION);           
+            progessStage.show();
+            //*/
         } catch(Exception e) {
             System.out.println("ERROR 2: " + e.getMessage());
         }       
+            
     }
 
     /**
@@ -59,8 +67,7 @@ public class MedicalMineFx extends Application {
      */
     public static void showProgessPage(){
         CreateStage createStage = new CreateStage();
-        progessStage = createStage.setStage(currentStage, ProgessResource, "");        
-        progessStage.show();
+        progessStage = createStage.setStage(currentStage, ProgessResource, "");          
     }
     /**
      * 
@@ -85,7 +92,7 @@ class CreateStage{
             Parent loadScreen =(Parent) myLoader.load();
             Scene scene =  new Scene(loadScreen);
             stage.setScene(scene);
-            stage.setTitle(title);           
+            stage.setTitle(title); 
         } catch (IOException ex) {
             Logger.getLogger(CreateStage.class.getName()).log(Level.SEVERE, null, ex);
         }

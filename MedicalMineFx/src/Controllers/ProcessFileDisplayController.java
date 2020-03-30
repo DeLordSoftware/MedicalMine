@@ -6,10 +6,11 @@
 package Controllers;
 
 import MedicalMineFxMain.ControlledScreen;
-import MedicalMineFxMain.MedicalMineFx;
 import MedicalMineFxMain.ScreenController;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,16 +27,23 @@ public class ProcessFileDisplayController implements Initializable, ControlledSc
     @FXML
     private ProgressBar progressBar;
     @FXML
-    private Button btnClose;
+    private Button testBtn;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-      
-    }    
+        // Start progress bar... TODO: not working... fix    
+        progressBar.setProgress(0.0);      
+        Thread thread = new Thread(new ProgressBarThread());
+        thread.start();
+        //*/
+    }       
+    
+    public void setProgressBar(){
+        //progressBar.setProgress(0.0);
+    }
 
     @Override
     public void setScreenParent(ScreenController screenPage) {        
@@ -43,15 +51,24 @@ public class ProcessFileDisplayController implements Initializable, ControlledSc
     }
 
     @FXML
-    private void actBtnClose(ActionEvent event) {             
-         screenController.setScreen(MedicalMineFx.MainScreen);
+    private void actTestBtn(ActionEvent event) {
+        Thread thread = new Thread(new ProgressBarThread());
+        thread.start();
     }
     
-    public void goBackToMian(){      
-         btnClose.fire();              
+    class ProgressBarThread implements Runnable {
+        @Override
+        public void run() {
+            for (int ii = 0 ; ii < 100 ; ii++){
+                progressBar.setProgress(ii/100.0);
+                //System.out.println("progress bar " + ii);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ProcessFileDisplayController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+        }
     }
-     
-    public ProcessFileDisplayController getProgressObject(){
-        return this;
-    }   
 }
