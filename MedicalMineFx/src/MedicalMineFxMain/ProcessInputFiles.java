@@ -7,17 +7,15 @@ package MedicalMineFxMain;
 
 import Controllers.SelectInputDataController;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
@@ -41,8 +39,7 @@ public class ProcessInputFiles extends SelectInputDataController {
     private final static String JSON_DATA_FILE = "MedicalMineData.json";
 
     /**
-     * ******************************
-     * Method : Process search Input : Return : Purpose: **************************************
+     *
      */
     public void processFiles() {
         try {
@@ -58,6 +55,21 @@ public class ProcessInputFiles extends SelectInputDataController {
                 mpFinalSaveToExcel.put(iFileNum, mpSaveToExcel);
             }
 
+            
+            
+            /* TODO: user select location of saved folder***
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(new File("C://"));
+
+            DirectoryChooser directChooser = new DirectoryChooser();
+            File fileA = directChooser.showDialog(stage);
+
+            System.out.println(fileA.getAbsolutePath());
+            String strResultFile = fileA.getAbsolutePath() + "\\Medical Mine Results.txt";
+            //*/
+            
+            
+            
             //Write data to Excel spreadsheet
             WriteDataToExcel writeDataToExcel = new WriteDataToExcel();
             String strReturnExcelLoc = writeDataToExcel.SaveExcelSpreadSheet(mpFinalSaveToExcel);
@@ -75,8 +87,10 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     * ***************************************
-     * Method : Input : Return : Purpose: **************************************
+     *
+     * @param isetValue
+     * @return
+     * @throws IOException
      */
     public static String selectProcessFiles(final int isetValue) throws IOException {
 
@@ -111,10 +125,10 @@ public class ProcessInputFiles extends SelectInputDataController {
         }
 
         try {
-
             // Set dialog parametes
             fileChooser.setTitle(strDialogTitle);
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(strExtentionText, strExtention));
+            
             File fileJson = new File(JSON_DATA_FILE);
 
             if (fileJson.exists()) {
@@ -128,7 +142,7 @@ public class ProcessInputFiles extends SelectInputDataController {
                     // Display dialog with selected location
                     strFilePathFromDoc = locationJson.get(jsonKeyValue).toString();
                     fileChooser.setInitialDirectory(new File(strFilePathFromDoc));
-                    fileInput = displayFileDialog(fileChooser, isetValue, fileInput, stageParent);                   
+                    fileInput = displayFileDialog(fileChooser, isetValue, fileInput, stageParent);
                 } else {
                     //Display dialog with default location           
                     fileChooser.setInitialDirectory(new File("c:/"));
@@ -154,6 +168,7 @@ public class ProcessInputFiles extends SelectInputDataController {
                     case CSV_FILE:
                         strSaveCsvLocal = strFilePath;
                         bHasCsvFile = true;
+                        strDisplayFile = " " + strDisplayFile;
                         break;
                     case SEARCH_FILE:
                         strSaveFilesLocal = strFilePath;
@@ -201,7 +216,7 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     *  Store values for dialog location
+     * Store values for dialog location
      */
     public static void setJsonLocationFile() {
         // Set values
@@ -219,10 +234,10 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     * ******************************
-     * Message dialog *****************************
+     * Message dialog
      */
     public static void displayMsg(String str, int iMessage) {
+
         JFrame frame = null;
         String strTitle = null;
         int intMsg = 0;
@@ -248,9 +263,11 @@ public class ProcessInputFiles extends SelectInputDataController {
         return strDisplayMessage;
     }
 
-    /*****************************************
+    /**
+     * ***************************************
      * Method : Input : Return : Purpose: 
-     ***************************************/
+     **************************************
+     */
     private static void setListSearchFiles(List<File> list) {
         lstFileReturned = list;
     }

@@ -7,18 +7,39 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SelectInputDataController">
    <children>
-      <Button fx:id="btnCsvSelect" layoutX="454.0" layoutY="125.0" mnemonicParsing="false" onAction="#actBtnCsvSelect" prefHeight="36.0" prefWidth="84.0" text="Select CSV" />
-      <Label fx:id="lblShowCsv" layoutX="137.0" layoutY="125.0" prefHeight="36.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black;" />
-      <Label layoutX="137.0" layoutY="108.0" text="Selected Input CSV File" />
-      <Button fx:id="btnFileSelect" layoutX="454.0" layoutY="234.0" mnemonicParsing="false" onAction="#actBtnFileSelect" prefHeight="36.0" prefWidth="84.0" text="Select FIles" />
-      <Label fx:id="lblShowText" layoutX="137.0" layoutY="234.0" prefHeight="36.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black;" />
-      <Label layoutX="137.0" layoutY="217.0" text="Selected Input Search  Files" />
+      <Button fx:id="btnCsvSelect" layoutX="454.0" layoutY="138.0" mnemonicParsing="false" onAction="#actBtnCsvSelect" prefHeight="36.0" prefWidth="98.0" text="Select CSV">
+         <font>
+            <Font size="15.0" />
+         </font></Button>
+      <Label fx:id="lblShowCsv" layoutX="137.0" layoutY="138.0" prefHeight="36.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black;" textFill="#1c1ca8">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Label layoutX="137.0" layoutY="108.0" text="Selected Input CSV File">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font></Label>
+      <Button fx:id="btnFileSelect" layoutX="454.0" layoutY="247.0" mnemonicParsing="false" onAction="#actBtnFileSelect" prefHeight="36.0" prefWidth="98.0" text="Select FIles">
+         <font>
+            <Font size="15.0" />
+         </font></Button>
+      <Label fx:id="lblShowText" layoutX="137.0" layoutY="247.0" prefHeight="36.0" prefWidth="263.0" style="-fx-background-color: white; -fx-border-color: black;" textFill="#2c198a">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Label layoutX="137.0" layoutY="217.0" text="Selected Input Search  Files">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font></Label>
       <Label layoutX="192.0" layoutY="26.0" prefHeight="53.0" prefWidth="216.0" text="Medical Mine">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
       <Button fx:id="btnExit" layoutX="524.0" layoutY="350.0" mnemonicParsing="false" onAction="#actBtnExit" prefHeight="30.0" prefWidth="56.0" text="Exit" />
-      <Button fx:id="btnProcess" disable="true" layoutX="227.0" layoutY="315.0" mnemonicParsing="false" onAction="#actBtnProcess" prefHeight="36.0" prefWidth="84.0" text="Process" />
+      <Button fx:id="btnProcess" disable="true" layoutX="213.0" layoutY="315.0" mnemonicParsing="false" onAction="#actBtnProcess" prefHeight="44.0" prefWidth="111.0" text="Process" textFill="#02ab2f">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
    </children>
 </AnchorPane>

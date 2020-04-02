@@ -15,10 +15,9 @@ import javafx.stage.Stage;
  *
  * @author RW Simmons
  */
-public class MedicalMineFx extends Application {
+public class MedicalMineFx extends Application {    
     
-    
-    private static final String VERSION = "1.1";
+    private static final String VERSION = "2.0";
      
     public static String MainScreen      = "main";
     public static String MainResource    = "/FxmlDisplays/SelectInputData.fxml";
@@ -36,20 +35,11 @@ public class MedicalMineFx extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {        
-        try{           
-           
+        try{
             CreateStage createStage = new CreateStage();           
             currentStage = stage;
             mainStage = createStage.setStage(stage, MainResource, "Medical Mine by DSC ver " + VERSION);           
-            mainStage.show();                        
-            //*/
-            /*
-            // testing progress bar
-            CreateStage createStage = new CreateStage();           
-            currentStage = stage;
-            progessStage = createStage.setStage(stage, ProgessResource, "test " + VERSION);           
-            progessStage.show();
-            //*/
+            mainStage.show();
         } catch(Exception e) {
             System.out.println("ERROR 2: " + e.getMessage());
         }       

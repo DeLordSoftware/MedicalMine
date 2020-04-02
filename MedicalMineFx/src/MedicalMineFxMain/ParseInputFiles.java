@@ -25,6 +25,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -51,16 +55,26 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * ***************************************
-     * Method : TextParsing Input : file Return : Map Purpose: Get search data from text files **************************************
+     * 
+     * @param flFileName
+     * @return
+     * @throws IOException 
      */
     public Map<String, String> TextParsing(File flFileName) throws IOException {
         Map<String, String> mpSaveToExcel = new LinkedHashMap();
         FileReader flInputFile = null;
         FileWriter flOutputFile = null;
-        
+
         // TODO: Have user selected location of result files
+        /*
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("C://"));        
+        DirectoryChooser directChooser = new DirectoryChooser();
+        File fileA = directChooser.showDialog(MedicalMineFx.getStage());         
+        String strResultFile = fileA.getAbsolutePath() + "\\Medical Mine Results.txt";
+         */
         String strResultFile = "C:/MedicalMineResults/Medical Mine Results.txt";
+
         File file = new File(strResultFile);
         file.mkdirs();
 
@@ -129,13 +143,7 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                 // Pre set map for Excel
                 mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, "");
-                /*
-                // Use file name for patiend id
-                if (strCategory.equals(PATIENT_ID)) {
-                    mpSaveToExcel.put(PATIENT_ID, strFileName.replaceAll(".txt", ""));
-                    //mpSaveToExcel = GetAccountForExcel(mpSaveToExcel, strFind, strSearchLine, strValue);
-                }
-                 */
+
                 // Print category text to result file
                 flOutputFile.write(System.lineSeparator());// line feed
                 flOutputFile.write(CategoryCounter + ") Category - " + strCategory + ":");
@@ -146,6 +154,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                 if (bDebug) {
                     System.out.println(CategoryCounter + ") Category -" + strCategory + ":");
                 }
+
                 CategoryCounter++;
 
                 // Collect data from map
@@ -176,15 +185,15 @@ public class ParseInputFiles extends ProcessInputFiles {
                                         System.out.println("    ++ " + strFind + " ++");
                                     }
 
-                                    /**
-                                     * Save for Excel *
-                                     */
+                                    //  Save for Excel 
                                     if (bGetCustomData) {
+                                        // Custom save: display custom data
+                                        strSearchLine = getCustomData(strSearchLine);
                                         mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, strSearchLine);
                                     } else {
                                         mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, strFind);
                                     }
-                                    
+
                                     bDisplayOnce = false;// Display only once per category
                                 }
 
@@ -220,29 +229,6 @@ public class ParseInputFiles extends ProcessInputFiles {
                                         System.out.println("        -- " + strSearchLine);
                                     }
                                 }
-                                
-                                //****** Special Searches ******//                                
-                                /*
-                                // Get surgery date
-                                if (strCategory.equals(SURGERY_DATE) && (!strSearchLine.isEmpty() || !strValue.isEmpty())) {
-                                    if (strSearchLine.length() > 0) {
-                                        mpSaveToExcel = GetDateForExcel(mpSaveToExcel, strFind, strSearchLine);
-                                    } else {
-                                        mpSaveToExcel = GetDateForExcel(mpSaveToExcel, strFind, strValue);
-                                    }
-                                } else if (strCategory.equals(PATIENT_ID) && (!strSearchLine.isEmpty() || !strValue.isEmpty())) {
-                                    // Get Patient data
-                                    mpSaveToExcel.put(PATIENT_ID, strFileName); // Use file name for now
-                                    //mpSaveToExcel = GetAccountForExcel(mpSaveToExcel, strFind, strSearchLine, strValue);
-                                } else if (strCategory.equals(GENDER) && (!strSearchLine.isEmpty() || !strValue.isEmpty())) {
-                                    // Get gender
-                                    if (strSearchLine.length() > 0) {
-                                        mpSaveToExcel = GetGender(mpSaveToExcel, strFind, strSearchLine);
-                                    } else {
-                                        mpSaveToExcel = GetGender(mpSaveToExcel, strFind, strValue);
-                                    }
-                                }
-                                */
                             }
                         }// For loop Search input file 
                     }
@@ -269,8 +255,10 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * ***************************************
-     * Method : firstLevelParse Input : String, String Return : boolean Purpose: Search for each key word in line **************************************
+     * 
+     * @param parseLine
+     * @param strFind
+     * @return 
      */
     private boolean firstLevelParse(String parseLine, String strFind) {
         // Main Reg Exp string
@@ -296,8 +284,39 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * ***************************************
-     * Method : secondLevelParse Input : String, String Return : List Purpose: Separate chunks of multiple sentences into individual lines **************************************
+     *
+     * @param strCustom
+     * @return
+     */
+    private String getCustomData(String strCustom) {
+        // Get exact date        
+        String regex = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(strCustom);
+        // Clean string
+        strCustom = strCustom.replaceAll("  ", " ").replace(":", " ").replace(".", "/");
+
+        String[] lstStringSegments = strCustom.split(" ");
+
+        for (String segment : lstStringSegments) {
+            // Cycle throught segments of data in string
+            segment = segment.replaceAll(" ", "");
+            matcher = pattern.matcher(segment);
+            if (matcher.matches()) {
+                // Store date format
+                strCustom = segment;
+                break;
+            }
+        }
+
+        return strCustom;
+    }
+
+    /**
+     * 
+     * @param parseLine
+     * @param strFind
+     * @return 
      */
     private List<String> secondLevelParse(String parseLine, String strFind) {
         List<String> lstParseLine = new LinkedList();
@@ -335,10 +354,13 @@ public class ParseInputFiles extends ProcessInputFiles {
         return lstParseLine;
     }
 
-    /**
-     * **************************************
-     * Method : SetMapForExcel Input : String, String Return : Map Purpose: Set the values for the Excel map **************************************
-     */
+   /**
+    * 
+    * @param mpExcel
+    * @param strCategory
+    * @param strValue
+    * @return 
+    */
     private Map<String, String> SetMapForExcel(Map<String, String> mpExcel, String strCategory, String strValue) {
         // Does map have category 
         if (mpExcel.containsKey(strCategory) && strValue.length() > 0) {
@@ -360,10 +382,13 @@ public class ParseInputFiles extends ProcessInputFiles {
         return mpExcel;
     }
 
-    /**
-     * ***************************************
-     * Method : GetDateForExcel Input : Map, String, String, String Return : map Purpose: Extract date from search line string **************************************
-     */
+   /**
+    * 
+    * @param mpExcel
+    * @param strCat
+    * @param strFind
+    * @return 
+    */
     private Map<String, String> GetDateForExcel(Map<String, String> mpExcel, String strCat, String strFind) {
         String strFinalDate = null;
 
@@ -397,11 +422,13 @@ public class ParseInputFiles extends ProcessInputFiles {
         return mpExcel;
     }
 
-    /**
-     * ***************************************
-     * Method : GetGender Input : Map<String, String>, String, String Return : Map<String, String>
-     * Purpose: **************************************
-     */
+   /**
+    * 
+    * @param mpExcel
+    * @param strCat
+    * @param strFind
+    * @return 
+    */
     private Map<String, String> GetGender(Map<String, String> mpExcel, String strCat, String strFind) {
         // Get exact gender 
         String[] arryStr = CreateArrayForSearch(strFind, strCat);
@@ -437,8 +464,10 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * ***************************************
-     * Method : CreateArrayForSearch Input : String, String Return : String[] Purpose: **************************************
+     * 
+     * @param strDateFinal
+     * @param strCatgy
+     * @return 
      */
     private String[] CreateArrayForSearch(String strDateFinal, String strCatgy) {
         // Convert strings to lower case because sometimes string has different capitalization
@@ -457,8 +486,12 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * ***************************************
-     * Method : Not used: GetDateForExcel Input : Map, String, String, String Return : map Purpose: Extract date from search line string **************************************
+     * 
+     * @param mpExcel
+     * @param strCat
+     * @param strOne
+     * @param strTwo
+     * @return 
      */
     private Map<String, String> GetAccountForExcel(Map<String, String> mpExcel, String strCat, String strOne, String strTwo) {
         String strFinalDate = null;
@@ -495,10 +528,8 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * ***************************************
-     * Method : Input : Return : Purpose:
-     *
-     * @param file **************************************
+     * 
+     * @param file 
      */
     @SuppressWarnings("null")
     public static void setSearchData(File file) {
@@ -520,8 +551,3 @@ public class ParseInputFiles extends ProcessInputFiles {
         }
     }
 }
-
-/**
- * ***************************************
- * Method : Input : Return : Purpose: **************************************
- */
