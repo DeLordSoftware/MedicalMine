@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controllers;
 
 import MedicalMineFxMain.ControlledScreen;
@@ -34,13 +30,16 @@ public class SelectInputDataController implements Initializable, ControlledScree
     public static final int SEARCH_FILE = 1;
     public static boolean bHasCsvFile = false;
     public static boolean bHasSearchFile = false;
+    
+    final private String CLR_GREEN = "-fx-text-fill: green";
+    final private String CLR_GRAY = "-fx-text-fill: gray";
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        btnProcess.setStyle(CLR_GRAY);
     }
 
     /**
@@ -57,7 +56,8 @@ public class SelectInputDataController implements Initializable, ControlledScree
         if (strDisplay != null) {
             lblShowCsv.setText(strDisplay);
             if (bHasSearchFile && bHasCsvFile) {
-                btnProcess.setDisable(false);               
+                btnProcess.setDisable(false);
+                btnProcess.setStyle(CLR_GREEN);
             }
         }
     }
@@ -77,6 +77,7 @@ public class SelectInputDataController implements Initializable, ControlledScree
             lblShowText.setText(strDisplay);
             if (bHasSearchFile && bHasCsvFile) {
                 btnProcess.setDisable(false);
+                btnProcess.setStyle(CLR_GREEN);
             }
         }
     }

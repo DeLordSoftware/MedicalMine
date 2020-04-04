@@ -42,6 +42,7 @@ public class ProcessInputFiles extends SelectInputDataController {
      *
      */
     public void processFiles() {
+        
         try {
             Map<String, String> mpSaveToExcel = new LinkedHashMap();
             Map<Integer, Map<String, String>> mpFinalSaveToExcel = new LinkedHashMap();
@@ -202,11 +203,12 @@ public class ProcessInputFiles extends SelectInputDataController {
             case SEARCH_FILE:
                 List<File> fileList = fileChser.showOpenMultipleDialog(stagePrat);
                 if (fileList != null) {
+                    // Store search files
                     fileInpt = new File[fileList.size()];
                     for (int ii = 0; ii < fileList.size(); ii++) {
                         fileInpt[ii] = fileList.get(ii);
                     }
-                    // Store search files
+                    
                     setListSearchFiles(fileList);
                 }
                 break;
@@ -256,18 +258,17 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     * ***************************************
-     * Method : GetMessage Input : n/a Return : String Purpose: Return message to main ui **************************************
+     * 
+     * @return 
      */
     public String getMessage() {
         return strDisplayMessage;
     }
 
-    /**
-     * ***************************************
-     * Method : Input : Return : Purpose: 
-     **************************************
-     */
+   /**
+    * 
+    * @param list 
+    */
     private static void setListSearchFiles(List<File> list) {
         lstFileReturned = list;
     }

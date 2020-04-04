@@ -34,7 +34,7 @@ public class ProcessFileDisplayController implements Initializable, ControlledSc
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Start progress bar... TODO: not working... fix    
+        // Start progress bar... FIX: not working... fix    
         progressBar.setProgress(0.0);      
         Thread thread = new Thread(new ProgressBarThread());
         thread.start();

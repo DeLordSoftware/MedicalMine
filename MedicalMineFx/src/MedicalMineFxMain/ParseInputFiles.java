@@ -55,10 +55,10 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * 
+     *
      * @param flFileName
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public Map<String, String> TextParsing(File flFileName) throws IOException {
         Map<String, String> mpSaveToExcel = new LinkedHashMap();
@@ -127,18 +127,20 @@ public class ParseInputFiles extends ProcessInputFiles {
 
             List<String> lstTier1Search;
             int CategoryCounter = 1;
-            boolean bGetCustomData = false;
+            boolean bHasDate = false;
+            boolean bHasSpecielWords = false;
 
             // Loop through search data map of word and phrase searches
             for (Map.Entry<String, List<String>> itrCategory : mpTierOne.entrySet()) {
                 String strCategory = itrCategory.getKey();
 
                 // Check if custom data needs to be displayed
-                if (strCategory.contains("@")) {
-                    bGetCustomData = true;
+                if (strCategory.contains("#")) {
+                    bHasDate = true;
+                    strCategory = strCategory.replaceAll("#", "");
+                } else if (strCategory.contains("@")) {
+                    bHasSpecielWords = true;
                     strCategory = strCategory.replaceAll("@", "");
-                } else {
-                    bGetCustomData = false;
                 }
 
                 // Pre set map for Excel
@@ -170,7 +172,17 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                         // Search input file line by line
                         for (String strSearchLine : strArray) {
-                            boolean bWordMatch = firstLevelParse(strSearchLine, strFind);
+                            //Create a list of multiple word search                            
+                            String[] lstFind = strFind.split(" ");
+                            boolean bWordMatch = false;
+
+                            // Check for combination of search
+                            for (String findStr : lstFind) {
+                                bWordMatch = parseEachLine(strSearchLine, findStr);
+                                if (!bWordMatch) {
+                                    break;
+                                }
+                            }
 
                             // Word search match
                             if (bWordMatch) {
@@ -186,10 +198,12 @@ public class ParseInputFiles extends ProcessInputFiles {
                                     }
 
                                     //  Save for Excel 
-                                    if (bGetCustomData) {
-                                        // Custom save: display custom data
-                                        strSearchLine = getCustomData(strSearchLine);
-                                        mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, strSearchLine);
+                                    if (bHasDate) {
+                                        // Save Date format
+                                        bHasDate = saveToExcelFile(mpSaveToExcel, strSearchLine, strCategory);
+                                    } else if (bHasSpecielWords) {
+                                        // Save word format
+
                                     } else {
                                         mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, strFind);
                                     }
@@ -199,7 +213,7 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                                 // Note: Originally, the first parse search may contain chunks of multiple sentences per line.
                                 // The following code seperate the chunks of multiple sentences into individual lines.
-                                String strValue = null;
+                                String strValue;// = null;
                                 if (strSearchLine.contains(". ")) {
                                     // Divide chunks of multiple sentences into a list of each individual line and
                                     // search for word/phrase for each line
@@ -220,13 +234,19 @@ public class ParseInputFiles extends ProcessInputFiles {
                                         }
                                     }
                                 } else {
+                                    //  Check again if need to save custom data to for Excel 
+                                    if (bHasDate) {
+                                        // Save to Excel 
+                                        bHasDate = saveToExcelFile(mpSaveToExcel, strSearchLine, strCategory);
+                                    }
+
                                     // If not chunks of sentences exist, print to result file
-                                    flOutputFile.write("        -- " + strSearchLine);
+                                    flOutputFile.write("        1-- " + strSearchLine);
                                     flOutputFile.write(System.lineSeparator());
 
                                     // Print to Console
                                     if (bDebug) {
-                                        System.out.println("        -- " + strSearchLine);
+                                        System.out.println("        1-- " + strSearchLine);
                                     }
                                 }
                             }
@@ -255,31 +275,32 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * 
+     *
      * @param parseLine
      * @param strFind
-     * @return 
+     * @return
      */
-    private boolean firstLevelParse(String parseLine, String strFind) {
-        // Main Reg Exp string
-        // (?i:.*\\b + 'word' + \\b.*)
-        // ?i: Case-insensitive  
-        // ? match zero or one occurrence - A quantifier defines how often an element can occur. 
-        // . Matches any single character - put at both front and end of string 
-        /*
-        \\b Word boundary - Makes sure that only the exact word is found and not 
-            concatinated with another word or letters. 
-            The regex \bcat\b would therefore match cat in a black cat, 
-            but it wouldn't match it in catatonic, tomcat or certificate.
-            Removing one of the boundaries, \bcat would match cat in catfish, 
-            and cat\b would match cat in tomcat, but not vice-versa. 
-            Both, of course, would match cat on its own. 
-         */
-        // \\ to define a single backslash.
-        // ( ) Groups regular expressions - need when using '?'
-        // * matches zero or more occurrences - A quantifier defines how often 
-        //   an element can occur - but at both front and end of string . 
+    private boolean parseEachLine(String parseLine, String strFind) {
+        /* 
+        Main Reg Exp string
+        (?i:.*\\b + 'word' + \\b.*)
+        ?i: Case-insensitive  
+        ? match zero or one occurrence - A quantifier defines how often an element can occur. 
+        . Matches any single character - put at both front and end of string 
 
+        \\b Word boundary - Makes sure that only the exact word is found and not 
+        concatinated with another word or letters. 
+        The strDateFormat \bcat\b would therefore match cat in a black cat, 
+        but it wouldn't match it in catatonic, tomcat or certificate.
+        Removing one of the boundaries, \bcat would match cat in catfish, 
+        and cat\b would match cat in tomcat, but not vice-versa. 
+        Both, of course, would match cat on its own. 
+
+        \\ to define a single backslash.
+        ( ) Groups regular expressions - need when using '?'
+        * matches zero or more occurrences - A quantifier defines how often 
+        an element can occur - but at both front and end of string . 
+         */
         return Pattern.matches("(?i:.*\\b" + strFind + "\\b.*)", parseLine);
     }
 
@@ -288,35 +309,62 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param strCustom
      * @return
      */
-    private String getCustomData(String strCustom) {
+    private String getDateValue(String strCustom) {
         // Get exact date        
-        String regex = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(strCustom);
+        String strDateFormat = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
+        Pattern pattern = Pattern.compile(strDateFormat);
+        String strReturnVal = null;
+        Matcher matcher;
+        //System.out.println("xxxxxxxxx custom method xxxxxxxxxx");
         // Clean string
-        strCustom = strCustom.replaceAll("  ", " ").replace(":", " ").replace(".", "/");
-
+        final String DOULBE_SPC = "  ";
+        strCustom = strCustom.replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
         String[] lstStringSegments = strCustom.split(" ");
 
+        // Cycle throught segments of data to find date  
         for (String segment : lstStringSegments) {
-            // Cycle throught segments of data in string
-            segment = segment.replaceAll(" ", "");
-            matcher = pattern.matcher(segment);
+            matcher = pattern.matcher(segment.trim());
             if (matcher.matches()) {
                 // Store date format
-                strCustom = segment;
+                strReturnVal = segment;
+                System.out.println("**** Excel Value ************** " + strReturnVal);
                 break;
             }
         }
-
-        return strCustom;
+        
+        return strReturnVal;
     }
 
     /**
-     * 
+     *
+     * @param mpSaveToExcel
+     * @param searchLine
+     * @param category
+     * @return
+     */
+    private boolean saveToExcelFile(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+
+        boolean hasDate = true;
+        // Save Date format
+        String strDateFormated = getDateValue(searchLine);
+        if (strDateFormated != null) {
+            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated);
+            hasDate = false;
+        }
+
+        return hasDate;
+    }
+
+    private String getSpecialWords(String strWork) {
+
+        return "";
+    }
+
+    /**
+     *
      * @param parseLine
      * @param strFind
-     * @return 
+     * @return
      */
     private List<String> secondLevelParse(String parseLine, String strFind) {
         List<String> lstParseLine = new LinkedList();
@@ -338,7 +386,9 @@ public class ParseInputFiles extends ProcessInputFiles {
                     String strLine = parseLine.substring(iStart + 1, iEnd + 1).trim();
 
                     // Check if line has search word/phrase
-                    boolean bHasSearchWord = firstLevelParse(strLine, strFind);
+                    // TODO: create a list on multiple work search
+                    // 
+                    boolean bHasSearchWord = parseEachLine(strLine, strFind);
 
                     // If word/phrase found, place in list
                     if (bHasSearchWord) {
@@ -354,13 +404,13 @@ public class ParseInputFiles extends ProcessInputFiles {
         return lstParseLine;
     }
 
-   /**
-    * 
-    * @param mpExcel
-    * @param strCategory
-    * @param strValue
-    * @return 
-    */
+    /**
+     *
+     * @param mpExcel
+     * @param strCategory
+     * @param strValue
+     * @return
+     */
     private Map<String, String> SetMapForExcel(Map<String, String> mpExcel, String strCategory, String strValue) {
         // Does map have category 
         if (mpExcel.containsKey(strCategory) && strValue.length() > 0) {
@@ -382,13 +432,13 @@ public class ParseInputFiles extends ProcessInputFiles {
         return mpExcel;
     }
 
-   /**
-    * 
-    * @param mpExcel
-    * @param strCat
-    * @param strFind
-    * @return 
-    */
+    /**
+     *
+     * @param mpExcel
+     * @param strCat
+     * @param strFind
+     * @return
+     */
     private Map<String, String> GetDateForExcel(Map<String, String> mpExcel, String strCat, String strFind) {
         String strFinalDate = null;
 
@@ -422,13 +472,13 @@ public class ParseInputFiles extends ProcessInputFiles {
         return mpExcel;
     }
 
-   /**
-    * 
-    * @param mpExcel
-    * @param strCat
-    * @param strFind
-    * @return 
-    */
+    /**
+     *
+     * @param mpExcel
+     * @param strCat
+     * @param strFind
+     * @return
+     */
     private Map<String, String> GetGender(Map<String, String> mpExcel, String strCat, String strFind) {
         // Get exact gender 
         String[] arryStr = CreateArrayForSearch(strFind, strCat);
@@ -464,10 +514,10 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * 
+     *
      * @param strDateFinal
      * @param strCatgy
-     * @return 
+     * @return
      */
     private String[] CreateArrayForSearch(String strDateFinal, String strCatgy) {
         // Convert strings to lower case because sometimes string has different capitalization
@@ -486,12 +536,12 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * 
+     *
      * @param mpExcel
      * @param strCat
      * @param strOne
      * @param strTwo
-     * @return 
+     * @return
      */
     private Map<String, String> GetAccountForExcel(Map<String, String> mpExcel, String strCat, String strOne, String strTwo) {
         String strFinalDate = null;
@@ -528,8 +578,8 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     * 
-     * @param file 
+     *
+     * @param file
      */
     @SuppressWarnings("null")
     public static void setSearchData(File file) {
