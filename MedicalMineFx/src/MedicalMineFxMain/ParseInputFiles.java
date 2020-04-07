@@ -23,7 +23,6 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -36,15 +35,10 @@ import javax.swing.JOptionPane;
  */
 public class ParseInputFiles extends ProcessInputFiles {
 
-    private static Map<String, List<String>> mpTierOne;
-
+    private static Map<String, List<String>> mpSearchData;
     private static int count = 1;
     private static boolean bCheckFileExistOnce = true;
-    private boolean bDebug = false;
-
-    private final String SURGERY_DATE = "Date of Surgery";
-    private final String PATIENT_ID = "Patient ID";
-    private final String GENDER = "Gender";
+    private boolean bDebug = false;   
 
     /**
      *
@@ -116,7 +110,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             String[] strArray = pattern.split(strData);
 
             // Verify that search data map has been populate
-            if (mpTierOne == null) {
+            if (mpSearchData == null) {
                 displayMsg("Search data is null.", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
@@ -127,22 +121,18 @@ public class ParseInputFiles extends ProcessInputFiles {
 
             List<String> lstTier1Search;
             int CategoryCounter = 1;
-            boolean bHasDate = false;
-            boolean bHasSpecielWords = false;
 
             // Loop through search data map of word and phrase searches
-            for (Map.Entry<String, List<String>> itrCategory : mpTierOne.entrySet()) {
+            for (Map.Entry<String, List<String>> itrCategory : mpSearchData.entrySet()) {
                 String strCategory = itrCategory.getKey();
 
                 // Check if custom data needs to be displayed
-                if (strCategory.contains("#")) {
-                    bHasDate = true;
-                    strCategory = strCategory.replaceAll("#", "");
-                } else if (strCategory.contains("@")) {
-                    bHasSpecielWords = true;
-                    strCategory = strCategory.replaceAll("@", "");
+                CustomVals customVals = new CustomVals();
+                if (strCategory.contains("#") || strCategory.contains("@")) {
+                    customVals = CustomData.checkCustomData(strCategory);
+                    strCategory = customVals.category;
                 }
-
+                
                 // Pre set map for Excel
                 mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, "");
 
@@ -186,6 +176,9 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                             // Word search match
                             if (bWordMatch) {
+                                boolean bHasDate = false;
+                                boolean bHasSpecielWords = false;
+                                
                                 // Collect specific word/phrase searched for to result file
                                 if (bDisplayOnce) {
                                     // Print to result file
@@ -198,12 +191,11 @@ public class ParseInputFiles extends ProcessInputFiles {
                                     }
 
                                     //  Save for Excel 
-                                    if (bHasDate) {
+                                    if (customVals.HasDate) {
                                         // Save Date format
                                         bHasDate = saveToExcelFile(mpSaveToExcel, strSearchLine, strCategory);
-                                    } else if (bHasSpecielWords) {
+                                    } else if (customVals.HasName) {
                                         // Save word format
-
                                     } else {
                                         mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, strFind);
                                     }
@@ -217,7 +209,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                                 if (strSearchLine.contains(". ")) {
                                     // Divide chunks of multiple sentences into a list of each individual line and
                                     // search for word/phrase for each line
-                                    List<String> lsParseList = secondLevelParse(strSearchLine, strFind);
+                                    List<String> lsParseList = parseChunkData(strSearchLine, strFind);
                                     Iterator<String> lsParseListIterator = lsParseList.iterator();
 
                                     // Loop though list of individual lines
@@ -237,7 +229,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                                     //  Check again if need to save custom data to for Excel 
                                     if (bHasDate) {
                                         // Save to Excel 
-                                        bHasDate = saveToExcelFile(mpSaveToExcel, strSearchLine, strCategory);
+                                        saveToExcelFile(mpSaveToExcel, strSearchLine, strCategory);
                                     }
 
                                     // If not chunks of sentences exist, print to result file
@@ -302,63 +294,7 @@ public class ParseInputFiles extends ProcessInputFiles {
         an element can occur - but at both front and end of string . 
          */
         return Pattern.matches("(?i:.*\\b" + strFind + "\\b.*)", parseLine);
-    }
-
-    /**
-     *
-     * @param strCustom
-     * @return
-     */
-    private String getDateValue(String strCustom) {
-        // Get exact date        
-        String strDateFormat = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
-        Pattern pattern = Pattern.compile(strDateFormat);
-        String strReturnVal = null;
-        Matcher matcher;
-        //System.out.println("xxxxxxxxx custom method xxxxxxxxxx");
-        // Clean string
-        final String DOULBE_SPC = "  ";
-        strCustom = strCustom.replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
-        String[] lstStringSegments = strCustom.split(" ");
-
-        // Cycle throught segments of data to find date  
-        for (String segment : lstStringSegments) {
-            matcher = pattern.matcher(segment.trim());
-            if (matcher.matches()) {
-                // Store date format
-                strReturnVal = segment;
-                System.out.println("**** Excel Value ************** " + strReturnVal);
-                break;
-            }
-        }
-        
-        return strReturnVal;
-    }
-
-    /**
-     *
-     * @param mpSaveToExcel
-     * @param searchLine
-     * @param category
-     * @return
-     */
-    private boolean saveToExcelFile(Map<String, String> mpSaveToExcel, String searchLine, String category) {
-
-        boolean hasDate = true;
-        // Save Date format
-        String strDateFormated = getDateValue(searchLine);
-        if (strDateFormated != null) {
-            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated);
-            hasDate = false;
-        }
-
-        return hasDate;
-    }
-
-    private String getSpecialWords(String strWork) {
-
-        return "";
-    }
+    }     
 
     /**
      *
@@ -366,7 +302,7 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param strFind
      * @return
      */
-    private List<String> secondLevelParse(String parseLine, String strFind) {
+    private List<String> parseChunkData(String parseLine, String strFind) {
         List<String> lstParseLine = new LinkedList();
         int iStart = 0;
         int iEnd = 0;
@@ -430,153 +366,28 @@ public class ParseInputFiles extends ProcessInputFiles {
         }
 
         return mpExcel;
-    }
-
+    }   
+    
     /**
      *
-     * @param mpExcel
-     * @param strCat
-     * @param strFind
+     * @param mpSaveToExcel
+     * @param searchLine
+     * @param category
      * @return
      */
-    private Map<String, String> GetDateForExcel(Map<String, String> mpExcel, String strCat, String strFind) {
-        String strFinalDate = null;
+    private boolean saveToExcelFile(Map<String, String> mpSaveToExcel, String searchLine, String category) {
 
-        // Get exact date 
-        String[] arryStr = CreateArrayForSearch(strFind, strCat);
-        String regex = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
-        Pattern pattern = Pattern.compile(regex);
-
-        for (int ii = 0; ii < arryStr.length; ii++) {
-            // Replace xx.xx.xx with xx/xx/xx
-            if (arryStr[ii].contains(".")) {
-                arryStr[ii] = arryStr[ii].replace(".", "/");
-            }
-
-            Matcher matcher = pattern.matcher(arryStr[ii]);
-
-            if (matcher.matches()) {
-                strFinalDate = arryStr[ii];
-
-                // Have a two digit month -> x/xx/xx to 0x/xx/xx
-                if (strFinalDate.indexOf("/") != 2) {
-                    strFinalDate = "0" + strFinalDate;
-                }
-                break;
-            }
+        boolean hasDate = true;
+        // Save Date format
+        String strDateFormated =  CustomData.getDateValue(searchLine);        
+        if (strDateFormated != null) {
+            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated);
+            hasDate = false;
         }
 
-        // Set date value in excel map
-        mpExcel.replace(SURGERY_DATE, strFinalDate);
-
-        return mpExcel;
-    }
-
-    /**
-     *
-     * @param mpExcel
-     * @param strCat
-     * @param strFind
-     * @return
-     */
-    private Map<String, String> GetGender(Map<String, String> mpExcel, String strCat, String strFind) {
-        // Get exact gender 
-        String[] arryStr = CreateArrayForSearch(strFind, strCat);
-        String regex = "\\b(male|m|female|f)\\b";
-        Pattern pattern = Pattern.compile(regex);
-
-        for (int ii = 0; ii < arryStr.length; ii++) {
-            Matcher matcher = pattern.matcher(arryStr[ii]);
-
-            if (matcher.matches()) {
-                String strGender = null;
-                strGender = arryStr[ii].toLowerCase();
-
-                if (strGender.equals("m") || strGender.equals("male")) {
-                    strGender = "Male";
-                } else if (strGender.equals("f") || strGender.equals("female")) {
-                    strGender = "Female";
-                } else {
-                    strGender = "Not located";
-                }
-
-                // Set gender value in excel map
-                mpExcel.replace(GENDER, strGender);
-                break;
-            }
-        }
-
-        if (mpExcel.containsValue(strCat)) {
-            mpExcel.replace(GENDER, "Not located");
-        }
-
-        return mpExcel;
-    }
-
-    /**
-     *
-     * @param strDateFinal
-     * @param strCatgy
-     * @return
-     */
-    private String[] CreateArrayForSearch(String strDateFinal, String strCatgy) {
-        // Convert strings to lower case because sometimes string has different capitalization
-        String strLineData = strDateFinal.toLowerCase();
-        String strCat = strCatgy.toLowerCase();
-
-        // Remove characters before category word
-        int iRemoveIntialText = strLineData.indexOf(strCat) + strCat.length();
-        int test = strLineData.length();
-        strLineData = strLineData.substring(iRemoveIntialText, test);
-
-        // Replace special char with space
-        strLineData = strLineData.replace(':', ' ').replace('\t', ' ');
-
-        return strLineData.split(" ");
-    }
-
-    /**
-     *
-     * @param mpExcel
-     * @param strCat
-     * @param strOne
-     * @param strTwo
-     * @return
-     */
-    private Map<String, String> GetAccountForExcel(Map<String, String> mpExcel, String strCat, String strOne, String strTwo) {
-        String strFinalDate = null;
-
-        // Get string with data
-        if (!strOne.isEmpty()) {
-            strFinalDate = strOne;
-        } else if (!strTwo.isEmpty()) {
-            strFinalDate = strTwo;
-        } else {
-            // Exit if no data is found
-            return mpExcel;
-        }
-
-        // Get exact date from search line string
-        String strLineData = strFinalDate.toLowerCase();
-        int iLength = strLineData.length();
-
-        // Find first digit of line that contains date
-        for (int indx = 0; iLength > indx; indx++) {
-            char strFindDigit = strLineData.substring(indx, indx + 1).charAt(0);
-
-            // Once first digit is found, get rest of date string
-            if (Character.isDigit(strFindDigit)) {
-                strFinalDate = strLineData.substring(indx, iLength);
-                break;
-            }
-        }
-
-        // Set date value in excel map
-        mpExcel.replace(PATIENT_ID, strFinalDate);
-
-        return mpExcel;
-    }
-
+        return hasDate;
+    }      
+   
     /**
      *
      * @param file
@@ -584,7 +395,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     @SuppressWarnings("null")
     public static void setSearchData(File file) {
         try {
-            mpTierOne = new HashMap();
+            mpSearchData = new HashMap();
             Scanner scan = new Scanner(file);
             while (scan.hasNext()) {
                 List<String> lstSearchData = new ArrayList<String>();
@@ -592,7 +403,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                 if (lstSearchData.addAll(Arrays.asList(aryData))) {
                     String strCategoryKey = lstSearchData.get(0);
                     lstSearchData.remove(0);
-                    mpTierOne.put(strCategoryKey, lstSearchData);
+                    mpSearchData.put(strCategoryKey, lstSearchData);
                     System.out.println("strCategoryKey " + strCategoryKey + " -- lstSearchData -- " + lstSearchData);
                 }
             }
