@@ -38,7 +38,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     private static Map<String, List<String>> mpSearchData;
     private static int count = 1;
     private static boolean bCheckFileExistOnce = true;
-    private boolean bDebug = false;   
+    private boolean bDebug = false;
 
     /**
      *
@@ -128,11 +128,12 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                 // Check if custom data needs to be displayed
                 CustomVals customVals = new CustomVals();
+                //TODO: use a list.contains to check for special characters
                 if (strCategory.contains("#") || strCategory.contains("@")) {
                     customVals = CustomData.checkCustomData(strCategory);
                     strCategory = customVals.category;
                 }
-                
+
                 // Pre set map for Excel
                 mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, "");
 
@@ -166,7 +167,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                             String[] lstFind = strFind.split(" ");
                             boolean bWordMatch = false;
 
-                            // Check for combination of search
+                            // Check for multiple words for search
                             for (String findStr : lstFind) {
                                 bWordMatch = parseEachLine(strSearchLine, findStr);
                                 if (!bWordMatch) {
@@ -178,7 +179,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                             if (bWordMatch) {
                                 boolean bHasDate = false;
                                 boolean bHasSpecielWords = false;
-                                
+
                                 // Collect specific word/phrase searched for to result file
                                 if (bDisplayOnce) {
                                     // Print to result file
@@ -193,9 +194,10 @@ public class ParseInputFiles extends ProcessInputFiles {
                                     //  Save for Excel 
                                     if (customVals.HasDate) {
                                         // Save Date format
-                                        bHasDate = saveToExcelFile(mpSaveToExcel, strSearchLine, strCategory);
+                                        bHasDate = saveDateExcel(mpSaveToExcel, strSearchLine, strCategory);
                                     } else if (customVals.HasName) {
                                         // Save word format
+                                        bHasSpecielWords = saveSpecialValExcel(mpSaveToExcel, strSearchLine, strCategory);
                                     } else {
                                         mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, strFind);
                                     }
@@ -227,10 +229,16 @@ public class ParseInputFiles extends ProcessInputFiles {
                                     }
                                 } else {
                                     //  Check again if need to save custom data to for Excel 
+                                     //  Save for Excel 
                                     if (bHasDate) {
-                                        // Save to Excel 
-                                        saveToExcelFile(mpSaveToExcel, strSearchLine, strCategory);
-                                    }
+                                        // Save Date format
+                                        saveDateExcel(mpSaveToExcel, strSearchLine, strCategory);
+                                    } else if (customVals.HasName) {
+                                        // Save word format
+                                        saveSpecialValExcel(mpSaveToExcel, strSearchLine, strCategory);
+                                    } else {
+                                       // mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, strFind);
+                                    }                                   
 
                                     // If not chunks of sentences exist, print to result file
                                     flOutputFile.write("        1-- " + strSearchLine);
@@ -294,7 +302,7 @@ public class ParseInputFiles extends ProcessInputFiles {
         an element can occur - but at both front and end of string . 
          */
         return Pattern.matches("(?i:.*\\b" + strFind + "\\b.*)", parseLine);
-    }     
+    }
 
     /**
      *
@@ -307,7 +315,6 @@ public class ParseInputFiles extends ProcessInputFiles {
         int iStart = 0;
         int iEnd = 0;
         final char CHR_PERIOD = '.';
-        //char val = 'x';
 
         // Search through each chunk of data
         for (int jj = 0; parseLine.length() > jj; jj++) {
@@ -366,8 +373,8 @@ public class ParseInputFiles extends ProcessInputFiles {
         }
 
         return mpExcel;
-    }   
-    
+    }
+
     /**
      *
      * @param mpSaveToExcel
@@ -375,19 +382,39 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param category
      * @return
      */
-    private boolean saveToExcelFile(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+    private boolean saveDateExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
 
         boolean hasDate = true;
         // Save Date format
-        String strDateFormated =  CustomData.getDateValue(searchLine);        
+        String strDateFormated = CustomData.getDateValue(searchLine);
         if (strDateFormated != null) {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated);
             hasDate = false;
         }
 
         return hasDate;
-    }      
-   
+    }
+
+    /**
+     *
+     * @param mpSaveToExcel
+     * @param searchLine
+     * @param category
+     * @return
+     */
+    private boolean saveSpecialValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+
+        boolean hasSpecial = true;
+        // Save Date format
+        String strNameFormated = CustomData.getSpecialWords(searchLine);
+        if (strNameFormated != null) {
+            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
+            hasSpecial = false;
+        }
+
+        return hasSpecial;
+    }
+
     /**
      *
      * @param file

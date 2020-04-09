@@ -42,7 +42,7 @@ public class CustomData {
 
         // Clean string
         final String DOULBE_SPC = "  ";
-        strCustom = strCustom.replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
+        strCustom = cleanString(strCustom); // strCustom.replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
         String[] lstStringSegments = strCustom.split(" ");
 
         // Cycle throught segments of data to find date  
@@ -51,7 +51,7 @@ public class CustomData {
             if (matcher.matches()) {
                 // Store date format
                 strReturnVal = segment;
-                System.out.println("**** CLASS Excel Value ************** " + strReturnVal);
+                //System.out.println("**** CLASS Excel Value ************** " + strReturnVal);
                 break;
             }
         }
@@ -61,12 +61,39 @@ public class CustomData {
 
     /**
      *
-     * @param strWork
+     * @param strSearchLine
      * @return
      */
-    public static String getSpecialWords(String strWork) {
-
-        return "";
+    public static String getSpecialWords(String strSearchLine) {        
+        strSearchLine = cleanString(strSearchLine);
+        String strReturnVal = null; 
+        String[] lstWords = strSearchLine.split(" ");
+        boolean bHasVal = false;
+        int iCounter =  0;
+        for(String val : lstWords){
+            if(bHasVal && iCounter < 2 && !val.isEmpty()){
+                strReturnVal += val + " ";
+                iCounter++;
+            }
+            
+            if (val.equalsIgnoreCase("name")){
+                bHasVal = true;   
+                strReturnVal = "";
+            }
+        }
+        
+        //System.out.println("///////////////// CLASS Excel Value ////////////// " + strReturnVal);
+        return strReturnVal;
+    }
+    
+    /**
+     * 
+     * @param clean
+     * @return 
+     */
+    private static String cleanString(String clean){       
+        final String DOULBE_SPC = "  ";
+        return clean .replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
     }
 
     /**
