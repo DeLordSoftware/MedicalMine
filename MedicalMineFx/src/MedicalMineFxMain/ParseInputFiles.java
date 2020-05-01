@@ -45,7 +45,7 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param check
      */
     ParseInputFiles(boolean check) {
-        bDebug = check;
+       // bDebug = check;
     }
 
     /**
@@ -120,7 +120,8 @@ public class ParseInputFiles extends ProcessInputFiles {
             mpSaveToExcel.put("File Name", strFileName);
 
             List<String> lstTier1Search;
-            int CategoryCounter = 1;
+            int CategoryCounter = 1;          
+           
 
             // Loop through search data map of word and phrase searches
             for (Map.Entry<String, List<String>> itrCategory : mpSearchData.entrySet()) {
@@ -128,20 +129,23 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                 // Check if custom data needs to be displayed
                 CustomVals customVals = new CustomVals();
-                //TODO: use a list.contains to check for special characters
-                if (strCategory.contains("#") || strCategory.contains("@")) {
-                    customVals = CustomData.checkCustomData(strCategory);
-                    strCategory = customVals.category;
+                for(String val : CustomData.ckCustDataList()){
+                    if (strCategory.contains(val)) {
+                        customVals = CustomData.checkCustomData(strCategory);
+                        strCategory = customVals.category;
+                        break;
+                    }
                 }
-
+                
                 // Pre set map for Excel
                 mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, "");
 
                 // Print category text to result file
-                flOutputFile.write(System.lineSeparator());// line feed
+                final String LINE_SEPATATOR = System.lineSeparator();
+                flOutputFile.write(LINE_SEPATATOR);// line feed
                 flOutputFile.write(CategoryCounter + ") Category - " + strCategory + ":");
-                flOutputFile.write(System.lineSeparator());// line feed
-                flOutputFile.write(System.lineSeparator());// line feed
+                flOutputFile.write(LINE_SEPATATOR);// line feed
+                flOutputFile.write(LINE_SEPATATOR);// line feed
 
                 // Print to console
                 if (bDebug) {
@@ -177,31 +181,20 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                             // Word search match
                             if (bWordMatch) {
-                                boolean bHasDate = false;
-                                boolean bHasSpecielWords = false;
-
                                 // Collect specific word/phrase searched for to result file
                                 if (bDisplayOnce) {
                                     // Print to result file
                                     flOutputFile.write("    ++ " + strFind + " ++");
-                                    flOutputFile.write(System.lineSeparator());
+                                    flOutputFile.write(LINE_SEPATATOR);
 
                                     // Print to Console
                                     if (bDebug) {
                                         System.out.println("    ++ " + strFind + " ++");
                                     }
 
-                                    //  Save for Excel 
-                                    if (customVals.HasDate) {
-                                        // Save Date format
-                                        bHasDate = saveDateExcel(mpSaveToExcel, strSearchLine, strCategory);
-                                    } else if (customVals.HasName) {
-                                        // Save word format
-                                        bHasSpecielWords = saveSpecialValExcel(mpSaveToExcel, strSearchLine, strCategory);
-                                    } else {
-                                        mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, strFind);
-                                    }
-
+                                    //  Save for Excel                                   
+                                    processExcelData(customVals, mpSaveToExcel, strSearchLine, strCategory, strFind);                                     
+                                    
                                     bDisplayOnce = false;// Display only once per category
                                 }
 
@@ -220,7 +213,7 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                                         // Print to result file
                                         flOutputFile.write("        -- " + strValue);
-                                        flOutputFile.write(System.lineSeparator());
+                                        flOutputFile.write(LINE_SEPATATOR);
 
                                         // Print to console
                                         if (bDebug) {
@@ -228,25 +221,16 @@ public class ParseInputFiles extends ProcessInputFiles {
                                         }
                                     }
                                 } else {
-                                    //  Check again if need to save custom data to for Excel 
-                                     //  Save for Excel 
-                                    if (bHasDate) {
-                                        // Save Date format
-                                        saveDateExcel(mpSaveToExcel, strSearchLine, strCategory);
-                                    } else if (customVals.HasName) {
-                                        // Save word format
-                                        saveSpecialValExcel(mpSaveToExcel, strSearchLine, strCategory);
-                                    } else {
-                                       // mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, strFind);
-                                    }                                   
+                                    //  Check again if need to save custom data to for Excel                                    
+                                    processExcelData(customVals, mpSaveToExcel, strSearchLine, strCategory, strFind);
 
                                     // If not chunks of sentences exist, print to result file
-                                    flOutputFile.write("        1-- " + strSearchLine);
-                                    flOutputFile.write(System.lineSeparator());
+                                    flOutputFile.write("        --- " + strSearchLine);
+                                    flOutputFile.write(LINE_SEPATATOR);
 
                                     // Print to Console
                                     if (bDebug) {
-                                        System.out.println("        1-- " + strSearchLine);
+                                        System.out.println("        --- " + strSearchLine);
                                     }
                                 }
                             }
@@ -255,11 +239,13 @@ public class ParseInputFiles extends ProcessInputFiles {
                 }
             }// For loop Search map         
         } catch (NullPointerException e) {
-            System.out.println("NullPointerException - " + e.getMessage());
-            displayMsg(e.getMessage(), JOptionPane.ERROR_MESSAGE);
+            System.out.println("NullPointerException - " + e.toString());
+            displayMsg(e.toString(), JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
         } catch (NoSuchElementException e) {
-            System.out.println("NoSuchElementException - " + e.getMessage());
-            displayMsg(e.getMessage(), JOptionPane.ERROR_MESSAGE);
+            System.out.println("NoSuchElementException - " + e.toString());
+            displayMsg(e.toString(), JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
         } finally {
             if (flOutputFile != null) {
                 flOutputFile.close();
@@ -273,7 +259,28 @@ public class ParseInputFiles extends ProcessInputFiles {
         System.out.println("END OF REPORT");
         return mpSaveToExcel;
     }
+    
+    private EnumCustomType processExcelData(CustomVals customVals,  Map<String, String> mpSaveToExcel, String strSearchLine, String strCategory, String strFind){           
+        //  Save for Excel 
+        if (customVals.HasDate) {
+            // Save Date format           
+            saveDateExcel(mpSaveToExcel, strSearchLine, strCategory);
+            return EnumCustomType.DATE;
+        } else if (customVals.HasName) {
+            // Save word format           
+            saveSpecialValExcel(mpSaveToExcel, strSearchLine, strCategory);
+            return EnumCustomType.NAME;            
+        }else if (customVals.HasGender) {
+             return EnumCustomType.GENDER;
+        } else {           
+            SetMapForExcel(mpSaveToExcel, strCategory, strFind);
+            return EnumCustomType.NONE;
+        }
+    }
 
+    enum EnumCustomType {
+       DATE,NAME,GENDER,NONE    
+    }
     /**
      *
      * @param parseLine
@@ -307,7 +314,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     /**
      *
      * @param parseLine
-     * @param strFind
+     * @param strFindgit
      * @return
      */
     private List<String> parseChunkData(String parseLine, String strFind) {
@@ -415,7 +422,22 @@ public class ParseInputFiles extends ProcessInputFiles {
         return hasSpecial;
     }
 
+    private boolean saveGenderValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+
+        boolean hasGender = true;
+        // Save Date format
+        String strNameFormated = CustomData.getSpecialWords(searchLine);
+        if (strNameFormated != null) {
+            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
+            hasGender = false;
+        }
+
+        return hasGender;
+    }
+    
+    
     /**
+     * 
      *
      * @param file
      */

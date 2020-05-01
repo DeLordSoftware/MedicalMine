@@ -47,6 +47,9 @@ public class ProcessInputFiles extends SelectInputDataController {
             Map<String, String> mpSaveToExcel = new LinkedHashMap();
             Map<Integer, Map<String, String>> mpFinalSaveToExcel = new LinkedHashMap();
             int iFileNum = 0;
+            
+            // Set Custom list for searching
+            CustomData.setCustomDataList();
 
             // Cycle through files seleced
             for (File file : lstFileReturned) {

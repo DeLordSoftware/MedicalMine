@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  */
 public class MedicalMineFx extends Application {    
     
-    private static final String VERSION = "2.0";
+    private static final String VERSION = "3.0";
      
     public static String MainScreen      = "main";
     public static String MainResource    = "/FxmlDisplays/SelectInputData.fxml";

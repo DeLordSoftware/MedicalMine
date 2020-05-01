@@ -1,31 +1,53 @@
 package MedicalMineFxMain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author RW Simmons
  */
 public class CustomData {   
-  
+    
+    private static List<String> lstCustomData = null;
+    private final static String cust1 = "(date)";
+    private final static String cust2 = "(name)";    
+    private final static String cust3 = "(gender)";
+    
     /**
      *
      * @param categoryStr
      * @return
-     */
+     */       
+    public static void setCustomDataList(){
+        lstCustomData = new ArrayList<String>();
+        lstCustomData.add(cust1);
+        lstCustomData.add(cust2);     
+        lstCustomData.add(cust3);
+    }
+    
     public static CustomVals checkCustomData(String categoryStr) {
         CustomVals customVals = new CustomVals();
-        if (categoryStr.contains("#")) {
+        if (categoryStr.contains(cust1)) {
             customVals.HasDate = true;
-            customVals.category = categoryStr.replaceAll("#", "");
-        } else if (categoryStr.contains("@")) {
+            customVals.category = categoryStr.replace(cust1, "");
+        } else if (categoryStr.contains(cust2)) {
             customVals.HasName = true;
-            customVals.category = categoryStr.replaceAll("@", "");
+            customVals.category = categoryStr.replace(cust2, "");
+        } else if (categoryStr.contains(cust3)) {
+            customVals.HasGender = true;
+            customVals.category = categoryStr.replace(cust3, "");
         }
         
         return customVals;
+    }
+    
+    public static List<String> ckCustDataList() {       
+        return lstCustomData;
     }
 
     /**
@@ -51,7 +73,7 @@ public class CustomData {
             if (matcher.matches()) {
                 // Store date format
                 strReturnVal = segment;
-                //System.out.println("**** CLASS Excel Value ************** " + strReturnVal);
+                //System.out.println("**** CLASS Excel date ************** " + strReturnVal);
                 break;
             }
         }
@@ -81,7 +103,6 @@ public class CustomData {
                 strReturnVal = "";
             }
         }
-        
         //System.out.println("///////////////// CLASS Excel Value ////////////// " + strReturnVal);
         return strReturnVal;
     }
@@ -103,7 +124,7 @@ public class CustomData {
      * @param strFind
      * @return
      */
-    public static Map<String, String> GetGender(Map<String, String> mpExcel, String strCat, String strFind) {
+    public static Map<String, String> getGender(Map<String, String> mpExcel, String strCat, String strFind) {
         // Get exact gender 
         String[] arryStr = CreateArrayForSearch(strFind, strCat);
         String regex = "\\b(male|m|female|f)\\b";
@@ -202,6 +223,8 @@ public class CustomData {
 
         return mpExcel;
     }
+    
+    
 }
 
 /**
@@ -211,5 +234,6 @@ public class CustomData {
 final class CustomVals {
     boolean HasDate = false;
     boolean HasName = false;
+    boolean HasGender = false;
     String category = "";
 }
