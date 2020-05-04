@@ -45,7 +45,7 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param check
      */
     ParseInputFiles(boolean check) {
-       // bDebug = check;
+       bDebug = check;
     }
 
     /**
@@ -264,14 +264,15 @@ public class ParseInputFiles extends ProcessInputFiles {
         //  Save for Excel 
         if (customVals.HasDate) {
             // Save Date format           
-            saveDateExcel(mpSaveToExcel, strSearchLine, strCategory);
+            saveDateValExcel(mpSaveToExcel, strSearchLine, strCategory);
             return EnumCustomType.DATE;
         } else if (customVals.HasName) {
             // Save word format           
-            saveSpecialValExcel(mpSaveToExcel, strSearchLine, strCategory);
+            saveNameValExcel(mpSaveToExcel, strSearchLine, strCategory);
             return EnumCustomType.NAME;            
         }else if (customVals.HasGender) {
-             return EnumCustomType.GENDER;
+            saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory);
+            return EnumCustomType.GENDER;
         } else {           
             SetMapForExcel(mpSaveToExcel, strCategory, strFind);
             return EnumCustomType.NONE;
@@ -389,11 +390,11 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param category
      * @return
      */
-    private boolean saveDateExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+    private boolean saveDateValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
 
         boolean hasDate = true;
         // Save Date format
-        String strDateFormated = CustomData.getDateValue(searchLine);
+        String strDateFormated = CustomData.getDateFormat(searchLine);
         if (strDateFormated != null) {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated);
             hasDate = false;
@@ -409,11 +410,11 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param category
      * @return
      */
-    private boolean saveSpecialValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+    private boolean saveNameValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
 
         boolean hasSpecial = true;
         // Save Date format
-        String strNameFormated = CustomData.getSpecialWords(searchLine);
+        String strNameFormated = CustomData.getNameFormat(searchLine);
         if (strNameFormated != null) {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
             hasSpecial = false;
@@ -426,9 +427,10 @@ public class ParseInputFiles extends ProcessInputFiles {
 
         boolean hasGender = true;
         // Save Date format
-        String strNameFormated = CustomData.getSpecialWords(searchLine);
-        if (strNameFormated != null) {
-            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
+        // TODO: Convert to format gender
+        String strGenderFormated = CustomData.getGender(searchLine);
+        if (strGenderFormated != null) {
+            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strGenderFormated);
             hasGender = false;
         }
 
@@ -444,7 +446,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     @SuppressWarnings("null")
     public static void setSearchData(File file) {
         try {
-            mpSearchData = new HashMap();
+            mpSearchData = new LinkedHashMap();
             Scanner scan = new Scanner(file);
             while (scan.hasNext()) {
                 List<String> lstSearchData = new ArrayList<String>();

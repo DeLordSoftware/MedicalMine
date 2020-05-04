@@ -11,43 +11,42 @@ import javax.swing.JOptionPane;
  *
  * @author RW Simmons
  */
-public class CustomData {   
-    
+public class CustomData {
+
     private static List<String> lstCustomData = null;
     private final static String cust1 = "(date)";
-    private final static String cust2 = "(name)";    
+    private final static String cust2 = "(name)";
     private final static String cust3 = "(gender)";
-    
+
     /**
      *
      * @param categoryStr
      * @return
-     */       
-    public static void setCustomDataList(){
+     */
+    public static void setCustomDataList() {
         lstCustomData = new ArrayList<String>();
         lstCustomData.add(cust1);
-        lstCustomData.add(cust2);     
+        lstCustomData.add(cust2);
         lstCustomData.add(cust3);
     }
-    
+
     public static CustomVals checkCustomData(String categoryStr) {
         CustomVals customVals = new CustomVals();
         if (categoryStr.contains(cust1)) {
+            // Set Date
             customVals.HasDate = true;
             customVals.category = categoryStr.replace(cust1, "");
         } else if (categoryStr.contains(cust2)) {
+            // Set Name
             customVals.HasName = true;
             customVals.category = categoryStr.replace(cust2, "");
         } else if (categoryStr.contains(cust3)) {
+            // Set Gender
             customVals.HasGender = true;
             customVals.category = categoryStr.replace(cust3, "");
         }
-        
+
         return customVals;
-    }
-    
-    public static List<String> ckCustDataList() {       
-        return lstCustomData;
     }
 
     /**
@@ -55,25 +54,23 @@ public class CustomData {
      * @param strCustom
      * @return
      */
-    public static String getDateValue(String strCustom) {
+    public static String getDateFormat(String strCustom) {
         // Get exact date        
         String strDateFormat = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
         Pattern pattern = Pattern.compile(strDateFormat);
-        String strReturnVal = null;
-        Matcher matcher;
 
         // Clean string
-        final String DOULBE_SPC = "  ";
-        strCustom = cleanString(strCustom); // strCustom.replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
+        strCustom = cleanString(strCustom);
         String[] lstStringSegments = strCustom.split(" ");
 
         // Cycle throught segments of data to find date  
+        Matcher matcher;
+        String strReturnVal = null;
         for (String segment : lstStringSegments) {
             matcher = pattern.matcher(segment.trim());
             if (matcher.matches()) {
                 // Store date format
                 strReturnVal = segment;
-                //System.out.println("**** CLASS Excel date ************** " + strReturnVal);
                 break;
             }
         }
@@ -86,58 +83,43 @@ public class CustomData {
      * @param strSearchLine
      * @return
      */
-    public static String getSpecialWords(String strSearchLine) {        
+    public static String getNameFormat(String strSearchLine) {
         strSearchLine = cleanString(strSearchLine);
-        String strReturnVal = null; 
+        String strReturnVal = null;
         String[] lstWords = strSearchLine.split(" ");
         boolean bHasVal = false;
-        int iCounter =  0;
-        for(String val : lstWords){
-            if(bHasVal && iCounter < 2 && !val.isEmpty()){
+        int iCounter = 0;
+        for (String val : lstWords) {
+            if (bHasVal && iCounter < 2 && !val.isEmpty()) {
                 strReturnVal += val + " ";
                 iCounter++;
             }
-            
-            if (val.equalsIgnoreCase("name")){
-                bHasVal = true;   
+
+            if (val.equalsIgnoreCase("name")) {
+                bHasVal = true;
                 strReturnVal = "";
             }
         }
-        //System.out.println("///////////////// CLASS Excel Value ////////////// " + strReturnVal);
+
         return strReturnVal;
     }
-    
+
     /**
      * 
-     * @param clean
+     * @param strSearchLine
      * @return 
      */
-    private static String cleanString(String clean){       
-        final String DOULBE_SPC = "  ";
-        return clean .replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
-    }
-
-    /**
-     *
-     * @param mpExcel
-     * @param strCat
-     * @param strFind
-     * @return
-     */
-    public static Map<String, String> getGender(Map<String, String> mpExcel, String strCat, String strFind) {
+    public static String getGender(String strSearchLine) {
         // Get exact gender 
-        String[] arryStr = CreateArrayForSearch(strFind, strCat);
+        strSearchLine = cleanString(strSearchLine);
+        String strGender = null;
+        String[] lstWords = strSearchLine.split(" ");
         String regex = "\\b(male|m|female|f)\\b";
-        Pattern pattern = Pattern.compile(regex);
-        final String GENDER = "Gender";
-
-        for (int ii = 0; ii < arryStr.length; ii++) {
-            Matcher matcher = pattern.matcher(arryStr[ii]);
-
-            if (matcher.matches()) {
-                String strGender = null;
-                strGender = arryStr[ii].toLowerCase();
-
+            Pattern pattern = Pattern.compile(regex);
+        for (String val : lstWords) {
+            Matcher matcher = pattern.matcher(val);
+            if (matcher.matches()) {               
+                strGender = val.toLowerCase();
                 if (strGender.equals("m") || strGender.equals("male")) {
                     strGender = "Male";
                 } else if (strGender.equals("f") || strGender.equals("female")) {
@@ -145,18 +127,11 @@ public class CustomData {
                 } else {
                     strGender = "Not located";
                 }
-
-                // Set gender value in excel map
-                mpExcel.replace(GENDER, strGender);
                 break;
-            }
-        }
+            }           
+        }       
 
-        if (mpExcel.containsValue(strCat)) {
-            mpExcel.replace(GENDER, "Not located");
-        }
-
-        return mpExcel;
+        return strGender;
     }
 
     /**
@@ -192,7 +167,7 @@ public class CustomData {
     private Map<String, String> GetAccountForExcel(Map<String, String> mpExcel, String strCat, String strOne, String strTwo) {
         String strFinalDate = null;
         final String PATIENT_ID = "Patient ID";
-        
+
         // Get string with data
         if (!strOne.isEmpty()) {
             strFinalDate = strOne;
@@ -223,15 +198,35 @@ public class CustomData {
 
         return mpExcel;
     }
-    
-    
+
+    /**
+     *
+     * @param clean
+     * @return
+     */
+    private static String cleanString(String clean) {
+        final String DOULBE_SPC = "  ";
+        return clean.replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static List<String> ckCustDataList() {
+        return lstCustomData;
+    }
+
 }
 
 /**
+ * **************************************************************
  *
  * @author RW Simmons
+ ***************************************************************
  */
 final class CustomVals {
+
     boolean HasDate = false;
     boolean HasName = false;
     boolean HasGender = false;
