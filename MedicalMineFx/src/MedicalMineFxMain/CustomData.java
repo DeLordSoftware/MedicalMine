@@ -1,6 +1,8 @@
 package MedicalMineFxMain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -30,6 +32,11 @@ public class CustomData {
         lstCustomData.add(cust3);
     }
 
+    /**
+     *
+     * @param categoryStr
+     * @return
+     */
     public static CustomVals checkCustomData(String categoryStr) {
         CustomVals customVals = new CustomVals();
         if (categoryStr.contains(cust1)) {
@@ -81,58 +88,113 @@ public class CustomData {
     /**
      *
      * @param strSearchLine
+     * @param searchWords
      * @return
      */
-    public static String getNameFormat(String strSearchLine) {
-        strSearchLine = cleanString(strSearchLine);
-        String strReturnVal = null;
-        String[] lstWords = strSearchLine.split(" ");
-        boolean bHasVal = false;
-        int iCounter = 0;
-        for (String val : lstWords) {
-            if (bHasVal && iCounter < 2 && !val.isEmpty()) {
-                strReturnVal += val + " ";
-                iCounter++;
-            }
+    public static String getNameFormat(String strSearchLine, String searchWords) {
+        strSearchLine = cleanString(strSearchLine).toLowerCase();
+        // Collect list of search string and category word 
+        List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
+        List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
 
-            if (val.equalsIgnoreCase("name")) {
-                bHasVal = true;
-                strReturnVal = "";
+        // Clean string list
+        lstCatWords = cleanStrList(lstCatWords);
+        lstWords = cleanStrList(lstWords);
+
+        // Remove category words from search string
+        for (String val : lstCatWords) {
+            val = val.replace(" ", "").toLowerCase();
+            if (lstWords.contains(val)) {
+                lstWords.remove(lstWords.indexOf(val));
+            }
+        }
+
+        int iCounter = 0;
+        String strReturnVal = "";
+        for (String val : lstWords) {
+            // Get the next two words which should be name
+            if (iCounter < 2 && !val.isEmpty()) {
+                // Store and capitalize first letter
+                String strFirst = val.substring(0, 1);
+                if (checkMatch(strFirst, "[a-z]")) {
+                    strReturnVal += strFirst.toUpperCase() + val.substring(1).toLowerCase() + " ";
+                    iCounter++;
+                } else {
+                    // If first char isn't a letter, check next char in string 
+                    strFirst = val.substring(1, 2);
+                    if (checkMatch(strFirst, "[a-z]")) {
+                        strReturnVal += strFirst.toUpperCase() + val.substring(2).toLowerCase() + " ";
+                        iCounter++;
+                    }
+                }
+            } else {
+                break;
             }
         }
 
         return strReturnVal;
     }
 
+   
     /**
-     * 
+     *
      * @param strSearchLine
-     * @return 
+     * @return
      */
     public static String getGender(String strSearchLine) {
         // Get exact gender 
         strSearchLine = cleanString(strSearchLine);
         String strGender = null;
-        String[] lstWords = strSearchLine.split(" ");
-        String regex = "\\b(male|m|female|f)\\b";
-            Pattern pattern = Pattern.compile(regex);
+        List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
+        lstWords = cleanStrList(lstWords);
+        
         for (String val : lstWords) {
-            Matcher matcher = pattern.matcher(val);
-            if (matcher.matches()) {               
-                strGender = val.toLowerCase();
-                if (strGender.equals("m") || strGender.equals("male")) {
+            strGender = val.toLowerCase();
+            if (checkMatch(strGender, "\\b(male| m |female| f )\\b")) { 
+                if (strGender.equals(" m ") || strGender.equals("male")) {
                     strGender = "Male";
-                } else if (strGender.equals("f") || strGender.equals("female")) {
+                } else if (strGender.equals(" f ") || strGender.equals("female")) {
                     strGender = "Female";
                 } else {
                     strGender = "Not located";
                 }
                 break;
-            }           
-        }       
+            }
+        }
 
         return strGender;
     }
+    
+     /**
+     *
+     * @param value
+     * @param match
+     * @return
+     */
+    private static boolean checkMatch(String value, String match) {
+        String regex = match;
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(value);
+        return matcher.matches();
+    }
+
+    /**
+     *
+     * @param list
+     * @return
+     */
+    private static List<String> cleanStrList(List<String> list) {
+        for (int ii = 0; ii < list.size(); ii++) {
+            String test = list.get(ii);
+            if (test.isEmpty()) {
+                list.remove(ii);
+                ii = 0; // Reset index
+            }
+        }
+
+        return list;
+    }
+
 
     /**
      *
@@ -206,7 +268,7 @@ public class CustomData {
      */
     private static String cleanString(String clean) {
         final String DOULBE_SPC = "  ";
-        return clean.replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
+        return clean.replace(";", "").replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
     }
 
     /**
@@ -220,10 +282,9 @@ public class CustomData {
 }
 
 /**
- * **************************************************************
+ * ***************************************************************
  *
- * @author RW Simmons
- ***************************************************************
+ * @author RW Simmons *************************************************************
  */
 final class CustomVals {
 

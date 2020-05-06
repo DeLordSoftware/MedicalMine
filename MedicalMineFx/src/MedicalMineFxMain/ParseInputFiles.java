@@ -13,7 +13,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -24,10 +23,6 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -45,7 +40,7 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param check
      */
     ParseInputFiles(boolean check) {
-       bDebug = check;
+        bDebug = check;
     }
 
     /**
@@ -57,17 +52,9 @@ public class ParseInputFiles extends ProcessInputFiles {
     public Map<String, String> TextParsing(File flFileName) throws IOException {
         Map<String, String> mpSaveToExcel = new LinkedHashMap();
         FileReader flInputFile = null;
-        FileWriter flOutputFile = null;
-
-        // TODO: Have user selected location of result files
-        /*
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("C://"));        
-        DirectoryChooser directChooser = new DirectoryChooser();
-        File fileA = directChooser.showDialog(MedicalMineFx.getStage());         
-        String strResultFile = fileA.getAbsolutePath() + "\\Medical Mine Results.txt";
-         */
-        String strResultFile = "C:/MedicalMineResults/Medical Mine Results.txt";
+        FileWriter flOutputFile = null;       
+        
+        String strResultFile = RESULT_FOLDER_LOC + "/Search Result" + resultTime + ".txt";
 
         File file = new File(strResultFile);
         file.mkdirs();
@@ -120,23 +107,27 @@ public class ParseInputFiles extends ProcessInputFiles {
             mpSaveToExcel.put("File Name", strFileName);
 
             List<String> lstTier1Search;
-            int CategoryCounter = 1;          
-           
+            int CategoryCounter = 1;
 
             // Loop through search data map of word and phrase searches
             for (Map.Entry<String, List<String>> itrCategory : mpSearchData.entrySet()) {
                 String strCategory = itrCategory.getKey();
 
+                // Programmers hack to end program without searching all categories
+                if (strCategory.contains("Done")) {
+                    return mpSaveToExcel;
+                }
+
                 // Check if custom data needs to be displayed
                 CustomVals customVals = new CustomVals();
-                for(String val : CustomData.ckCustDataList()){
+                for (String val : CustomData.ckCustDataList()) {
                     if (strCategory.contains(val)) {
                         customVals = CustomData.checkCustomData(strCategory);
                         strCategory = customVals.category;
                         break;
                     }
                 }
-                
+
                 // Pre set map for Excel
                 mpSaveToExcel = SetMapForExcel(mpSaveToExcel, strCategory, "");
 
@@ -193,14 +184,14 @@ public class ParseInputFiles extends ProcessInputFiles {
                                     }
 
                                     //  Save for Excel                                   
-                                    processExcelData(customVals, mpSaveToExcel, strSearchLine, strCategory, strFind);                                     
-                                    
+                                    processExcelData(customVals, mpSaveToExcel, strSearchLine, strCategory, strFind);
+
                                     bDisplayOnce = false;// Display only once per category
                                 }
 
                                 // Note: Originally, the first parse search may contain chunks of multiple sentences per line.
                                 // The following code seperate the chunks of multiple sentences into individual lines.
-                                String strValue;// = null;
+                                String strValue;
                                 if (strSearchLine.contains(". ")) {
                                     // Divide chunks of multiple sentences into a list of each individual line and
                                     // search for word/phrase for each line
@@ -259,8 +250,8 @@ public class ParseInputFiles extends ProcessInputFiles {
         System.out.println("END OF REPORT");
         return mpSaveToExcel;
     }
-    
-    private EnumCustomType processExcelData(CustomVals customVals,  Map<String, String> mpSaveToExcel, String strSearchLine, String strCategory, String strFind){           
+
+    private EnumCustomType processExcelData(CustomVals customVals, Map<String, String> mpSaveToExcel, String strSearchLine, String strCategory, String strFind) {
         //  Save for Excel 
         if (customVals.HasDate) {
             // Save Date format           
@@ -268,20 +259,22 @@ public class ParseInputFiles extends ProcessInputFiles {
             return EnumCustomType.DATE;
         } else if (customVals.HasName) {
             // Save word format           
-            saveNameValExcel(mpSaveToExcel, strSearchLine, strCategory);
-            return EnumCustomType.NAME;            
-        }else if (customVals.HasGender) {
+            saveNameValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
+            return EnumCustomType.NAME;
+        } else if (customVals.HasGender) {
+            // Save gender format
             saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory);
             return EnumCustomType.GENDER;
-        } else {           
+        } else {
             SetMapForExcel(mpSaveToExcel, strCategory, strFind);
             return EnumCustomType.NONE;
         }
     }
 
     enum EnumCustomType {
-       DATE,NAME,GENDER,NONE    
+        DATE, NAME, GENDER, NONE
     }
+
     /**
      *
      * @param parseLine
@@ -410,11 +403,11 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param category
      * @return
      */
-    private boolean saveNameValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+    private boolean saveNameValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category, String strSearchData) {
 
         boolean hasSpecial = true;
         // Save Date format
-        String strNameFormated = CustomData.getNameFormat(searchLine);
+        String strNameFormated = CustomData.getNameFormat(searchLine, strSearchData);
         if (strNameFormated != null) {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
             hasSpecial = false;
@@ -423,6 +416,13 @@ public class ParseInputFiles extends ProcessInputFiles {
         return hasSpecial;
     }
 
+    /**
+     *
+     * @param mpSaveToExcel
+     * @param searchLine
+     * @param category
+     * @return
+     */
     private boolean saveGenderValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
 
         boolean hasGender = true;
@@ -436,10 +436,9 @@ public class ParseInputFiles extends ProcessInputFiles {
 
         return hasGender;
     }
-    
-    
+
     /**
-     * 
+     *
      *
      * @param file
      */

@@ -10,12 +10,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
@@ -38,16 +39,25 @@ public class ProcessInputFiles extends SelectInputDataController {
     private final static String KEY_FILES_VAL = "FILE_Location";
     private final static String JSON_DATA_FILE = "MedicalMineData.json";
 
+    protected final static String RESULT_FOLDER_LOC = "C:/Search Results/";
+    protected static String resultTime;
+
     /**
      *
      */
     public void processFiles() {
-        
+
         try {
             Map<String, String> mpSaveToExcel = new LinkedHashMap();
             Map<Integer, Map<String, String>> mpFinalSaveToExcel = new LinkedHashMap();
             int iFileNum = 0;
-            
+
+            // Set time stamp for files
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_HH_mm_ss");
+            LocalDateTime now = LocalDateTime.now();
+            resultTime = dtf.format(now);
+            System.out.println(resultTime);
+
             // Set Custom list for searching
             CustomData.setCustomDataList();
 
@@ -59,21 +69,6 @@ public class ProcessInputFiles extends SelectInputDataController {
                 mpFinalSaveToExcel.put(iFileNum, mpSaveToExcel);
             }
 
-            
-            
-            /* TODO: user select location of saved folder***
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setInitialDirectory(new File("C://"));
-
-            DirectoryChooser directChooser = new DirectoryChooser();
-            File fileA = directChooser.showDialog(stage);
-
-            System.out.println(fileA.getAbsolutePath());
-            String strResultFile = fileA.getAbsolutePath() + "\\Medical Mine Results.txt";
-            //*/
-            
-            
-            
             //Write data to Excel spreadsheet
             WriteDataToExcel writeDataToExcel = new WriteDataToExcel();
             String strReturnExcelLoc = writeDataToExcel.SaveExcelSpreadSheet(mpFinalSaveToExcel);
@@ -132,7 +127,7 @@ public class ProcessInputFiles extends SelectInputDataController {
             // Set dialog parametes
             fileChooser.setTitle(strDialogTitle);
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(strExtentionText, strExtention));
-            
+
             File fileJson = new File(JSON_DATA_FILE);
 
             if (fileJson.exists()) {
@@ -211,7 +206,7 @@ public class ProcessInputFiles extends SelectInputDataController {
                     for (int ii = 0; ii < fileList.size(); ii++) {
                         fileInpt[ii] = fileList.get(ii);
                     }
-                    
+
                     setListSearchFiles(fileList);
                 }
                 break;
@@ -261,17 +256,17 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getMessage() {
         return strDisplayMessage;
     }
 
-   /**
-    * 
-    * @param list 
-    */
+    /**
+     *
+     * @param list
+     */
     private static void setListSearchFiles(List<File> list) {
         lstFileReturned = list;
     }

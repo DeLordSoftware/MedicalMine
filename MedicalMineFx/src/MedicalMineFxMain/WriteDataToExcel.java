@@ -14,8 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 
-public class WriteDataToExcel {  
-   //private static final XSSFWorkbook workbook = new XSSFWorkbook(); 
+public class WriteDataToExcel extends ProcessInputFiles {     
    private Map < String, Object[] > fileRecord = new TreeMap < >();     
    
     /*
@@ -74,7 +73,7 @@ public class WriteDataToExcel {
         // Write content to file in current directory and close workbook:
         File currDir = new File(".");
         String path = currDir.getAbsolutePath();
-        String fileLocation = "C:/MedicalMineResults/MedicalTest.xlsx";    
+        String fileLocation = RESULT_FOLDER_LOC + "/Search Result" + resultTime + ".xlsx";    
         //String fileLocation = path.substring(0, path.length() - 1) + "C:/MedicalMineResults/MedicalTest.xlsx";    
         File flOrginalFile =  new File(fileLocation);
         flOrginalFile.mkdirs();
