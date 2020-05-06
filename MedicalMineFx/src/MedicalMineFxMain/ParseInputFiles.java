@@ -81,12 +81,11 @@ public class ParseInputFiles extends ProcessInputFiles {
             flOutputFile.write(System.lineSeparator());
 
             // Increment file number printed to return file
-            count++;
-
-            String strData = "";
-            int iCharConverter;
+            count++;        
 
             // Collect each character from file and put in variable for processing
+            String strData = "";
+            int iCharConverter;
             while ((iCharConverter = flInputFile.read()) != -1) {
                 strData += ((char) iCharConverter);
             }
@@ -149,9 +148,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                 lstTier1Search = itrCategory.getValue();
 
                 // Search for each search word and phrase in line
-                for (int ii = 0; ii < lstTier1Search.size(); ii++) {
-                    String strFind = lstTier1Search.get(ii);
-
+                for (String strFind : lstTier1Search) {
                     // Make sure value is contained in string 
                     if (!strFind.isEmpty()) {
                         boolean bDisplayOnce = true;
@@ -252,18 +249,22 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     private EnumCustomType processExcelData(CustomVals customVals, Map<String, String> mpSaveToExcel, String strSearchLine, String strCategory, String strFind) {
+        
+        // Check to see if data already populated
+        boolean bIsValueEmpty = mpSaveToExcel.get(strCategory).isEmpty();
+
         //  Save for Excel 
         if (customVals.HasDate) {
             // Save Date format           
-            saveDateValExcel(mpSaveToExcel, strSearchLine, strCategory);
+            if(bIsValueEmpty) saveDateValExcel(mpSaveToExcel, strSearchLine, strCategory);
             return EnumCustomType.DATE;
         } else if (customVals.HasName) {
             // Save word format           
-            saveNameValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
+            if(bIsValueEmpty) saveNameValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
             return EnumCustomType.NAME;
         } else if (customVals.HasGender) {
             // Save gender format
-            saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory);
+            if(bIsValueEmpty) saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory);
             return EnumCustomType.GENDER;
         } else {
             SetMapForExcel(mpSaveToExcel, strCategory, strFind);

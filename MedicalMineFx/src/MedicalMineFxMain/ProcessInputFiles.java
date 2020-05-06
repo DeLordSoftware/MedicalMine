@@ -50,13 +50,12 @@ public class ProcessInputFiles extends SelectInputDataController {
         try {
             Map<String, String> mpSaveToExcel = new LinkedHashMap();
             Map<Integer, Map<String, String>> mpFinalSaveToExcel = new LinkedHashMap();
-            int iFileNum = 0;
+            int iFileNum = 1;
 
             // Set time stamp for files
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_HH_mm_ss");
-            LocalDateTime now = LocalDateTime.now();
-            resultTime = dtf.format(now);
-            System.out.println(resultTime);
+            LocalDateTime time = LocalDateTime.now();
+            resultTime = dtf.format(time);
 
             // Set Custom list for searching
             CustomData.setCustomDataList();
