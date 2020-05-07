@@ -15,11 +15,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -55,7 +57,8 @@ public class ParseInputFiles extends ProcessInputFiles {
 
         String strResultFile = RESULT_FOLDER_LOC + "Search Result" + resultTime + ".txt";
 
-        // Check result folder
+        // Check result folder 
+        // TODO: Ackward. Have to have delete file or unable to run software multiple times without restarting
         File file = new File(RESULT_FOLDER_LOC);
         if (!file.exists()) {
             file.mkdirs();
@@ -451,19 +454,62 @@ public class ParseInputFiles extends ProcessInputFiles {
      */
     @SuppressWarnings("null")
     public static void setSearchData(File file) {
+
         try {
+
+            List<String> lstCategory;
             mpSearchData = new LinkedHashMap();
+            Map<Integer, List<String>> mpTransferData = new LinkedHashMap();
             Scanner scan = new Scanner(file);
+            int count = 0;
+            
             while (scan.hasNext()) {
-                List<String> lstSearchData = new ArrayList<String>();
+                lstCategory = new ArrayList<String>();
                 String[] aryData = scan.nextLine().split(",");
-                if (lstSearchData.addAll(Arrays.asList(aryData))) {
-                    String strCategoryKey = lstSearchData.get(0);
-                    lstSearchData.remove(0);
-                    mpSearchData.put(strCategoryKey, lstSearchData);
-                    System.out.println("strCategoryKey " + strCategoryKey + " -- lstSearchData -- " + lstSearchData);
+                if (lstCategory.addAll(Arrays.asList(aryData))) {
+                    mpTransferData.put(count, lstCategory);
+                    count++;
                 }
             }
+
+            lstCategory = mpTransferData.get(0);
+            mpTransferData.remove(0);
+            for (int iCategory = 0; iCategory < lstCategory.size(); iCategory++) {
+                List<String> lstSetData = new ArrayList<String>();
+                List<String> lstData = new ArrayList<String>();
+                String strSearch;
+                for (Map.Entry iList : mpTransferData.entrySet()) {
+                    lstSetData = (List<String>) iList.getValue();
+                    if (iCategory < lstSetData.size()) {
+                        strSearch = lstSetData.get(iCategory);
+
+                        if (!strSearch.isEmpty()) {
+                            lstData.add(strSearch);
+                        }
+                    }
+                }
+
+                mpSearchData.put(lstCategory.get(iCategory), lstData);
+                System.out.println("Column file " + lstCategory.get(iCategory) + " -- lstCategory -- " + lstData);
+
+            }
+            
+            /*
+            System.out.println();
+            
+            mpSearchData = new LinkedHashMap();
+            //scan = new Scanner(file);
+            while (scan.hasNext()) {
+                lstCategory = new ArrayList<String>();
+                String[] aryData = scan.nextLine().split(",");
+                if (lstCategory.addAll(Arrays.asList(aryData))) {
+                    String strCategoryKey = lstCategory.get(0); // Set Categories
+                    lstCategory.remove(0);
+                    mpSearchData.put(strCategoryKey, lstCategory);
+                    System.out.println("Row file  " + strCategoryKey + " -- lstCategory -- " + lstCategory);
+                }
+            }
+            //*/
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SelectInputDataController.class.getName()).log(Level.SEVERE, null, ex);
         }
