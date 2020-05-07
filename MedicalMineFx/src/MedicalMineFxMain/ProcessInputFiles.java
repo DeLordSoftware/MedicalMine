@@ -50,22 +50,23 @@ public class ProcessInputFiles extends SelectInputDataController {
         try {
             Map<String, String> mpSaveToExcel = new LinkedHashMap();
             Map<Integer, Map<String, String>> mpFinalSaveToExcel = new LinkedHashMap();
-            int iFileNum = 1;
+            int iFileNum = 0;
 
             // Set time stamp for files
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_HH_mm_ss");
             LocalDateTime time = LocalDateTime.now();
-            resultTime = dtf.format(time);
+            resultTime = dtf.format(time);         
 
             // Set Custom list for searching
             CustomData.setCustomDataList();
 
             // Cycle through files seleced
             for (File file : lstFileReturned) {
-                System.out.println("\n\n-----------------------File number " + iFileNum++ + " -----------------------");
+                System.out.println("\n\n-----------------------File number " + (iFileNum + 1) + " -----------------------");
                 ParseInputFiles parseInputFiles = new ParseInputFiles(true);
                 mpSaveToExcel = parseInputFiles.TextParsing(file);
                 mpFinalSaveToExcel.put(iFileNum, mpSaveToExcel);
+                iFileNum++;
             }
 
             //Write data to Excel spreadsheet

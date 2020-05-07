@@ -32,7 +32,6 @@ public class ParseInputFiles extends ProcessInputFiles {
 
     private static Map<String, List<String>> mpSearchData;
     private static int count = 1;
-    private static boolean bCheckFileExistOnce = true;
     private boolean bDebug = false;
 
     /**
@@ -54,21 +53,16 @@ public class ParseInputFiles extends ProcessInputFiles {
         FileReader flInputFile = null;
         FileWriter flOutputFile = null;       
         
-        String strResultFile = RESULT_FOLDER_LOC + "/Search Result" + resultTime + ".txt";
-
-        File file = new File(strResultFile);
-        file.mkdirs();
-
-        try {
-            // Remove output file if already created
-            if (file.exists() && bCheckFileExistOnce) {
-                file.delete();
-                bCheckFileExistOnce = false;
-            }
-
+        String strResultFile = RESULT_FOLDER_LOC + "Search Result" + resultTime + ".txt";       
+        
+        // Check result folder
+        File file = new File(RESULT_FOLDER_LOC);  
+        if(!file.exists()) file.mkdirs();
+        
+        try {                     
             // Create files
-            flInputFile = new FileReader(flFileName);            // Input file            
-            flOutputFile = new FileWriter(strResultFile, true); // Result file           
+            flInputFile = new FileReader(flFileName);           // Input file                  
+            flOutputFile = new FileWriter(strResultFile, true); // Result file                       
             String strFileName = flFileName.toString();
 
             // Retrieve absolute name of input file
@@ -225,19 +219,21 @@ public class ParseInputFiles extends ProcessInputFiles {
                         }// For loop Search input file 
                     }
                 }
-            }// For loop Search map         
+            }// For loop Search map    
         } catch (NullPointerException e) {
             System.out.println("NullPointerException - " + e.toString());
+            e.printStackTrace();
             displayMsg(e.toString(), JOptionPane.ERROR_MESSAGE);
+            
             System.exit(1);
         } catch (NoSuchElementException e) {
             System.out.println("NoSuchElementException - " + e.toString());
             displayMsg(e.toString(), JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         } finally {
-            if (flOutputFile != null) {
+            /*if (flOutputFile != null) {
                 flOutputFile.close();
-            }
+            }*/
 
             if (flInputFile != null) {
                 flInputFile.close();
