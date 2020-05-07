@@ -51,15 +51,19 @@ public class ParseInputFiles extends ProcessInputFiles {
     public Map<String, String> TextParsing(File flFileName) throws IOException {
         Map<String, String> mpSaveToExcel = new LinkedHashMap();
         FileReader flInputFile = null;
-        FileWriter flOutputFile = null;       
-        
-        String strResultFile = RESULT_FOLDER_LOC + "Search Result" + resultTime + ".txt";       
-        
+        FileWriter flOutputFile = null;
+
+        String strResultFile = RESULT_FOLDER_LOC + "Search Result" + resultTime + ".txt";
+
         // Check result folder
-        File file = new File(RESULT_FOLDER_LOC);  
-        if(!file.exists()) file.mkdirs();
-        
-        try {                     
+        File file = new File(RESULT_FOLDER_LOC);
+        if (!file.exists()) {
+            file.mkdirs();
+        } else {
+            file.delete();
+        }
+
+        try {
             // Create files
             flInputFile = new FileReader(flFileName);           // Input file                  
             flOutputFile = new FileWriter(strResultFile, true); // Result file                       
@@ -75,7 +79,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             flOutputFile.write(System.lineSeparator());
 
             // Increment file number printed to return file
-            count++;        
+            count++;
 
             // Collect each character from file and put in variable for processing
             String strData = "";
@@ -224,16 +228,16 @@ public class ParseInputFiles extends ProcessInputFiles {
             System.out.println("NullPointerException - " + e.toString());
             e.printStackTrace();
             displayMsg(e.toString(), JOptionPane.ERROR_MESSAGE);
-            
+
             System.exit(1);
         } catch (NoSuchElementException e) {
             System.out.println("NoSuchElementException - " + e.toString());
             displayMsg(e.toString(), JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         } finally {
-            /*if (flOutputFile != null) {
+            if (flOutputFile != null) {
                 flOutputFile.close();
-            }*/
+            }
 
             if (flInputFile != null) {
                 flInputFile.close();
@@ -245,22 +249,28 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     private EnumCustomType processExcelData(CustomVals customVals, Map<String, String> mpSaveToExcel, String strSearchLine, String strCategory, String strFind) {
-        
+
         // Check to see if data already populated
         boolean bIsValueEmpty = mpSaveToExcel.get(strCategory).isEmpty();
 
         //  Save for Excel 
         if (customVals.HasDate) {
             // Save Date format           
-            if(bIsValueEmpty) saveDateValExcel(mpSaveToExcel, strSearchLine, strCategory);
+            if (bIsValueEmpty) {
+                saveDateValExcel(mpSaveToExcel, strSearchLine, strCategory);
+            }
             return EnumCustomType.DATE;
         } else if (customVals.HasName) {
             // Save word format           
-            if(bIsValueEmpty) saveNameValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
+            if (bIsValueEmpty) {
+                saveNameValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
+            }
             return EnumCustomType.NAME;
         } else if (customVals.HasGender) {
             // Save gender format
-            if(bIsValueEmpty) saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory);
+            if (bIsValueEmpty) {
+                saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory);
+            }
             return EnumCustomType.GENDER;
         } else {
             SetMapForExcel(mpSaveToExcel, strCategory, strFind);
