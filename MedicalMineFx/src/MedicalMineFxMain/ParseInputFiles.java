@@ -455,14 +455,14 @@ public class ParseInputFiles extends ProcessInputFiles {
     @SuppressWarnings("null")
     public static void setSearchData(File file) {
 
+        boolean bUseRowFormat = false;
         try {
-
             List<String> lstCategory;
             mpSearchData = new LinkedHashMap();
             Map<Integer, List<String>> mpTransferData = new LinkedHashMap();
             Scanner scan = new Scanner(file);
             int count = 0;
-            
+
             while (scan.hasNext()) {
                 lstCategory = new ArrayList<String>();
                 String[] aryData = scan.nextLine().split(",");
@@ -493,20 +493,20 @@ public class ParseInputFiles extends ProcessInputFiles {
                 System.out.println("Column file " + lstCategory.get(iCategory) + " -- lstCategory -- " + lstData);
 
             }
-            
-            /*
-            System.out.println();
-            
-            mpSearchData = new LinkedHashMap();
-            //scan = new Scanner(file);
-            while (scan.hasNext()) {
-                lstCategory = new ArrayList<String>();
-                String[] aryData = scan.nextLine().split(",");
-                if (lstCategory.addAll(Arrays.asList(aryData))) {
-                    String strCategoryKey = lstCategory.get(0); // Set Categories
-                    lstCategory.remove(0);
-                    mpSearchData.put(strCategoryKey, lstCategory);
-                    System.out.println("Row file  " + strCategoryKey + " -- lstCategory -- " + lstCategory);
+
+            // Parse CSV with Row format
+            if (bUseRowFormat) {
+                mpSearchData = new LinkedHashMap();
+                scan = new Scanner(file);
+                while (scan.hasNext()) {
+                    lstCategory = new ArrayList<String>();
+                    String[] aryData = scan.nextLine().split(",");
+                    if (lstCategory.addAll(Arrays.asList(aryData))) {
+                        String strCategoryKey = lstCategory.get(0); // Set Categories
+                        lstCategory.remove(0);
+                        mpSearchData.put(strCategoryKey, lstCategory);
+                        System.out.println("Row file  " + strCategoryKey + " -- lstCategory -- " + lstCategory);
+                    }
                 }
             }
             //*/

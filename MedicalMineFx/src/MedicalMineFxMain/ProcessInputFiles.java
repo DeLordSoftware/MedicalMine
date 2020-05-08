@@ -62,11 +62,10 @@ public class ProcessInputFiles extends SelectInputDataController {
 
             // Cycle through files seleced
             for (File file : lstFileReturned) {
-                System.out.println("\n\n-----------------------File number " + iFileNum + " -----------------------");
+                System.out.println("\n\n-----------------------File number " + iFileNum++ + " -----------------------");
                 ParseInputFiles parseInputFiles = new ParseInputFiles(true);
                 mpSaveToExcel = parseInputFiles.TextParsing(file);
                 mpFinalSaveToExcel.put(iFileNum, mpSaveToExcel);
-                iFileNum++;
             }
 
             //Write data to Excel spreadsheet
