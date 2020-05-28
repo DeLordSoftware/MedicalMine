@@ -46,7 +46,6 @@ public class ProcessInputFiles extends SelectInputDataController {
      *
      */
     public void processFiles() {
-
         try {
             Map<String, String> mpSaveToExcel = new LinkedHashMap();
             Map<Integer, Map<String, String>> mpFinalSaveToExcel = new LinkedHashMap();
@@ -73,7 +72,7 @@ public class ProcessInputFiles extends SelectInputDataController {
             String strReturnExcelLoc = writeDataToExcel.SaveExcelSpreadSheet(mpFinalSaveToExcel);
 
             // Create Gui message
-            strDisplayMessage = "Number of files searched: " + iFileNum + ".\nProcess complete...\nExcel file located at C:/MedicialMineResults";
+            strDisplayMessage = "Number of files searched: " + iFileNum + ".\nProcess complete...\nExcel file located at " + RESULT_FOLDER_LOC;
             displayMsg(strDisplayMessage, JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             System.out.println("IOException " + e.getMessage());
@@ -91,7 +90,6 @@ public class ProcessInputFiles extends SelectInputDataController {
      * @throws IOException
      */
     public static String selectProcessFiles(final int isetValue) throws IOException {
-
         FileChooser fileChooser = new FileChooser();
         String strDialogTitle = null;
         String strExtention = null;
@@ -190,7 +188,6 @@ public class ProcessInputFiles extends SelectInputDataController {
      * @param stagePrat
      */
     private static File[] displayFileDialog(FileChooser fileChser, int isetVal, File[] fileInpt, Stage stagePrat) {
-
         switch (isetVal) {
             case CSV_FILE:
                 fileInpt[0] = fileChser.showOpenDialog(stagePrat);
@@ -236,7 +233,6 @@ public class ProcessInputFiles extends SelectInputDataController {
      * Message dialog
      */
     public static void displayMsg(String str, int iMessage) {
-
         JFrame frame = null;
         String strTitle = null;
         int intMsg = 0;

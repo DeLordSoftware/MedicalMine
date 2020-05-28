@@ -2,12 +2,9 @@ package MedicalMineFxMain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,20 +13,25 @@ import javax.swing.JOptionPane;
 public class CustomData {
 
     private static List<String> lstCustomData = null;
-    private final static String cust1 = "(date)";
-    private final static String cust2 = "(name)";
-    private final static String cust3 = "(gender)";
+    private final static String CUST_DATE = "(date)";
+    private final static String CUST_NAME = "(name)";
+    private final static String CUST_GENDER = "(gender)";
+    private final static String CUST_ALL = "(all)";
+    private final static String CUST_FOLLOW = "(follow";
+    private final static String CUST_KEY = "(key)";
 
     /**
      *
-     * @param categoryStr
-     * @return
+     *
      */
     public static void setCustomDataList() {
-        lstCustomData = new ArrayList<String>();
-        lstCustomData.add(cust1);
-        lstCustomData.add(cust2);
-        lstCustomData.add(cust3);
+        lstCustomData = new ArrayList<>();
+        lstCustomData.add(CUST_DATE);
+        lstCustomData.add(CUST_NAME);
+        lstCustomData.add(CUST_GENDER);
+        lstCustomData.add(CUST_ALL);
+        lstCustomData.add(CUST_FOLLOW);
+        lstCustomData.add(CUST_KEY);
     }
 
     /**
@@ -39,18 +41,30 @@ public class CustomData {
      */
     public static CustomVals checkCustomData(String categoryStr) {
         CustomVals customVals = new CustomVals();
-        if (categoryStr.contains(cust1)) {
+        if (categoryStr.contains(CUST_DATE)) {
             // Set Date
             customVals.HasDate = true;
-            customVals.category = categoryStr.replace(cust1, "");
-        } else if (categoryStr.contains(cust2)) {
+            customVals.category = categoryStr.replace(CUST_DATE, "");
+        } else if (categoryStr.contains(CUST_NAME)) {
             // Set Name
             customVals.HasName = true;
-            customVals.category = categoryStr.replace(cust2, "");
-        } else if (categoryStr.contains(cust3)) {
+            customVals.category = categoryStr.replace(CUST_NAME, "");
+        } else if (categoryStr.contains(CUST_GENDER)) {
             // Set Gender
             customVals.HasGender = true;
-            customVals.category = categoryStr.replace(cust3, "");
+            customVals.category = categoryStr.replace(CUST_GENDER, "");
+        } else if (categoryStr.contains(CUST_ALL)) {
+            // Set All
+            customVals.HasAll = true;
+            customVals.category = categoryStr.replace(CUST_ALL, "");
+        } else if (categoryStr.contains(CUST_FOLLOW)) {
+            // Set Follow
+            customVals.HasFollow = true;
+            customVals.category = categoryStr.replace(CUST_FOLLOW, "");
+        } else if (categoryStr.contains(CUST_KEY)) {
+            // Set Key
+            customVals.HasKey = true;
+            customVals.category = categoryStr.replace(CUST_KEY, "");
         }
 
         return customVals;
@@ -63,8 +77,8 @@ public class CustomData {
      */
     public static String getDateFormat(String strCustom) {
         // Get exact date        
-        String strDateFormat = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
-        Pattern pattern = Pattern.compile(strDateFormat);
+        final String DATE_FORMAT = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
+        Pattern pattern = Pattern.compile(DATE_FORMAT);
 
         // Clean string
         strCustom = cleanString(strCustom);
@@ -97,9 +111,9 @@ public class CustomData {
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
         List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
 
-        // Clean string list
-        lstCatWords = cleanStrList(lstCatWords);
-        lstWords = cleanStrList(lstWords);
+        // Remove empty element
+        lstCatWords = removeEmptyElements(lstCatWords);
+        lstWords = removeEmptyElements(lstWords);
 
         // Remove category words from search string
         for (String val : lstCatWords) {
@@ -135,7 +149,30 @@ public class CustomData {
         return strReturnVal;
     }
 
-   
+    /**
+     *
+     * @param strSearchLine
+     * @param searchWords
+     * @return
+     */
+    public static String getAllFormat(String strSearchLine, String searchWords) {
+        strSearchLine = cleanString(strSearchLine).toLowerCase();
+        // Collect list of search string and category word 
+        List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
+        
+        // Remove empty element
+        lstCatWords = removeEmptyElements(lstCatWords);
+
+        // Remove category words from search string
+        String strReturnVal = strSearchLine;
+        for (String val : lstCatWords) {
+            val = val.replace(" ", "").toLowerCase();
+            strReturnVal = strReturnVal.replace(val, "");
+        }
+
+        return strReturnVal.trim();
+    }
+
     /**
      *
      * @param strSearchLine
@@ -146,11 +183,11 @@ public class CustomData {
         strSearchLine = cleanString(strSearchLine);
         String strGender = null;
         List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
-        lstWords = cleanStrList(lstWords);
-        
+        lstWords = removeEmptyElements(lstWords);
+
         for (String val : lstWords) {
             strGender = val.toLowerCase();
-            if (checkMatch(strGender, "\\b(male| m |female| f )\\b")) { 
+            if (checkMatch(strGender, "\\b(male| m |female| f )\\b")) {
                 if (strGender.equals(" m ") || strGender.equals("male")) {
                     strGender = "Male";
                 } else if (strGender.equals(" f ") || strGender.equals("female")) {
@@ -164,8 +201,8 @@ public class CustomData {
 
         return strGender;
     }
-    
-     /**
+
+    /**
      *
      * @param value
      * @param match
@@ -183,82 +220,18 @@ public class CustomData {
      * @param list
      * @return
      */
-    private static List<String> cleanStrList(List<String> list) {
+    public static List<String> removeEmptyElements(List<String> list) {
+        // Check to see if list element is empty
         for (int ii = 0; ii < list.size(); ii++) {
-            String test = list.get(ii);
-            if (test.isEmpty()) {
+            String strCheck = list.get(ii);
+            if (strCheck.isEmpty()) {
+                // Remove empty element
                 list.remove(ii);
                 ii = 0; // Reset index
             }
         }
 
         return list;
-    }
-
-
-    /**
-     *
-     * @param strDateFinal
-     * @param strCatgy
-     * @return
-     */
-    private static String[] CreateArrayForSearch(String strDateFinal, String strCatgy) {
-        // Convert strings to lower case because sometimes string has different capitalization
-        String strLineData = strDateFinal.toLowerCase();
-        String strCat = strCatgy.toLowerCase();
-
-        // Remove characters before category word
-        int iRemoveIntialText = strLineData.indexOf(strCat) + strCat.length();
-        int test = strLineData.length();
-        strLineData = strLineData.substring(iRemoveIntialText, test);
-
-        // Replace special char with space
-        strLineData = strLineData.replace(':', ' ').replace('\t', ' ');
-
-        return strLineData.split(" ");
-    }
-
-    /**
-     *
-     * @param mpExcel
-     * @param strCat
-     * @param strOne
-     * @param strTwo
-     * @return
-     */
-    private Map<String, String> GetAccountForExcel(Map<String, String> mpExcel, String strCat, String strOne, String strTwo) {
-        String strFinalDate = null;
-        final String PATIENT_ID = "Patient ID";
-
-        // Get string with data
-        if (!strOne.isEmpty()) {
-            strFinalDate = strOne;
-        } else if (!strTwo.isEmpty()) {
-            strFinalDate = strTwo;
-        } else {
-            // Exit if no data is found
-            return mpExcel;
-        }
-
-        // Get exact date from search line string
-        String strLineData = strFinalDate.toLowerCase();
-        int iLength = strLineData.length();
-
-        // Find first digit of line that contains date
-        for (int indx = 0; iLength > indx; indx++) {
-            char strFindDigit = strLineData.substring(indx, indx + 1).charAt(0);
-
-            // Once first digit is found, get rest of date string
-            if (Character.isDigit(strFindDigit)) {
-                strFinalDate = strLineData.substring(indx, iLength);
-                break;
-            }
-        }
-
-        // Set date value in excel map
-        mpExcel.replace(PATIENT_ID, strFinalDate);
-
-        return mpExcel;
     }
 
     /**
@@ -278,18 +251,19 @@ public class CustomData {
     public static List<String> ckCustDataList() {
         return lstCustomData;
     }
-
 }
 
 /**
- * ***************************************************************
  *
- * @author RW Simmons *************************************************************
+ * @author RW Simmons
  */
 final class CustomVals {
 
     boolean HasDate = false;
     boolean HasName = false;
     boolean HasGender = false;
+    boolean HasAll = false;
+    boolean HasFollow = false;
+    boolean HasKey = false;
     String category = "";
 }

@@ -15,13 +15,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -92,10 +90,10 @@ public class ParseInputFiles extends ProcessInputFiles {
             }
 
             // Set up parsing controls          
-            final String strLookForPeriod = "[\r\n]";
+            final String strLookForPeriod = "[\r\n\\.]";
             Pattern pattern = Pattern.compile(strLookForPeriod, Pattern.CASE_INSENSITIVE);
             String[] strArray = pattern.split(strData);
-
+            
             // Verify that search data map has been populate
             if (mpSearchData == null) {
                 displayMsg("Search data is null.", JOptionPane.ERROR_MESSAGE);
@@ -106,7 +104,6 @@ public class ParseInputFiles extends ProcessInputFiles {
             strFileName = strFileName.replace(".txt", "");
             mpSaveToExcel.put("File Name", strFileName);
 
-            List<String> lstTier1Search;
             int CategoryCounter = 1;
 
             // Loop through search data map of word and phrase searches
@@ -114,6 +111,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                 String strCategory = itrCategory.getKey();
 
                 // Programmers hack to end program without searching all categories
+                // TODO: Remove in final version
                 if (strCategory.contains("Done")) {
                     return mpSaveToExcel;
                 }
@@ -145,11 +143,16 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                 CategoryCounter++;
 
-                // Collect data from map
-                lstTier1Search = itrCategory.getValue();
-
-                // Search for each search word and phrase in line
-                for (String strFind : lstTier1Search) {
+                // Collect keyword data from map
+                List<String> lstKeywordSearch = itrCategory.getValue();
+                
+                // If custom data format is (all), then use category as search word
+                if (customVals.HasAll && lstKeywordSearch.isEmpty()) {
+                    lstKeywordSearch.add(strCategory);
+                }                
+                
+                // Search for each keyword and phrase in line
+                for (String strFind : lstKeywordSearch) {
                     // Make sure value is contained in string 
                     if (!strFind.isEmpty()) {
                         boolean bDisplayOnce = true;
@@ -251,6 +254,15 @@ public class ParseInputFiles extends ProcessInputFiles {
         return mpSaveToExcel;
     }
 
+    /**
+     *
+     * @param customVals
+     * @param mpSaveToExcel
+     * @param strSearchLine
+     * @param strCategory
+     * @param strFind
+     * @return
+     */
     private EnumCustomType processExcelData(CustomVals customVals, Map<String, String> mpSaveToExcel, String strSearchLine, String strCategory, String strFind) {
 
         // Check to see if data already populated
@@ -275,6 +287,12 @@ public class ParseInputFiles extends ProcessInputFiles {
                 saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory);
             }
             return EnumCustomType.GENDER;
+        } else if (customVals.HasAll) {
+            // Save gender format
+            if (bIsValueEmpty) {
+                saveAllValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
+            }
+            return EnumCustomType.ALL;
         } else {
             SetMapForExcel(mpSaveToExcel, strCategory, strFind);
             return EnumCustomType.NONE;
@@ -282,7 +300,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     enum EnumCustomType {
-        DATE, NAME, GENDER, NONE
+        DATE, NAME, GENDER, FOLLOW, KEY, ALL, NONE
     }
 
     /**
@@ -433,11 +451,30 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param category
      * @return
      */
+    private boolean saveAllValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category, String strSearchData) {
+
+        boolean hasSpecial = true;
+        // Save all format
+        String strNameFormated = CustomData.getAllFormat(searchLine, strSearchData);
+        if (strNameFormated != null) {
+            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
+            hasSpecial = false;
+        }
+
+        return hasSpecial;
+    }
+
+    /**
+     *
+     * @param mpSaveToExcel
+     * @param searchLine
+     * @param category
+     * @return
+     */
     private boolean saveGenderValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
 
         boolean hasGender = true;
-        // Save Date format
-        // TODO: Convert to format gender
+        // Save Geneder format
         String strGenderFormated = CustomData.getGender(searchLine);
         if (strGenderFormated != null) {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strGenderFormated);

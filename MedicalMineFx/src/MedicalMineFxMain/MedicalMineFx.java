@@ -17,7 +17,8 @@ import javafx.stage.Stage;
  */
 public class MedicalMineFx extends Application {    
     
-    private static final String VERSION = "3.0";
+    private static final String VERSION = "4.0";
+    private static final String TITLE_NAME = "Seek-N-Shall Fine by DSC ver ";
      
     public static String MainScreen      = "main";
     public static String MainResource    = "/FxmlDisplays/SelectInputData.fxml";
@@ -38,7 +39,7 @@ public class MedicalMineFx extends Application {
         try{
             CreateStage createStage = new CreateStage();           
             currentStage = stage;
-            mainStage = createStage.setStage(stage, MainResource, "Medical Mine by DSC ver " + VERSION);           
+            mainStage = createStage.setStage(stage, MainResource, TITLE_NAME + VERSION);           
             mainStage.show();
         } catch(Exception e) {
             System.out.println("ERROR 2: " + e.getMessage());
@@ -65,7 +66,7 @@ public class MedicalMineFx extends Application {
      */
     public static void closeProgessPage() throws InterruptedException{
        CreateStage createStage = new CreateStage();
-       mainStage = createStage.setStage(currentStage, MainResource, "Medical Mine by DSC ver "  + VERSION);
+       mainStage = createStage.setStage(currentStage, MainResource, TITLE_NAME  + VERSION);
        mainStage.show();
     }
 }
