@@ -147,7 +147,8 @@ public class ParseInputFiles extends ProcessInputFiles {
                 List<String> lstKeywordSearch = itrCategory.getValue();
                 
                 // If custom data format is (all), then use category as search word
-                if (customVals.HasAll && lstKeywordSearch.isEmpty()) {
+                boolean bHasCustom = customVals.HasAll || customVals.HasFollow;
+                if ( bHasCustom && lstKeywordSearch.isEmpty()) {
                     lstKeywordSearch.add(strCategory);
                 }                
                 
@@ -184,7 +185,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                                         System.out.println("    ++ " + strFind + " ++");
                                     }
 
-                                    //  Save for Excel                                   
+                                    // Save for Excel                                   
                                     processExcelData(customVals, mpSaveToExcel, strSearchLine, strCategory, strFind);
 
                                     bDisplayOnce = false;// Display only once per category
@@ -293,6 +294,12 @@ public class ParseInputFiles extends ProcessInputFiles {
                 saveAllValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
             }
             return EnumCustomType.ALL;
+        } else if (customVals.HasFollow) {
+            // Save gender format
+            if (bIsValueEmpty) {
+                saveFollowValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind, customVals.iWords);
+            }
+            return EnumCustomType.FOLLOW;
         } else {
             SetMapForExcel(mpSaveToExcel, strCategory, strFind);
             return EnumCustomType.NONE;
@@ -456,6 +463,25 @@ public class ParseInputFiles extends ProcessInputFiles {
         boolean hasSpecial = true;
         // Save all format
         String strNameFormated = CustomData.getAllFormat(searchLine, strSearchData);
+        if (strNameFormated != null) {
+            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
+            hasSpecial = false;
+        }
+
+        return hasSpecial;
+    }
+    
+    /**
+     *
+     * @param mpSaveToExcel
+     * @param searchLine
+     * @param category
+     * @return
+     */
+    private boolean saveFollowValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category, String strSearchData, int iWord) {
+        boolean hasSpecial = true;
+        // Save all format
+        String strNameFormated = CustomData.getFollowFormat(searchLine, strSearchData, iWord);
         if (strNameFormated != null) {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
             hasSpecial = false;

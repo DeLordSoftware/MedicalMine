@@ -53,6 +53,7 @@ public class MedicalMineFx extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
     /**
      * 
      */
@@ -60,6 +61,7 @@ public class MedicalMineFx extends Application {
         CreateStage createStage = new CreateStage();
         progessStage = createStage.setStage(currentStage, ProgessResource, "");          
     }
+    
     /**
      * 
      * @throws InterruptedException 
@@ -90,6 +92,4 @@ class CreateStage{
 
         return stage;
     }
-
-
 }

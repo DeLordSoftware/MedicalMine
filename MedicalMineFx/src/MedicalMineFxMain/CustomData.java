@@ -17,11 +17,10 @@ public class CustomData {
     private final static String CUST_NAME = "(name)";
     private final static String CUST_GENDER = "(gender)";
     private final static String CUST_ALL = "(all)";
-    private final static String CUST_FOLLOW = "(follow";
+    private final static String CUST_FOLLOW = "(follow"; // ')' missing intentional
     private final static String CUST_KEY = "(key)";
 
-    /**
-     *
+    /**    
      *
      */
     public static void setCustomDataList() {
@@ -40,33 +39,38 @@ public class CustomData {
      * @return
      */
     public static CustomVals checkCustomData(String categoryStr) {
+        // Remove format trigger from category word
         CustomVals customVals = new CustomVals();
         if (categoryStr.contains(CUST_DATE)) {
-            // Set Date
-            customVals.HasDate = true;
+            // Remove(date)           
             customVals.category = categoryStr.replace(CUST_DATE, "");
+            customVals.HasDate = true;
         } else if (categoryStr.contains(CUST_NAME)) {
-            // Set Name
-            customVals.HasName = true;
+            // Remove(name)            
             customVals.category = categoryStr.replace(CUST_NAME, "");
+            customVals.HasName = true;
         } else if (categoryStr.contains(CUST_GENDER)) {
-            // Set Gender
-            customVals.HasGender = true;
+            // Remove(gender)             
             customVals.category = categoryStr.replace(CUST_GENDER, "");
+            customVals.HasGender = true;
         } else if (categoryStr.contains(CUST_ALL)) {
-            // Set All
-            customVals.HasAll = true;
+            // Remove(all)              
             customVals.category = categoryStr.replace(CUST_ALL, "");
+            customVals.HasAll = true;
         } else if (categoryStr.contains(CUST_FOLLOW)) {
-            // Set Follow
+            // Remove(follow)             
+            int index = categoryStr.indexOf(CUST_FOLLOW);           
+            int indexEnd = categoryStr.indexOf(")");
+            String strRemove = categoryStr.substring(index, indexEnd + 1);
+            // Retrieve number of words to display
+            customVals.iWords = Integer.valueOf(strRemove.replaceAll("[^0-9]", ""));
+            customVals.category = categoryStr.replace(strRemove, "");
             customVals.HasFollow = true;
-            customVals.category = categoryStr.replace(CUST_FOLLOW, "");
         } else if (categoryStr.contains(CUST_KEY)) {
-            // Set Key
-            customVals.HasKey = true;
+            // Remove(key)              
             customVals.category = categoryStr.replace(CUST_KEY, "");
+            customVals.HasKey = true;
         }
-
         return customVals;
     }
 
@@ -80,7 +84,7 @@ public class CustomData {
         final String DATE_FORMAT = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
         Pattern pattern = Pattern.compile(DATE_FORMAT);
 
-        // Clean string
+        // Clean string and create list
         strCustom = cleanString(strCustom);
         String[] lstStringSegments = strCustom.split(" ");
 
@@ -95,7 +99,6 @@ public class CustomData {
                 break;
             }
         }
-
         return strReturnVal;
     }
 
@@ -116,28 +119,28 @@ public class CustomData {
         lstWords = removeEmptyElements(lstWords);
 
         // Remove category words from search string
-        for (String val : lstCatWords) {
-            val = val.replace(" ", "").toLowerCase();
-            if (lstWords.contains(val)) {
-                lstWords.remove(lstWords.indexOf(val));
+        for (String catWords : lstCatWords) {
+            catWords = catWords.replace(" ", "").toLowerCase();
+            if (lstWords.contains(catWords)) {
+                lstWords.remove(lstWords.indexOf(catWords));
             }
         }
 
         int iCounter = 0;
         String strReturnVal = "";
-        for (String val : lstWords) {
+        for (String words : lstWords) {
             // Get the next two words which should be name
-            if (iCounter < 2 && !val.isEmpty()) {
+            if (iCounter < 2 && !words.isEmpty()) {
                 // Store and capitalize first letter
-                String strFirst = val.substring(0, 1);
+                String strFirst = words.substring(0, 1);
                 if (checkMatch(strFirst, "[a-z]")) {
-                    strReturnVal += strFirst.toUpperCase() + val.substring(1).toLowerCase() + " ";
+                    strReturnVal += strFirst.toUpperCase() + words.substring(1).toLowerCase() + " ";
                     iCounter++;
                 } else {
                     // If first char isn't a letter, check next char in string 
-                    strFirst = val.substring(1, 2);
+                    strFirst = words.substring(1, 2);
                     if (checkMatch(strFirst, "[a-z]")) {
-                        strReturnVal += strFirst.toUpperCase() + val.substring(2).toLowerCase() + " ";
+                        strReturnVal += strFirst.toUpperCase() + words.substring(2).toLowerCase() + " ";
                         iCounter++;
                     }
                 }
@@ -145,7 +148,6 @@ public class CustomData {
                 break;
             }
         }
-
         return strReturnVal;
     }
 
@@ -159,7 +161,7 @@ public class CustomData {
         strSearchLine = cleanString(strSearchLine).toLowerCase();
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
-        
+
         // Remove empty element
         lstCatWords = removeEmptyElements(lstCatWords);
 
@@ -167,12 +169,51 @@ public class CustomData {
         String strReturnVal = strSearchLine;
         for (String val : lstCatWords) {
             val = val.replace(" ", "").toLowerCase();
+            // Save new string
             strReturnVal = strReturnVal.replace(val, "");
         }
-
         return strReturnVal.trim();
     }
 
+    /**
+     *
+     * @param strSearchLine
+     * @param searchWords
+     * @return
+     */
+    public static String getFollowFormat(String strSearchLine, String searchWords, int numWords) {
+        
+        strSearchLine = cleanString(strSearchLine).toLowerCase();
+        // Collect list of search string and category word 
+        List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
+        List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
+        
+        // Remove empty element
+        lstCatWords = removeEmptyElements(lstCatWords);
+        lstWords = removeEmptyElements(lstWords);       
+        
+        // Remove category words from search string
+        for (String catWord : lstCatWords) {
+            catWord = catWord.replace(" ", "").toLowerCase();
+            if (lstWords.contains(catWord)) {
+                lstWords.remove(lstWords.indexOf(catWord));
+            }
+        }
+
+        int iCounter = 0;
+        String strReturnVal = "";
+        for (String words : lstWords) {
+            // Get the number of words to display
+            if (iCounter < numWords && !words.isEmpty()) {
+                strReturnVal += words + " ";
+                iCounter++;
+            } else {
+                break;
+            }
+        }
+        return strReturnVal;
+    }
+    
     /**
      *
      * @param strSearchLine
@@ -198,7 +239,6 @@ public class CustomData {
                 break;
             }
         }
-
         return strGender;
     }
 
@@ -214,13 +254,15 @@ public class CustomData {
         Matcher matcher = pattern.matcher(value);
         return matcher.matches();
     }
+    
+    
 
     /**
      *
      * @param list
      * @return
      */
-    public static List<String> removeEmptyElements(List<String> list) {
+    private static List<String> removeEmptyElements(List<String> list) {
         // Check to see if list element is empty
         for (int ii = 0; ii < list.size(); ii++) {
             String strCheck = list.get(ii);
@@ -230,7 +272,6 @@ public class CustomData {
                 ii = 0; // Reset index
             }
         }
-
         return list;
     }
 
@@ -266,4 +307,5 @@ final class CustomVals {
     boolean HasFollow = false;
     boolean HasKey = false;
     String category = "";
+    int iWords = 0;
 }
