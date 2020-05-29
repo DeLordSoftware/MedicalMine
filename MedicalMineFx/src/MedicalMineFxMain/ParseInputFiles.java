@@ -250,7 +250,6 @@ public class ParseInputFiles extends ProcessInputFiles {
                 flInputFile.close();
             }
         }
-
         System.out.println("END OF REPORT");
         return mpSaveToExcel;
     }
@@ -265,7 +264,6 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @return
      */
     private EnumCustomType processExcelData(CustomVals customVals, Map<String, String> mpSaveToExcel, String strSearchLine, String strCategory, String strFind) {
-
         // Check to see if data already populated
         boolean bIsValueEmpty = mpSaveToExcel.get(strCategory).isEmpty();
 
@@ -305,11 +303,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             return EnumCustomType.NONE;
         }
     }
-
-    enum EnumCustomType {
-        DATE, NAME, GENDER, FOLLOW, KEY, ALL, NONE
-    }
-
+   
     /**
      *
      * @param parseLine
@@ -379,7 +373,6 @@ public class ParseInputFiles extends ProcessInputFiles {
                 }
             }
         }
-
         return lstParseLine;
     }
 
@@ -407,7 +400,6 @@ public class ParseInputFiles extends ProcessInputFiles {
             // Create blank new key value
             mpExcel.put(strCategory, "");
         }
-
         return mpExcel;
     }
 
@@ -419,7 +411,6 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @return
      */
     private boolean saveDateValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
-
         boolean hasDate = true;
         // Save Date format
         String strDateFormated = CustomData.getDateFormat(searchLine);
@@ -427,7 +418,6 @@ public class ParseInputFiles extends ProcessInputFiles {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated);
             hasDate = false;
         }
-
         return hasDate;
     }
 
@@ -439,7 +429,6 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @return
      */
     private boolean saveNameValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category, String strSearchData) {
-
         boolean hasSpecial = true;
         // Save Date format
         String strNameFormated = CustomData.getNameFormat(searchLine, strSearchData);
@@ -447,7 +436,6 @@ public class ParseInputFiles extends ProcessInputFiles {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
             hasSpecial = false;
         }
-
         return hasSpecial;
     }
 
@@ -459,7 +447,6 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @return
      */
     private boolean saveAllValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category, String strSearchData) {
-
         boolean hasSpecial = true;
         // Save all format
         String strNameFormated = CustomData.getAllFormat(searchLine, strSearchData);
@@ -467,7 +454,6 @@ public class ParseInputFiles extends ProcessInputFiles {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
             hasSpecial = false;
         }
-
         return hasSpecial;
     }
     
@@ -486,7 +472,6 @@ public class ParseInputFiles extends ProcessInputFiles {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strNameFormated);
             hasSpecial = false;
         }
-
         return hasSpecial;
     }
 
@@ -498,7 +483,6 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @return
      */
     private boolean saveGenderValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
-
         boolean hasGender = true;
         // Save Geneder format
         String strGenderFormated = CustomData.getGender(searchLine);
@@ -506,7 +490,6 @@ public class ParseInputFiles extends ProcessInputFiles {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strGenderFormated);
             hasGender = false;
         }
-
         return hasGender;
     }
 
@@ -576,5 +559,12 @@ public class ParseInputFiles extends ProcessInputFiles {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SelectInputDataController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    /**
+     * Enum of custom types
+     */
+    enum EnumCustomType {
+        DATE, NAME, GENDER, FOLLOW, KEY, ALL, NONE
     }
 }

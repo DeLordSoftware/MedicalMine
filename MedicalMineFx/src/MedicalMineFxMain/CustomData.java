@@ -11,13 +11,12 @@ import java.util.regex.Pattern;
  * @author RW Simmons
  */
 public class CustomData {
-
     private static List<String> lstCustomData = null;
     private final static String CUST_DATE = "(date)";
     private final static String CUST_NAME = "(name)";
     private final static String CUST_GENDER = "(gender)";
     private final static String CUST_ALL = "(all)";
-    private final static String CUST_FOLLOW = "(follow"; // ')' missing intentional
+    private final static String CUST_FOLLOW = "(follow"; // ')' intentional missing
     private final static String CUST_KEY = "(key)";
 
     /**    
@@ -181,8 +180,7 @@ public class CustomData {
      * @param searchWords
      * @return
      */
-    public static String getFollowFormat(String strSearchLine, String searchWords, int numWords) {
-        
+    public static String getFollowFormat(String strSearchLine, String searchWords, int numWords) {        
         strSearchLine = cleanString(strSearchLine).toLowerCase();
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
@@ -299,7 +297,6 @@ public class CustomData {
  * @author RW Simmons
  */
 final class CustomVals {
-
     boolean HasDate = false;
     boolean HasName = false;
     boolean HasGender = false;
