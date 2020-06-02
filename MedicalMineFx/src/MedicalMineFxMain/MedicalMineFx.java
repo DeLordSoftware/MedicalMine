@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -18,8 +19,7 @@ import javafx.stage.Stage;
 public class MedicalMineFx extends Application {    
     
     private static final String VERSION = "4.0";
-    private static final String TITLE_NAME = "Seek-N-Shall Fine by DSC ver ";
-     
+    private static final String TITLE_NAME = "Seek-N-Shall Fine by DSC ver ";     
     public static String MainScreen      = "main";
     public static String MainResource    = "/FxmlDisplays/SelectInputData.fxml";
     public static String ProgessScreen   = "progess";
@@ -39,7 +39,8 @@ public class MedicalMineFx extends Application {
         try{
             CreateStage createStage = new CreateStage();           
             currentStage = stage;
-            mainStage = createStage.setStage(stage, MainResource, TITLE_NAME + VERSION);           
+            mainStage = createStage.setStage(stage, MainResource, TITLE_NAME + VERSION);   
+            mainStage.getIcons().add(new Image("/Images/Seek-N-Shall Find Image.png"));
             mainStage.show();
         } catch(Exception e) {
             System.out.println("ERROR 2: " + e.getMessage());

@@ -11,7 +11,9 @@ import java.util.regex.Pattern;
  * @author RW Simmons
  */
 public class CustomData {
+
     private static List<String> lstCustomData = null;
+    private static List<String> lstMonthsName = null;
     private final static String CUST_DATE = "(date)";
     private final static String CUST_NAME = "(name)";
     private final static String CUST_GENDER = "(gender)";
@@ -19,10 +21,11 @@ public class CustomData {
     private final static String CUST_FOLLOW = "(follow"; // ')' intentional missing
     private final static String CUST_KEY = "(key)";
 
-    /**    
+    /**
      *
      */
     public static void setCustomDataList() {
+        // List of custom formats
         lstCustomData = new ArrayList<>();
         lstCustomData.add(CUST_DATE);
         lstCustomData.add(CUST_NAME);
@@ -30,6 +33,21 @@ public class CustomData {
         lstCustomData.add(CUST_ALL);
         lstCustomData.add(CUST_FOLLOW);
         lstCustomData.add(CUST_KEY);
+
+        // List of months for date format
+        lstMonthsName = new ArrayList<>();
+        lstMonthsName.add("january");
+        lstMonthsName.add("february");
+        lstMonthsName.add("march");
+        lstMonthsName.add("april");
+        lstMonthsName.add("may");
+        lstMonthsName.add("june");
+        lstMonthsName.add("july");
+        lstMonthsName.add("august");
+        lstMonthsName.add("september");
+        lstMonthsName.add("october");
+        lstMonthsName.add("november");
+        lstMonthsName.add("december");
     }
 
     /**
@@ -58,7 +76,7 @@ public class CustomData {
             customVals.HasAll = true;
         } else if (categoryStr.contains(CUST_FOLLOW)) {
             // Remove(follow)             
-            int index = categoryStr.indexOf(CUST_FOLLOW);           
+            int index = categoryStr.indexOf(CUST_FOLLOW);
             int indexEnd = categoryStr.indexOf(")");
             String strRemove = categoryStr.substring(index, indexEnd + 1);
             // Retrieve number of words to display
@@ -79,7 +97,8 @@ public class CustomData {
      * @return
      */
     public static String getDateFormat(String strCustom) {
-        // Get exact date        
+
+// Get exact date        
         final String DATE_FORMAT = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
         Pattern pattern = Pattern.compile(DATE_FORMAT);
 
@@ -90,13 +109,31 @@ public class CustomData {
         // Cycle throught segments of data to find date  
         Matcher matcher;
         String strReturnVal = null;
+        int iIndex = 0;
         for (String segment : lstStringSegments) {
-            matcher = pattern.matcher(segment.trim());
-            if (matcher.matches()) {
-                // Store date format
-                strReturnVal = segment;
+            String Month = segment.toLowerCase();
+            if (lstMonthsName.contains(Month)) {
+                // Get date if Month is in word format
+                int iMonth = lstMonthsName.indexOf(Month) + 1;
+                String strMonth = String.valueOf(iMonth);
+                strMonth = strMonth.length() < 2 ? "0" + strMonth : strMonth;  // Add zero if only one digit                         
+                // Date
+                String strDay = lstStringSegments[iIndex + 1].replaceAll("[^0-9]", "");
+                strDay = strDay.length() < 2 ? "0" + strDay : strDay; // Add zero if only one digit                        
+                // Year
+                String strYear = lstStringSegments[iIndex + 2].replaceAll("[^0-9]", "");
+                strReturnVal = strMonth + "/" + strDay + "/" + strYear;
                 break;
+            } else {
+                // Get date if in numeric format
+                matcher = pattern.matcher(segment.trim());
+                if (matcher.matches()) {
+                    // Store date format
+                    strReturnVal = segment;
+                    break;
+                }
             }
+            iIndex++;
         }
         return strReturnVal;
     }
@@ -180,16 +217,16 @@ public class CustomData {
      * @param searchWords
      * @return
      */
-    public static String getFollowFormat(String strSearchLine, String searchWords, int numWords) {        
+    public static String getFollowFormat(String strSearchLine, String searchWords, int numWords) {
         strSearchLine = cleanString(strSearchLine).toLowerCase();
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
         List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
-        
+
         // Remove empty element
         lstCatWords = removeEmptyElements(lstCatWords);
-        lstWords = removeEmptyElements(lstWords);       
-        
+        lstWords = removeEmptyElements(lstWords);
+
         // Remove category words from search string
         for (String catWord : lstCatWords) {
             catWord = catWord.replace(" ", "").toLowerCase();
@@ -211,7 +248,7 @@ public class CustomData {
         }
         return strReturnVal;
     }
-    
+
     /**
      *
      * @param strSearchLine
@@ -252,8 +289,6 @@ public class CustomData {
         Matcher matcher = pattern.matcher(value);
         return matcher.matches();
     }
-    
-    
 
     /**
      *
@@ -297,6 +332,7 @@ public class CustomData {
  * @author RW Simmons
  */
 final class CustomVals {
+
     boolean HasDate = false;
     boolean HasName = false;
     boolean HasGender = false;
