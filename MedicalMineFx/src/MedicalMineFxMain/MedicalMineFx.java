@@ -63,6 +63,7 @@ public class MedicalMineFx extends Application {
         } else {
             // Display error message and close application 
             System.out.println("Expired license!!!");
+            System.exit(0);
         }
     }
 
@@ -76,14 +77,21 @@ public class MedicalMineFx extends Application {
 
     private static boolean checkLicense() {
         boolean returnVal = false;
+        File file; 
+        Scanner scanner = null;
         try {
-            File file = new File("License.lic");
-            Scanner sc = new Scanner(file);
+            file = new File("License.lic");
+            if(!file.exists()){
+                // Display error dialog
+                return false;
+            }
+            scanner = new Scanner(file);
+            
             // Get actual expiration date
-            String strExpire = sc.nextLine();
+            String strExpire = scanner.nextLine();
             System.out.println(strExpire);
             // Get actual expiration encoder
-            String strEncoder = sc.nextLine();
+            String strEncoder = scanner.nextLine();
             System.out.println(strEncoder);
 
             char[] lstEncoder = strEncoder.toCharArray();
@@ -156,6 +164,8 @@ public class MedicalMineFx extends Application {
             }
         } catch (IOException ex) {
             Logger.getLogger(MedicalMineFx.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{       
+            if(scanner != null) scanner.close();
         }
 
         return returnVal;
