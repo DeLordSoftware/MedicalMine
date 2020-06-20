@@ -272,7 +272,7 @@ public class FXMLLicenseEncoderController implements Initializable {
         // Print to file
         FileWriter flEncoderLic = null;
         try {
-            flEncoderLic = new FileWriter("License.lic");
+            flEncoderLic = new FileWriter("License.dsc");
             flEncoderLic.write(strExpire + "\n" + strFinalEncoder);
         } catch (IOException ex) {
             Logger.getLogger(FXMLLicenseEncoderController.class.getName()).log(Level.SEVERE, null, ex);

@@ -93,7 +93,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             final String strLookForPeriod = "[\r\n\\.]";
             Pattern pattern = Pattern.compile(strLookForPeriod, Pattern.CASE_INSENSITIVE);
             String[] strArray = pattern.split(strData);
-            
+
             // Verify that search data map has been populate
             if (mpSearchData == null) {
                 displayMsg("Search data is null.", JOptionPane.ERROR_MESSAGE);
@@ -145,13 +145,13 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                 // Collect keyword data from map
                 List<String> lstKeywordSearch = itrCategory.getValue();
-                
+
                 // If custom data format is (all), then use category as search word
                 boolean bHasCustom = customVals.HasAll || customVals.HasFollow;
-                if ( bHasCustom && lstKeywordSearch.isEmpty()) {
+                if (bHasCustom && lstKeywordSearch.isEmpty()) {
                     lstKeywordSearch.add(strCategory);
-                }                
-                
+                }
+
                 // Search for each keyword and phrase in line
                 for (String strFind : lstKeywordSearch) {
                     // Make sure value is contained in string 
@@ -303,7 +303,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             return EnumCustomType.NONE;
         }
     }
-   
+
     /**
      *
      * @param parseLine
@@ -387,15 +387,18 @@ public class ParseInputFiles extends ProcessInputFiles {
         // Does map have category 
         if (mpExcel.containsKey(strCategory) && strValue.length() > 0) {
             String strCurrentValue = mpExcel.get(strCategory);
-
             // Determine if value is already in map
             if (!strCurrentValue.equals(strValue) && strCurrentValue.length() > 0) {
-                // Add new string value to string 
-                strCurrentValue += ", " + strValue;
-                mpExcel.put(strCategory, strCurrentValue);
+                // Check to see if data is already in map
+                if (!strCurrentValue.contains(strValue)) {
+                    // Add new string value to string 
+                    strCurrentValue += ", " + strValue;
+                    mpExcel.put(strCategory, strCurrentValue);
+                }
             } else {
                 mpExcel.put(strCategory, strValue);
             }
+
         } else {
             // Create blank new key value
             mpExcel.put(strCategory, "");
@@ -456,7 +459,7 @@ public class ParseInputFiles extends ProcessInputFiles {
         }
         return hasSpecial;
     }
-    
+
     /**
      *
      * @param mpSaveToExcel
@@ -560,7 +563,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             Logger.getLogger(SelectInputDataController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Enum of custom types
      */

@@ -1,6 +1,7 @@
 package MedicalMineFxMain;
 
 import static MedicalMineFxMain.MedicalMineFx.MainResource;
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -17,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -62,7 +64,13 @@ public class MedicalMineFx extends Application {
             launch(args);
         } else {
             // Display error message and close application 
-            System.out.println("Expired license!!!");
+            Frame frame = null;
+            //custom title, error icon
+            JOptionPane.showMessageDialog(frame,
+                    "Expired or missing license!!!\nSee DeLords Software Consultent.",
+                    "License error",
+                    JOptionPane.ERROR_MESSAGE);
+            System.out.println("Expired or missing license!!!");
             System.exit(0);
         }
     }
@@ -77,30 +85,28 @@ public class MedicalMineFx extends Application {
 
     private static boolean checkLicense() {
         boolean returnVal = false;
-        File file; 
+        File file;
         Scanner scanner = null;
         try {
-            file = new File("License.lic");
-            if(!file.exists()){
+            file = new File("License.dsc");
+            if (!file.exists()) {
                 // Display error dialog
                 return false;
             }
             scanner = new Scanner(file);
-            
+
             // Get actual expiration date
             String strExpire = scanner.nextLine();
             System.out.println(strExpire);
+            
             // Get actual expiration encoder
             String strEncoder = scanner.nextLine();
             System.out.println(strEncoder);
 
-            char[] lstEncoder = strEncoder.toCharArray();
-            int[] lstLocate = new int[3];
+            char[] lstEncoder = strEncoder.toCharArray();            
             int iMonth = 0;
             int iDay = 0;
             int iYear = 0;
-
-            int count = 0;
             int iValue = 0;
 
             // Convert string to integer list
@@ -164,10 +170,11 @@ public class MedicalMineFx extends Application {
             }
         } catch (IOException ex) {
             Logger.getLogger(MedicalMineFx.class.getName()).log(Level.SEVERE, null, ex);
-        } finally{       
-            if(scanner != null) scanner.close();
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
         }
-
         return returnVal;
     }
 
