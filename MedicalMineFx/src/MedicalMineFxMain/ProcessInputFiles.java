@@ -192,7 +192,7 @@ public class ProcessInputFiles extends SelectInputDataController {
             case CSV_FILE:
                 fileInpt[0] = fileChser.showOpenDialog(stagePrat);
                 // Store search critia file
-                ParseInputFiles.setSearchData(fileInpt[0]);
+                ParseInputFiles.setCsvSearchData(fileInpt[0]);
                 break;
             case SEARCH_FILE:
                 List<File> fileList = fileChser.showOpenMultipleDialog(stagePrat);

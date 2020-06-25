@@ -81,7 +81,7 @@ public class CustomData {
             String strRemove = categoryStr.substring(index, indexEnd + 1);
             // Retrieve number of words to display
             customVals.iWords = Integer.valueOf(strRemove.replaceAll("[^0-9]", ""));
-            customVals.category = categoryStr.replace(strRemove, "");
+            customVals.category = categoryStr.replace(strRemove, "");           
             customVals.HasFollow = true;
         } else if (categoryStr.contains(CUST_KEY)) {
             // Remove(key)              
@@ -97,8 +97,7 @@ public class CustomData {
      * @return
      */
     public static String getDateFormat(String strCustom) {
-
-// Get exact date        
+        // Get exact date        
         final String DATE_FORMAT = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
         Pattern pattern = Pattern.compile(DATE_FORMAT);
 

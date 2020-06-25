@@ -97,11 +97,11 @@ public class MedicalMineFx extends Application {
 
             // Get actual expiration date
             String strExpire = scanner.nextLine();
-            System.out.println(strExpire);
+            //System.out.println(strExpire);
             
             // Get actual expiration encoder
             String strEncoder = scanner.nextLine();
-            System.out.println(strEncoder);
+            //System.out.println(strEncoder);
 
             char[] lstEncoder = strEncoder.toCharArray();            
             int iMonth = 0;

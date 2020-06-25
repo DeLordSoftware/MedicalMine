@@ -22,6 +22,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
@@ -33,6 +34,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     private static Map<String, List<String>> mpSearchData;
     private static int count = 1;
     private boolean bDebug = false;
+    private final List<String> lsSpecialChar;
 
     /**
      *
@@ -40,6 +42,21 @@ public class ParseInputFiles extends ProcessInputFiles {
      */
     ParseInputFiles(boolean check) {
         bDebug = check;
+        
+        // Set a list to check for special characters
+        lsSpecialChar = new ArrayList();
+        lsSpecialChar.add("@");
+        lsSpecialChar.add("#");
+        lsSpecialChar.add("$");
+        lsSpecialChar.add("%");
+        lsSpecialChar.add("&");
+        lsSpecialChar.add("*");
+        lsSpecialChar.add("-");
+        lsSpecialChar.add("=");
+        lsSpecialChar.add("<");
+        lsSpecialChar.add(">");
+        lsSpecialChar.add("?");
+        lsSpecialChar.add("!");
     }
 
     /**
@@ -109,6 +126,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             // Loop through search data map of word and phrase searches
             for (Map.Entry<String, List<String>> itrCategory : mpSearchData.entrySet()) {
                 String strCategory = itrCategory.getKey();
+                strCategory = strCategory.trim();
 
                 // Programmers hack to end program without searching all categories
                 // TODO: Remove in final version
@@ -146,29 +164,42 @@ public class ParseInputFiles extends ProcessInputFiles {
                 // Collect keyword data from map
                 List<String> lstKeywordSearch = itrCategory.getValue();
 
-                // If custom data format is (all), then use category as search word
+                // If custom data format is (all) or (follow), then use category as search word
                 boolean bHasCustom = customVals.HasAll || customVals.HasFollow;
                 if (bHasCustom && lstKeywordSearch.isEmpty()) {
                     lstKeywordSearch.add(strCategory);
                 }
 
                 // Search for each keyword and phrase in line
-                for (String strFind : lstKeywordSearch) {
+                for (String strKeyWordFind : lstKeywordSearch) {
                     // Make sure value is contained in string 
-                    if (!strFind.isEmpty()) {
+                    if (!strKeyWordFind.isEmpty()) {
                         boolean bDisplayOnce = true;
 
                         // Search input file line by line
                         for (String strSearchLine : strArray) {
+                            strSearchLine = strSearchLine.trim();
                             //Create a list of multiple word search                            
-                            String[] lstFind = strFind.split(" ");
+                            String[] lstFind = strKeyWordFind.split(" ");
                             boolean bWordMatch = false;
-
+                            
                             // Check for multiple words for search
                             for (String findStr : lstFind) {
-                                bWordMatch = parseEachLine(strSearchLine, findStr);
-                                if (!bWordMatch) {
-                                    break;
+                                if (!findStr.isEmpty() && !strSearchLine.isEmpty()) {                                        
+                                    if (lsSpecialChar.contains(findStr)) {
+                                        // Check for special characters with spaces (e.g. ssss #)
+                                        bWordMatch = strSearchLine.contains(findStr);
+                                    } else if (!Pattern.matches("[a-zA-Z0-9]*", findStr)) {
+                                        // Check for special characters with not spaces ( e.g. ssss@)
+                                        if (strSearchLine.contains(findStr)) {
+                                            bWordMatch = true;
+                                        }
+                                    } else {
+                                        bWordMatch = findSearchWord(strSearchLine, findStr);
+                                    }
+                                    if (!bWordMatch) {
+                                        break;
+                                    }
                                 }
                             }
 
@@ -177,16 +208,16 @@ public class ParseInputFiles extends ProcessInputFiles {
                                 // Collect specific word/phrase searched for to result file
                                 if (bDisplayOnce) {
                                     // Print to result file
-                                    flOutputFile.write("    ++ " + strFind + " ++");
+                                    flOutputFile.write("    ++ " + strKeyWordFind + " ++");
                                     flOutputFile.write(LINE_SEPATATOR);
 
                                     // Print to Console
                                     if (bDebug) {
-                                        System.out.println("    ++ " + strFind + " ++");
+                                        System.out.println("    ++ " + strKeyWordFind + " ++");
                                     }
 
                                     // Save for Excel                                   
-                                    processExcelData(customVals, mpSaveToExcel, strSearchLine, strCategory, strFind);
+                                    processExcelData(customVals, mpSaveToExcel, strSearchLine, strCategory, strKeyWordFind);
 
                                     bDisplayOnce = false;// Display only once per category
                                 }
@@ -197,7 +228,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                                 if (strSearchLine.contains(". ")) {
                                     // Divide chunks of multiple sentences into a list of each individual line and
                                     // search for word/phrase for each line
-                                    List<String> lsParseList = parseChunkData(strSearchLine, strFind);
+                                    List<String> lsParseList = parseChunkData(strSearchLine, strKeyWordFind);
                                     Iterator<String> lsParseListIterator = lsParseList.iterator();
 
                                     // Loop though list of individual lines
@@ -215,7 +246,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                                     }
                                 } else {
                                     //  Check again if need to save custom data to for Excel                                    
-                                    processExcelData(customVals, mpSaveToExcel, strSearchLine, strCategory, strFind);
+                                    processExcelData(customVals, mpSaveToExcel, strSearchLine, strCategory, strKeyWordFind);
 
                                     // If not chunks of sentences exist, print to result file
                                     flOutputFile.write("        --- " + strSearchLine);
@@ -310,7 +341,7 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param strFind
      * @return
      */
-    private boolean parseEachLine(String parseLine, String strFind) {
+    private boolean findSearchWord(String parseLine, String strFind) {
         /* 
         Main Reg Exp string
         (?i:.*\\b + 'word' + \\b.*)
@@ -329,8 +360,8 @@ public class ParseInputFiles extends ProcessInputFiles {
         \\ to define a single backslash.
         ( ) Groups regular expressions - need when using '?'
         * matches zero or more occurrences - A quantifier defines how often 
-        an element can occur - but at both front and end of string . 
-         */
+        an element can occur - but at both front and end of string . */
+
         return Pattern.matches("(?i:.*\\b" + strFind + "\\b.*)", parseLine);
     }
 
@@ -361,7 +392,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                     // Check if line has search word/phrase
                     // TODO: create a list on multiple work search
                     // 
-                    boolean bHasSearchWord = parseEachLine(strLine, strFind);
+                    boolean bHasSearchWord = findSearchWord(strLine, strFind);
 
                     // If word/phrase found, place in list
                     if (bHasSearchWord) {
@@ -389,7 +420,7 @@ public class ParseInputFiles extends ProcessInputFiles {
             String strCurrentValue = mpExcel.get(strCategory);
             // Determine if value is already in map
             if (!strCurrentValue.equals(strValue) && strCurrentValue.length() > 0) {
-                // Check to see if data is already in map
+                // Check to see if data is duplicated in map
                 if (!strCurrentValue.contains(strValue)) {
                     // Add new string value to string 
                     strCurrentValue += ", " + strValue;
@@ -502,27 +533,35 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param file
      */
     @SuppressWarnings("null")
-    public static void setSearchData(File file) {
+    public static void setCsvSearchData(File file) {
 
         boolean bUseRowFormat = false;
         try {
+            
+            /**
+             * Parse CSV with Column format (Currently used)
+             */
             List<String> lstCategory;
             mpSearchData = new LinkedHashMap();
             Map<Integer, List<String>> mpTransferData = new LinkedHashMap();
             Scanner scan = new Scanner(file);
             int count = 0;
-
+            // Collect category data from csv file (first row)
             while (scan.hasNext()) {
                 lstCategory = new ArrayList<String>();
                 String[] aryData = scan.nextLine().split(",");
+                // Place category data in map
                 if (lstCategory.addAll(Arrays.asList(aryData))) {
                     mpTransferData.put(count, lstCategory);
                     count++;
                 }
             }
 
+            // Insert data in category list and then remove that data from map
             lstCategory = mpTransferData.get(0);
             mpTransferData.remove(0);
+
+            // Collect key word search data from csv file
             for (int iCategory = 0; iCategory < lstCategory.size(); iCategory++) {
                 List<String> lstSetData = new ArrayList<String>();
                 List<String> lstData = new ArrayList<String>();
@@ -538,12 +577,15 @@ public class ParseInputFiles extends ProcessInputFiles {
                     }
                 }
 
+                // Place search data in final map               
                 mpSearchData.put(lstCategory.get(iCategory), lstData);
                 System.out.println("Column file " + lstCategory.get(iCategory) + " -- lstCategory -- " + lstData);
-
             }
 
-            // Parse CSV with Row format
+            /**
+             * Parse CSV with Row format (Currently not used - DO NOT REMOVE)
+             */
+            /*
             if (bUseRowFormat) {
                 mpSearchData = new LinkedHashMap();
                 scan = new Scanner(file);
@@ -551,14 +593,14 @@ public class ParseInputFiles extends ProcessInputFiles {
                     lstCategory = new ArrayList<String>();
                     String[] aryData = scan.nextLine().split(",");
                     if (lstCategory.addAll(Arrays.asList(aryData))) {
-                        String strCategoryKey = lstCategory.get(0); // Set Categories
+                        String strCategoryKey = lstCategory.get(0); // Set Categories 
                         lstCategory.remove(0);
                         mpSearchData.put(strCategoryKey, lstCategory);
-                        System.out.println("Row file  " + strCategoryKey + " -- lstCategory -- " + lstCategory);
+                        System.out.println("Row file " + strCategoryKey + " -- lstCategory -- " + lstCategory);
                     }
                 }
             }
-            //*/
+            */
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SelectInputDataController.class.getName()).log(Level.SEVERE, null, ex);
         }
