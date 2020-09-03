@@ -54,7 +54,7 @@ public class ProcessInputFiles extends SelectInputDataController {
             // Set time stamp for files
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_HH_mm_ss");
             LocalDateTime time = LocalDateTime.now();
-            resultTime = dtf.format(time);         
+            resultTime = dtf.format(time);
 
             // Set Custom list for searching
             CustomData.setCustomDataList();
@@ -192,7 +192,10 @@ public class ProcessInputFiles extends SelectInputDataController {
             case CSV_FILE:
                 fileInpt[0] = fileChser.showOpenDialog(stagePrat);
                 // Store search critia file
-                ParseInputFiles.setCsvSearchData(fileInpt[0]);
+                if (!ParseInputFiles.setCsvSearchData(fileInpt[0])) {
+                    // If error with input file, set file array to null
+                    fileInpt = null;
+                }
                 break;
             case SEARCH_FILE:
                 List<File> fileList = fileChser.showOpenMultipleDialog(stagePrat);

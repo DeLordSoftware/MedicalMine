@@ -42,7 +42,7 @@ public class ParseInputFiles extends ProcessInputFiles {
      */
     ParseInputFiles(boolean check) {
         bDebug = check;
-        
+
         // Set a list to check for special characters
         lsSpecialChar = new ArrayList();
         lsSpecialChar.add("@");
@@ -182,10 +182,10 @@ public class ParseInputFiles extends ProcessInputFiles {
                             //Create a list of multiple word search                            
                             String[] lstFind = strKeyWordFind.split(" ");
                             boolean bWordMatch = false;
-                            
+
                             // Check for multiple words for search
                             for (String findStr : lstFind) {
-                                if (!findStr.isEmpty() && !strSearchLine.isEmpty()) {                                        
+                                if (!findStr.isEmpty() && !strSearchLine.isEmpty()) {
                                     if (lsSpecialChar.contains(findStr)) {
                                         // Check for special characters with spaces (e.g. ssss #)
                                         bWordMatch = strSearchLine.contains(findStr);
@@ -533,11 +533,12 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param file
      */
     @SuppressWarnings("null")
-    public static void setCsvSearchData(File file) {
+    public static boolean setCsvSearchData(File file) {
 
         boolean bUseRowFormat = false;
+        boolean bGoodInput = true;
         try {
-            
+
             /**
              * Parse CSV with Column format (Currently used)
              */
@@ -578,14 +579,27 @@ public class ParseInputFiles extends ProcessInputFiles {
                 }
 
                 // Place search data in final map               
-                mpSearchData.put(lstCategory.get(iCategory), lstData);
-                System.out.println("Column file " + lstCategory.get(iCategory) + " -- lstCategory -- " + lstData);
+                String strFinalCategory = lstCategory.get(iCategory);
+                if (strFinalCategory.contains(CustomData.CUST_FOLLOW)) {
+                    // If the (follow) custom tag is used must have digits
+                    if (strFinalCategory.matches(".*\\d.*")) {
+                        mpSearchData.put(strFinalCategory, lstData);
+                        System.out.println("Column file " + strFinalCategory + " -- lstCategory -- " + lstData);
+                    } else {
+                        // error in input file
+                        ProcessInputFiles.displayMsg("Incorrect input file (follow 0-9). Correct and retry.", JOptionPane.ERROR_MESSAGE);
+                        bGoodInput = false;
+                        break;
+                    }
+                } else {
+                    mpSearchData.put(strFinalCategory, lstData);
+                    System.out.println("Column file " + strFinalCategory + " -- lstCategory -- " + lstData);
+                }
             }
 
             /**
              * Parse CSV with Row format (Currently not used - DO NOT REMOVE)
              */
-            /*
             if (bUseRowFormat) {
                 mpSearchData = new LinkedHashMap();
                 scan = new Scanner(file);
@@ -600,10 +614,11 @@ public class ParseInputFiles extends ProcessInputFiles {
                     }
                 }
             }
-            */
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SelectInputDataController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        return bGoodInput;
     }
 
     /**

@@ -18,7 +18,7 @@ public class CustomData {
     private final static String CUST_NAME = "(name)";
     private final static String CUST_GENDER = "(gender)";
     private final static String CUST_ALL = "(all)";
-    private final static String CUST_FOLLOW = "(follow"; // ')' intentional missing
+    public  final static String CUST_FOLLOW = "(follow"; // ')' intentional missing
     private final static String CUST_KEY = "(key)";
 
     /**

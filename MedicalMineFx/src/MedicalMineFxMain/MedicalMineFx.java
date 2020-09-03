@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
  */
 public class MedicalMineFx extends Application {
 
-    private static final String VERSION = "1.4.0";
+    private static final String VERSION = "1.4.1";
     private static final String TITLE_NAME = "Seek-N-Shall Find by DSC ver ";
     public static String MainScreen = "main";
     public static String MainResource = "/FxmlDisplays/SelectInputData.fxml";
@@ -67,7 +67,7 @@ public class MedicalMineFx extends Application {
             Frame frame = null;
             //custom title, error icon
             JOptionPane.showMessageDialog(frame,
-                    "Expired or missing license!!!\nSee DeLords Software Consultent.",
+                    "Expired or missing license!!!\nSee DeLords Software Consultant.",
                     "License error",
                     JOptionPane.ERROR_MESSAGE);
             System.out.println("Expired or missing license!!!");
