@@ -152,53 +152,26 @@ public class CustomData {
         // Remove empty element
         lstCatWords = removeEmptyElements(lstCatWords);
         lstWords = removeEmptyElements(lstWords);
-
-        // Remove category words from search string
-        /* 
-            issue: need to get the location (index) of the category word 
-            and get the next two elements which should be the name 
-         */
+        
         String strReturnVal = "";
         for (String catWords : lstCatWords) {
             catWords = catWords.replace(" ", "").toLowerCase();
-
+            // Collect Name
             if (lstWords.contains(catWords)) {
                 int iCatWords = lstWords.indexOf(catWords);
+                // Make sure string contains enough elements
                 if (lstWords.size() > iCatWords + 2) {
+                    // Get the first and last name and capitallize first letter of each
                     String strFirst = lstWords.get(iCatWords + 1);
                     String strSecond = lstWords.get(iCatWords + 2);
                     strFirst = strFirst.substring(0, 1).toUpperCase() + strFirst.substring(1).toLowerCase();
                     strSecond = strSecond.substring(0, 1).toUpperCase() + strSecond.substring(1).toLowerCase();
                     strReturnVal = strFirst + " " + strSecond;
+                    break;
                 }
             }
         }
-        /*
-
-        int iCounter = 0;
         
-        for (String words : lstWords) {
-            // Get the next two words which should be name
-            if (iCounter < 2 && !words.isEmpty()) {
-                // Store and capitalize first letter
-                String strFirst = words.substring(0, 1);
-                if (checkMatch(strFirst, "[a-z]")) {
-                    strReturnVal += strFirst.toUpperCase() + words.substring(1).toLowerCase() + " ";
-                    iCounter++;
-                } else if(words.length() > 2){
-                    // If first char isn't a letter, check next char in string 
-                    strFirst = words.substring(1, 2);
-                    if (checkMatch(strFirst, "[a-z]")) {
-                        strReturnVal += strFirst.toUpperCase() + words.substring(2).toLowerCase() + " ";
-                        iCounter++;
-                    }
-                }
-            } else {
-                break;
-            }
-        }
-         */
-        System.out.println("****Result " + strReturnVal);
         return strReturnVal;
     }
 
