@@ -18,7 +18,7 @@ public class CustomData {
     private final static String CUST_NAME = "(name)";
     private final static String CUST_GENDER = "(gender)";
     private final static String CUST_ALL = "(all)";
-    public  final static String CUST_FOLLOW = "(follow"; // ')' intentional missing
+    public final static String CUST_FOLLOW = "(follow"; // ')' intentional missing
     private final static String CUST_KEY = "(key)";
 
     /**
@@ -81,7 +81,7 @@ public class CustomData {
             String strRemove = categoryStr.substring(index, indexEnd + 1);
             // Retrieve number of words to display
             customVals.iWords = Integer.valueOf(strRemove.replaceAll("[^0-9]", ""));
-            customVals.category = categoryStr.replace(strRemove, "");           
+            customVals.category = categoryStr.replace(strRemove, "");
             customVals.HasFollow = true;
         } else if (categoryStr.contains(CUST_KEY)) {
             // Remove(key)              
@@ -154,15 +154,29 @@ public class CustomData {
         lstWords = removeEmptyElements(lstWords);
 
         // Remove category words from search string
+        /* 
+            issue: need to get the location (index) of the category word 
+            and get the next two elements which should be the name 
+         */
+        String strReturnVal = "";
         for (String catWords : lstCatWords) {
             catWords = catWords.replace(" ", "").toLowerCase();
+
             if (lstWords.contains(catWords)) {
-                lstWords.remove(lstWords.indexOf(catWords));
+                int iCatWords = lstWords.indexOf(catWords);
+                if (lstWords.size() > iCatWords + 2) {
+                    String strFirst = lstWords.get(iCatWords + 1);
+                    String strSecond = lstWords.get(iCatWords + 2);
+                    strFirst = strFirst.substring(0, 1).toUpperCase() + strFirst.substring(1).toLowerCase();
+                    strSecond = strSecond.substring(0, 1).toUpperCase() + strSecond.substring(1).toLowerCase();
+                    strReturnVal = strFirst + " " + strSecond;
+                }
             }
         }
+        /*
 
         int iCounter = 0;
-        String strReturnVal = "";
+        
         for (String words : lstWords) {
             // Get the next two words which should be name
             if (iCounter < 2 && !words.isEmpty()) {
@@ -171,7 +185,7 @@ public class CustomData {
                 if (checkMatch(strFirst, "[a-z]")) {
                     strReturnVal += strFirst.toUpperCase() + words.substring(1).toLowerCase() + " ";
                     iCounter++;
-                } else {
+                } else if(words.length() > 2){
                     // If first char isn't a letter, check next char in string 
                     strFirst = words.substring(1, 2);
                     if (checkMatch(strFirst, "[a-z]")) {
@@ -183,6 +197,8 @@ public class CustomData {
                 break;
             }
         }
+         */
+        System.out.println("****Result " + strReturnVal);
         return strReturnVal;
     }
 
@@ -314,7 +330,7 @@ public class CustomData {
      */
     private static String cleanString(String clean) {
         final String DOULBE_SPC = "  ";
-        return clean.replace(";", "").replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
+        return clean.replace("·", "").replace(";", "").replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ").trim();
     }
 
     /**

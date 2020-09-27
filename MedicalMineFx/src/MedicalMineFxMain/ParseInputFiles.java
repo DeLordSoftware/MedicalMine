@@ -179,6 +179,8 @@ public class ParseInputFiles extends ProcessInputFiles {
                         // Search input file line by line
                         for (String strSearchLine : strArray) {
                             strSearchLine = strSearchLine.trim();
+                            
+                            
                             //Create a list of multiple word search                            
                             String[] lstFind = strKeyWordFind.split(" ");
                             boolean bWordMatch = false;
@@ -202,7 +204,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                                     }
                                 }
                             }
-
+                            
                             // Word search match
                             if (bWordMatch) {
                                 // Collect specific word/phrase searched for to result file
