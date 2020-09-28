@@ -96,16 +96,22 @@ public class CustomData {
      * @param strCustom
      * @return
      */
-    public static String getDateFormat(String strCustom) {
+    public static String getDateFormat(String strCustom, String strFind) {
         // Get exact date        
         final String DATE_FORMAT = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
         Pattern pattern = Pattern.compile(DATE_FORMAT);
 
         // Clean string and create list
         strCustom = cleanString(strCustom);
-        String[] lstStringSegments = strCustom.split(" ");
-
+        
+        // Only select segment of string pertaining to actual search word(s) 
+        String[] lstSegmentsTest = strCustom.split(strFind);        
+        if(lstSegmentsTest.length > 1){
+            strCustom = lstSegmentsTest[1];           
+        }        
+        
         // Cycle throught segments of data to find date  
+        String[] lstStringSegments = strCustom.split(" ");        
         Matcher matcher;
         String strReturnVal = null;
         int iIndex = 0;
@@ -152,7 +158,7 @@ public class CustomData {
         // Remove empty element
         lstCatWords = removeEmptyElements(lstCatWords);
         lstWords = removeEmptyElements(lstWords);
-        
+
         String strReturnVal = "";
         for (String catWords : lstCatWords) {
             catWords = catWords.replace(" ", "").toLowerCase();
@@ -171,7 +177,6 @@ public class CustomData {
                 }
             }
         }
-        
         return strReturnVal;
     }
 

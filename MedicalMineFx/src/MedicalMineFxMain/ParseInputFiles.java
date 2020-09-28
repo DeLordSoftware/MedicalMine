@@ -304,7 +304,7 @@ public class ParseInputFiles extends ProcessInputFiles {
         if (customVals.HasDate) {
             // Save Date format           
             if (bIsValueEmpty) {
-                saveDateValExcel(mpSaveToExcel, strSearchLine, strCategory);
+                saveDateValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
             }
             return EnumCustomType.DATE;
         } else if (customVals.HasName) {
@@ -446,10 +446,10 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param category
      * @return
      */
-    private boolean saveDateValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+    private boolean saveDateValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category, String find) {
         boolean hasDate = true;
         // Save Date format
-        String strDateFormated = CustomData.getDateFormat(searchLine);
+        String strDateFormated = CustomData.getDateFormat(searchLine, find);
         if (strDateFormated != null) {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated);
             hasDate = false;
