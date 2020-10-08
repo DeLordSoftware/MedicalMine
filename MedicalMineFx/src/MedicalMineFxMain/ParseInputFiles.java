@@ -316,17 +316,17 @@ public class ParseInputFiles extends ProcessInputFiles {
         } else if (customVals.HasGender) {
             // Save gender format
             if (bIsValueEmpty) {
-                saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory);
+                saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
             }
             return EnumCustomType.GENDER;
         } else if (customVals.HasAll) {
-            // Save gender format
+            // Save All format
             if (bIsValueEmpty) {
                 saveAllValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
             }
             return EnumCustomType.ALL;
         } else if (customVals.HasFollow) {
-            // Save gender format
+            // Save follow format
             if (bIsValueEmpty) {
                 saveFollowValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind, customVals.iWords);
             }
@@ -518,10 +518,10 @@ public class ParseInputFiles extends ProcessInputFiles {
      * @param category
      * @return
      */
-    private boolean saveGenderValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+    private boolean saveGenderValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category, String find) {
         boolean hasGender = true;
         // Save Geneder format
-        String strGenderFormated = CustomData.getGender(searchLine);
+        String strGenderFormated = CustomData.getGender(searchLine, find);
         if (strGenderFormated != null) {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strGenderFormated);
             hasGender = false;

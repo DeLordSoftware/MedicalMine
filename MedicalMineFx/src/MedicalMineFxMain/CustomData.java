@@ -150,7 +150,9 @@ public class CustomData {
      * @return
      */
     public static String getNameFormat(String strSearchLine, String searchWords) {
+        // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
+        
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
         List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
@@ -187,7 +189,9 @@ public class CustomData {
      * @return
      */
     public static String getAllFormat(String strSearchLine, String searchWords) {
+        // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
+        
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
 
@@ -211,7 +215,9 @@ public class CustomData {
      * @return
      */
     public static String getFollowFormat(String strSearchLine, String searchWords, int numWords) {
+        // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
+        
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
         List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
@@ -247,27 +253,20 @@ public class CustomData {
      * @param strSearchLine
      * @return
      */
-    public static String getGender(String strSearchLine) {
-        // Get exact gender 
-        strSearchLine = cleanString(strSearchLine);
-        String strGender = null;
+    public static String getGender(String strSearchLine, String strFind) {
+        // Remove unwanted values
+        strSearchLine = cleanString(strSearchLine);     
+        
+        // Only select segment of string pertaining to actual search word(s) 
+        String[] lstSegmentsTest = strSearchLine.split(strFind);        
+        if(lstSegmentsTest.length > 1){
+            strSearchLine = lstSegmentsTest[1];           
+        }   
+        
+        // Turn string into list and select element one which cantains gender
         List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
         lstWords = removeEmptyElements(lstWords);
-
-        for (String val : lstWords) {
-            strGender = val.toLowerCase();
-            if (checkMatch(strGender, "\\b(male| m |female| f )\\b")) {
-                if (strGender.equals(" m ") || strGender.equals("male")) {
-                    strGender = "Male";
-                } else if (strGender.equals(" f ") || strGender.equals("female")) {
-                    strGender = "Female";
-                } else {
-                    strGender = "Not located";
-                }
-                break;
-            }
-        }
-        return strGender;
+        return lstWords.get(1);         
     }
 
     /**
