@@ -183,6 +183,36 @@ public class CustomData {
     }
 
     /**
+     * 
+     * @param searchLine
+     * @param find
+     * @return 
+     */
+    public static String getGender(String searchLine, String find) {
+        // Remove unwanted values set to lower case for easy of match
+        String strSearchLine = cleanString(searchLine).toLowerCase();
+        String strFind = find.toLowerCase().trim();
+        
+        // Only select segment of string pertaining to actual search word(s) 
+        String[] lstSegmentsTest = strSearchLine.split(strFind);        
+        if(lstSegmentsTest.length > 1){
+            strSearchLine = lstSegmentsTest[1].trim();           
+        }   
+        
+        // Turn string into list 
+        List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
+        lstWords = removeEmptyElements(lstWords);
+        
+        // Select first element which cantains gender
+        String strGender = "";
+        int iSize = lstWords.size();        
+        if (iSize >= 1){
+            strGender = lstWords.get(0); 
+        }        
+        return strGender;         
+    }
+    
+    /**
      *
      * @param strSearchLine
      * @param searchWords
@@ -246,28 +276,7 @@ public class CustomData {
             }
         }
         return strReturnVal;
-    }
-
-    /**
-     *
-     * @param strSearchLine
-     * @return
-     */
-    public static String getGender(String strSearchLine, String strFind) {
-        // Remove unwanted values
-        strSearchLine = cleanString(strSearchLine);     
-        
-        // Only select segment of string pertaining to actual search word(s) 
-        String[] lstSegmentsTest = strSearchLine.split(strFind);        
-        if(lstSegmentsTest.length > 1){
-            strSearchLine = lstSegmentsTest[1];           
-        }   
-        
-        // Turn string into list and select element one which cantains gender
-        List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
-        lstWords = removeEmptyElements(lstWords);
-        return lstWords.get(1);         
-    }
+    }    
 
     /**
      *
