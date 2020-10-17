@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * Class CustomData
  * @author RW Simmons
  */
 public class CustomData {
@@ -22,7 +22,7 @@ public class CustomData {
     private final static String CUST_KEY = "(key)";
 
     /**
-     *
+     * setCustomDataList
      */
     public static void setCustomDataList() {
         // List of custom formats
@@ -51,7 +51,7 @@ public class CustomData {
     }
 
     /**
-     *
+     * checkCustomData
      * @param categoryStr
      * @return
      */
@@ -92,7 +92,7 @@ public class CustomData {
     }
 
     /**
-     *
+     * getDateFormat
      * @param strCustom
      * @return
      */
@@ -144,7 +144,7 @@ public class CustomData {
     }
 
     /**
-     *
+     * getNameFormat
      * @param strSearchLine
      * @param searchWords
      * @return
@@ -183,7 +183,7 @@ public class CustomData {
     }
 
     /**
-     * 
+     * getGender
      * @param searchLine
      * @param find
      * @return 
@@ -213,7 +213,7 @@ public class CustomData {
     }
     
     /**
-     *
+     * getAllFormat
      * @param strSearchLine
      * @param searchWords
      * @return
@@ -239,7 +239,7 @@ public class CustomData {
     }
 
     /**
-     *
+     * getFollowFormat
      * @param strSearchLine
      * @param searchWords
      * @return
@@ -279,7 +279,7 @@ public class CustomData {
     }    
 
     /**
-     *
+     * checkMatch
      * @param value
      * @param match
      * @return
@@ -292,7 +292,7 @@ public class CustomData {
     }
 
     /**
-     *
+     * removeEmptyElements
      * @param list
      * @return
      */
@@ -310,7 +310,7 @@ public class CustomData {
     }
 
     /**
-     *
+     * cleanString
      * @param clean
      * @return
      */

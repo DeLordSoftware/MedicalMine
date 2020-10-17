@@ -82,7 +82,11 @@ public class MedicalMineFx extends Application {
         CreateStage createStage = new CreateStage();
         progessStage = createStage.setStage(currentStage, ProgessResource, "");
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     private static boolean checkLicense() {
         boolean returnVal = false;
         File file;
@@ -190,8 +194,7 @@ public class MedicalMineFx extends Application {
 }
 
 /**
- * ***************************************
- * Class: Purpose: **************************************
+ *  * Class: Purpose: **************************************
  */
 class CreateStage {
 

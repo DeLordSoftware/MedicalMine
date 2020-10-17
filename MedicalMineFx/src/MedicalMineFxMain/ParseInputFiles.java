@@ -60,7 +60,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * TextParsing
      * @param flFileName
      * @return
      * @throws IOException
@@ -288,7 +288,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * processExcelData
      * @param customVals
      * @param mpSaveToExcel
      * @param strSearchLine
@@ -338,7 +338,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * findSearchWord
      * @param parseLine
      * @param strFind
      * @return
@@ -368,7 +368,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * parseChunkData
      * @param parseLine
      * @param strFindgit
      * @return
@@ -410,7 +410,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * SetMapForExcel
      * @param mpExcel
      * @param strCategory
      * @param strValue
@@ -440,7 +440,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * saveDateValExcel
      * @param mpSaveToExcel
      * @param searchLine
      * @param category
@@ -458,7 +458,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * saveNameValExcel
      * @param mpSaveToExcel
      * @param searchLine
      * @param category
@@ -476,7 +476,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * saveAllValExcel
      * @param mpSaveToExcel
      * @param searchLine
      * @param category
@@ -494,7 +494,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * saveFollowValExcel
      * @param mpSaveToExcel
      * @param searchLine
      * @param category
@@ -512,7 +512,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * saveGenderValExcel
      * @param mpSaveToExcel
      * @param searchLine
      * @param category
@@ -530,8 +530,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
-     *
+     * setCsvSearchData
      * @param file
      */
     @SuppressWarnings("null")
