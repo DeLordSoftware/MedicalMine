@@ -23,16 +23,17 @@ import javafx.stage.Stage;
  * @author RW Simmons
  */
 public class WelcomeAndSelectPageController implements Initializable {
-    public static String strFxmlFile = "/FxmlDisplays/SelectInputData.fxml";
-
     
+    final private static String strFxmlFile = "/FxmlDisplays/SelectInputData.fxml";
+        
     private static Stage currentStage;  
     @FXML
     private Button btnSelectSearchList;
     @FXML
     private Button btnExit;
+    
     @FXML
-    private AnchorPane RootPane;
+    private AnchorPane panelWelcome;
 
     /**
      * Initializes the controller class.
@@ -44,21 +45,12 @@ public class WelcomeAndSelectPageController implements Initializable {
 
     @FXML
     private void actSelectSearchList(ActionEvent event) {
-        try {
-            //FXMLLoader loader = new FXMLLoader(SelectInputDataController.class.getResource(strFxmlFile));
+        try {            
             AnchorPane secondPane = FXMLLoader.load(getClass().getResource(strFxmlFile));
-            RootPane.getChildren().setAll(secondPane);
-             /*Scene scene = new Scene(login);
-            Stage stage = new Stage();
-            stage.setScene(scene);//Stage loads the new scene, which has the layout of the fxml
-           CreateStage createStage = new CreateStage();
-            currentStage = stage;
-            mainStage = createStage.setStage(stage, MainResource, TITLE_NAME + VERSION);
-            mainStage.getIcons().add(new Image("/Images/Seek-N-Shall Find Image.png"));
-            mainStage.show();*/
+            panelWelcome.getChildren().setAll(secondPane);             
         } catch (Exception e) {
             System.out.println("ERROR 2: " + e.getMessage());
-        }//*/
+        }
     }
 
     @FXML

@@ -29,8 +29,6 @@ public class MedicalMineFx extends Application {
     private static final String TITLE_NAME = "Seek-N-Shall Find by DSC ver ";
     public static String MainScreen = "main";
     public static String MainResource = "/FxmlDisplays/WelcomeSelectDisplay.fxml";
-    //public static String MainResource = "/FxmlDisplays/TestScreen.fxml";
-    //public static String MainResource = "/FxmlDisplays/SelectInputData.fxml";
     public static String ProgessScreen = "progess";
     public static String ProgessResource = "/FxmlDisplays/ProcessFileDisplay.fxml";
     public static String LoadScreen = "load";

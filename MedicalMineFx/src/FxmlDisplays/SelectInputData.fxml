@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SelectInputDataController">
+<AnchorPane id="AnchorPane" fx:id="panelSelect" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SelectInputDataController">
    <children>
       <Button fx:id="btnCsvSelect" layoutX="454.0" layoutY="138.0" mnemonicParsing="false" onAction="#actBtnCsvSelect" prefHeight="36.0" prefWidth="98.0" text="Select CSV">
          <font>
@@ -36,7 +36,7 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <Button fx:id="btnExit" layoutX="524.0" layoutY="350.0" mnemonicParsing="false" onAction="#actBtnExit" prefHeight="30.0" prefWidth="56.0" text="Exit" />
+      <Button fx:id="btnReturn" layoutX="466.0" layoutY="322.0" mnemonicParsing="false" onAction="#actReturn" prefHeight="30.0" prefWidth="75.0" text="Return" />
       <Button fx:id="btnProcess" disable="true" layoutX="213.0" layoutY="315.0" mnemonicParsing="false" onAction="#actBtnProcess" prefHeight="44.0" prefWidth="111.0" text="Process" textFill="GREY">
          <font>
             <Font name="System Bold" size="20.0" />
