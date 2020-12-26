@@ -19,7 +19,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author RW Simmons
@@ -29,7 +28,9 @@ public class MedicalMineFx extends Application {
     private static final String VERSION = "1.5.1a";
     private static final String TITLE_NAME = "Seek-N-Shall Find by DSC ver ";
     public static String MainScreen = "main";
-    public static String MainResource = "/FxmlDisplays/SelectInputData.fxml";
+    public static String MainResource = "/FxmlDisplays/WelcomeSelectDisplay.fxml";
+    //public static String MainResource = "/FxmlDisplays/TestScreen.fxml";
+    //public static String MainResource = "/FxmlDisplays/SelectInputData.fxml";
     public static String ProgessScreen = "progess";
     public static String ProgessResource = "/FxmlDisplays/ProcessFileDisplay.fxml";
     public static String LoadScreen = "load";
@@ -193,22 +194,4 @@ public class MedicalMineFx extends Application {
     }
 }
 
-/**
- *  * Class: Purpose: **************************************
- */
-class CreateStage {
 
-    public Stage setStage(Stage stage, String strResource, String title) {
-        try {
-            FXMLLoader myLoader = new FXMLLoader(getClass().getResource(strResource));
-            Parent loadScreen = (Parent) myLoader.load();
-            Scene scene = new Scene(loadScreen);
-            stage.setScene(scene);
-            stage.setTitle(title);
-        } catch (IOException ex) {
-            Logger.getLogger(CreateStage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return stage;
-    }
-}
