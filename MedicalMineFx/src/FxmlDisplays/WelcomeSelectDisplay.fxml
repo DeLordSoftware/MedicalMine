@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="panelWelcome" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FxmlDisplays.WelcomeAndSelectPageController">
+<AnchorPane fx:id="panelWelcome" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.WelcomeAndSelectPageController">
    <children>
       <Label alignment="CENTER" layoutX="68.0" layoutY="60.0" prefHeight="64.0" prefWidth="441.0" text="Welcome To Seek-N-Shall Find" textAlignment="CENTER">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <Button layoutX="90.0" layoutY="176.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="159.0" text="Create Search List">
+      <Button fx:id="btnCreateSearch" layoutX="90.0" layoutY="176.0" mnemonicParsing="false" onAction="#actCreateSearch" prefHeight="49.0" prefWidth="159.0" text="Create Search List">
          <font>
             <Font size="16.0" />
          </font>

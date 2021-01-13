@@ -1,10 +1,10 @@
 package Controllers;
 
-import FxmlDisplays.WelcomeAndSelectPageController;
 import MedicalMineFxMain.ControlledScreen;
 import MedicalMineFxMain.MedicalMineFx;
 import MedicalMineFxMain.ProcessInputFiles;
 import MedicalMineFxMain.ScreenController;
+import MedicalMineFxMain.UtlityClass;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,7 +32,7 @@ public class SelectInputDataController implements Initializable, ControlledScree
     public static boolean bHasCsvFile = false;
     public static boolean bHasSearchFile = false;
     
-    final private static String strWelcome = "/FxmlDisplays/WelcomeSelectDisplay.fxml";
+    //final private static String strWelcome = "/FxmlDisplays/WelcomeSelectDisplay.fxml";
     final private String CLR_GREEN = "-fx-text-fill: green";
     final private String CLR_GRAY = "-fx-text-fill: gray";
     
@@ -90,7 +90,7 @@ public class SelectInputDataController implements Initializable, ControlledScree
      @FXML
     private void actReturn(ActionEvent event) {
         try {
-            AnchorPane pane = FXMLLoader.load(getClass().getResource(strWelcome));
+            AnchorPane pane = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlWelcome));
             panelSelect.getChildren().setAll(pane);
         } catch (Exception e) {
             System.out.println("Error with Select return button: " + e.getMessage());
