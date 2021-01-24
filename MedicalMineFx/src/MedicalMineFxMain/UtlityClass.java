@@ -15,5 +15,6 @@ public class UtlityClass {
     final public static String strFxmlAddFields = "/FxmlDisplays/AddNewFields.fxml"; 
     final public static String strFxmlSelectInput = "/FxmlDisplays/SelectInputData.fxml"; 
     final public static String strFxmlCreateProject = "/FxmlDisplays/ProjectNameDisplay.fxml";        
-    
 }
+
+

@@ -14,7 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -30,23 +30,35 @@ public class CreateCategoryDisplayController implements Initializable {
     @FXML
     private Button btnReturn;
     @FXML
-    private Button btnFinished;
-    @FXML
     private AnchorPane CatogeryNameDisplay;
     @FXML
-    private ComboBox<?> cmbCatogeryType;
+    private ComboBox<String> cmbCatogeryType;
+    @FXML
+    private TextField txtCatogery;
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    public void initialize(URL url, ResourceBundle rb) {        
+        cmbCatogeryType.getItems().add("Follow");
+        cmbCatogeryType.getItems().add("Name");
+        cmbCatogeryType.getItems().add("Date");
+        cmbCatogeryType.getItems().add("Gender");       
     }    
 
     @FXML
     private void actEnter(ActionEvent event) {
-         
+         try {             
+             
+            CreateFileClass.setCatogery(txtCatogery.getText() + "(" + cmbCatogeryType.getValue() + ")");            
+            AnchorPane paneFields = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlAddFields));
+            if(paneFields != null){
+                CatogeryNameDisplay.getChildren().setAll(paneFields);             
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR In CreateCategoryDisplayController with enter button: " + e.toString());
+        }
     }
 
     @FXML
@@ -62,17 +74,6 @@ public class CreateCategoryDisplayController implements Initializable {
         
     }
 
-    @FXML
-    private void actFinished(ActionEvent event) {
-        try {             
-            AnchorPane paneFields = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlAddFields));
-            if(paneFields != null){
-                CatogeryNameDisplay.getChildren().setAll(paneFields);             
-            }
-        } catch (Exception e) {
-            System.out.println("ERROR In CreateCategoryDisplayController with enter button: " + e.toString());
-        }
-    }
 
     @FXML
     private void actCmbCatogery(ActionEvent event) {

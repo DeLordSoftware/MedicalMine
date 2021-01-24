@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
@@ -23,33 +25,30 @@ import javafx.scene.layout.AnchorPane;
  */
 public class AddNewFieldsController implements Initializable {
 
-    @FXML
-    private AnchorPane paneAddFields;
+    
     @FXML
     private Button btnFinish;
     @FXML
-    private Button btnReturn;
+    private AnchorPane paneAddSearchWord;
     @FXML
-    private Button btnEnter;
+    private Label lblCatogery;
     @FXML
-    private TextField lblNameField;
+    private Button btnAddWord;
     @FXML
-    private TextField lblLabelField;
+    private Button btnEdit;
     @FXML
-    private TextField lblTypeField;
+    private Button btnNextCatetory;
     @FXML
-    private TextField lblOneCriteria;
+    private TextArea txtAreaWordReview;
     @FXML
-    private TextField lblThreeCriteria;
-    @FXML
-    private TextField lblTwoCriteria;
+    private TextField txtSearchWord;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        txtSearchWord.requestFocus();
     }    
 
     @FXML
@@ -57,22 +56,20 @@ public class AddNewFieldsController implements Initializable {
         
         try {
             AnchorPane paneSelect = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlSelectInput));
-            if(paneSelect != null){
-                System.out.println("pane is not null");
-                paneAddFields.getChildren().setAll(paneSelect);
+            if(paneSelect != null){                
+                paneAddSearchWord.getChildren().setAll(paneSelect);
             }
         } catch (Exception e) {
             System.out.println("Error CreateCategoryDisplayController with Return button:: " + e.toString());
         }
     }
 
-    @FXML
     private void actReturn(ActionEvent event) {
         try {
             AnchorPane paneWelcome = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlWelcome));
             if(paneWelcome != null){
                 System.out.println("pane is not null");
-                paneAddFields.getChildren().setAll(paneWelcome);
+                paneAddSearchWord.getChildren().setAll(paneWelcome);
             }
         } catch (Exception e) {
             System.out.println("Error CreateCategoryDisplayController with Return button:: " + e.toString());
@@ -80,8 +77,26 @@ public class AddNewFieldsController implements Initializable {
     }
 
     @FXML
-    private void actEnter(ActionEvent event) {
-        
+    private void actAddWord(ActionEvent event) {
+        CreateFileClass.setCatogeryWord(txtSearchWord.getText());
+        txtSearchWord.setText("");
+    }
+
+    @FXML
+    private void actEdit(ActionEvent event) {
+    }
+
+    @FXML
+    private void actNextCatetoy(ActionEvent event) {
+        try {
+            AnchorPane paneWelcome = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlCategory));
+            if(paneWelcome != null){
+                System.out.println("pane is not null");
+                paneAddSearchWord.getChildren().setAll(paneWelcome);
+            }
+        } catch (Exception e) {
+            System.out.println("Error CreateCategoryDisplayController with Return button:: " + e.toString());
+        }
     }
     
 }

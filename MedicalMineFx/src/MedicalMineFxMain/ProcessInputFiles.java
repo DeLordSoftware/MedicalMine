@@ -59,7 +59,7 @@ public class ProcessInputFiles extends SelectInputDataController {
             // Set Custom list for searching
             CustomData.setCustomDataList();
 
-            // Cycle through files seleced
+            // Cycle through files selected
             for (File file : lstFileReturned) {
                 System.out.println("\n\n-----------------------File number " + iFileNum++ + " -----------------------");
                 ParseInputFiles parseInputFiles = new ParseInputFiles(true);

@@ -57,10 +57,7 @@ public class SelectInputDataController implements Initializable, ControlledScree
         // Enable process button  
         if (strDisplay != null) {
             lblShowCsv.setText(strDisplay);
-            if (bHasSearchFile && bHasCsvFile) {
-                btnProcess.setDisable(false);
-                btnProcess.setStyle(CLR_GREEN);
-            }
+            readyToProcess();
         }
     }
 
@@ -76,13 +73,16 @@ public class SelectInputDataController implements Initializable, ControlledScree
         // Enable process button      
         if (strDisplay != null) {
             lblShowText.setText(strDisplay);
-            if (bHasSearchFile && bHasCsvFile) {
-                btnProcess.setDisable(false);
-                btnProcess.setStyle(CLR_GREEN);
-            }
+            readyToProcess();
         }
     }
-
+    private void readyToProcess(){
+        
+        if (bHasSearchFile && bHasCsvFile) {
+            btnProcess.setDisable(false);
+            btnProcess.setStyle(CLR_GREEN);
+        }
+    }
     /**
      * ***************************************
      * Method : Input : Return : Purpose: 
