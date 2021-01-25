@@ -23,37 +23,37 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author RW Simmons
  */
-public class AddNewFieldsController implements Initializable {
-
-    
-    @FXML
-    private Button btnFinish;
+public class AddNewFieldsController implements Initializable {    
+   
     @FXML
     private AnchorPane paneAddSearchWord;
-    @FXML
-    private Label lblCatogery;
     @FXML
     private Button btnAddWord;
     @FXML
     private Button btnEdit;
     @FXML
-    private Button btnNextCatetory;
+    private Button btnNextCategory;   
+    @FXML
+    private Button btnFinish;
     @FXML
     private TextArea txtAreaWordReview;
     @FXML
     private TextField txtSearchWord;
+    @FXML
+    private Label lblCategory;
+   
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        txtSearchWord.requestFocus();
+        txtAreaWordReview.setEditable(false);
+        lblCategory.setText(CreateFileClass.getCategory());
     }    
 
     @FXML
-    private void actFinish(ActionEvent event) {
-        
+    private void actFinish(ActionEvent event) {        
         try {
             AnchorPane paneSelect = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlSelectInput));
             if(paneSelect != null){                
@@ -68,7 +68,6 @@ public class AddNewFieldsController implements Initializable {
         try {
             AnchorPane paneWelcome = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlWelcome));
             if(paneWelcome != null){
-                System.out.println("pane is not null");
                 paneAddSearchWord.getChildren().setAll(paneWelcome);
             }
         } catch (Exception e) {
@@ -79,19 +78,45 @@ public class AddNewFieldsController implements Initializable {
     @FXML
     private void actAddWord(ActionEvent event) {
         CreateFileClass.setCatogeryWord(txtSearchWord.getText());
+        if(!txtAreaWordReview.getText().isEmpty()){
+           txtAreaWordReview.setText(txtAreaWordReview.getText() + "\n" + txtSearchWord.getText());
+        }
+        else{
+             txtAreaWordReview.setText(txtSearchWord.getText());
+        }
         txtSearchWord.setText("");
     }
 
     @FXML
     private void actEdit(ActionEvent event) {
     }
-
-    @FXML
-    private void actNextCatetoy(ActionEvent event) {
+/*
+    private void actNextCategory(ActionEvent event) {
         try {
+            if(!txtSearchWord.getText().isEmpty()){
+                CreateFileClass.setCatogeryWord(txtSearchWord.getText());
+            }
+            
+            CreateFileClass.addNewCategory();
             AnchorPane paneWelcome = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlCategory));
             if(paneWelcome != null){
-                System.out.println("pane is not null");
+                paneAddSearchWord.getChildren().setAll(paneWelcome);
+            }
+        } catch (Exception e) {
+            System.out.println("Error CreateCategoryDisplayController with Return button:: " + e.toString());
+        }
+    }
+*/
+    @FXML
+    private void btnNextCategory(ActionEvent event) {
+        try {
+            if(!txtSearchWord.getText().isEmpty()){
+                CreateFileClass.setCatogeryWord(txtSearchWord.getText());
+            }
+            
+            CreateFileClass.addNewCategory();
+            AnchorPane paneWelcome = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlCategory));
+            if(paneWelcome != null){
                 paneAddSearchWord.getChildren().setAll(paneWelcome);
             }
         } catch (Exception e) {

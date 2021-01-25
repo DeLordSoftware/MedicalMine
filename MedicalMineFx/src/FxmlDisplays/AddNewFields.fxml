@@ -17,7 +17,7 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Label fx:id="lblCatogery" layoutX="175.0" layoutY="22.0" text="put category work here">
+      <Label fx:id="lblCategory" alignment="CENTER" layoutX="131.0" layoutY="22.0" prefHeight="36.0" prefWidth="339.0" text="put category work here">
          <font>
             <Font size="25.0" />
          </font>
@@ -34,7 +34,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="btnNextCatetory" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#actNextCatetoy" text="Next Category">
+            <Button fx:id="btnNextCategory" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnNextCategory" text="Next Category">
                <font>
                   <Font size="16.0" />
                </font>

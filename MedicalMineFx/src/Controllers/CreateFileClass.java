@@ -37,12 +37,20 @@ public class CreateFileClass {
     public static void setCatogery(String catogery){
         strCatogeryName = catogery;
         mpCreateFile.put(strCatogeryName, lstSearchWords);        
-        System.out.println("------------Set catogery " + strCatogeryName);
+        System.out.println("------------Set catogery = " + strCatogeryName);
     } 
     
-    public static void setCatogeryWord(String value) {
+    public static String getCategory(){
+        return strCatogeryName;       
+    }     
+    
+    public static void addNewCategory(){
+        lstSearchWords = new ArrayList<String>();
+    }
+    
+    public static void setCatogeryWord(String word) {
         if(bHasBeenInitialize && !strCatogeryName.isEmpty()){
-            mpCreateFile.get(strCatogeryName).add(value); 
+            mpCreateFile.get(strCatogeryName).add(word); 
         }        
         tester();
     }    
@@ -50,14 +58,14 @@ public class CreateFileClass {
     public static void setFileName(String name){
         if(!name.isEmpty() && bHasBeenInitialize){
             strFileName = name;
-            System.out.println("------------strFileName " + strFileName);
+            System.out.println("------------strFileName  = " + strFileName);
         } else{
             System.out.println("initialized " + bHasBeenInitialize + " and text value" + strFileName);
         }        
     }
     
     public static String getFileName(){  
-        System.out.println("------------Return " + strFileName);
+        System.out.println("------------Return = " + strFileName);
         return strFileName;        
     }
     

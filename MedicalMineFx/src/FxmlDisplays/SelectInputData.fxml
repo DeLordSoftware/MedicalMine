@@ -7,7 +7,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="panelSelect" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SelectInputDataController">
    <children>
-      <Button fx:id="btnCsvSelect" layoutX="454.0" layoutY="138.0" mnemonicParsing="false" onAction="#actBtnCsvSelect" prefHeight="36.0" prefWidth="98.0" text="Select CSV">
+      <Button fx:id="btnCsvSelect" layoutX="448.0" layoutY="138.0" mnemonicParsing="false" onAction="#actBtnCsvSelect" prefHeight="36.0" prefWidth="111.0" text="Select Project">
          <font>
             <Font size="15.0" />
          </font></Button>
@@ -15,11 +15,11 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Label layoutX="137.0" layoutY="108.0" text="Selected Input CSV File">
+      <Label layoutX="137.0" layoutY="108.0" text="Select Search Project (csv)">
          <font>
             <Font name="System Bold" size="20.0" />
          </font></Label>
-      <Button fx:id="btnFileSelect" layoutX="454.0" layoutY="247.0" mnemonicParsing="false" onAction="#actBtnFileSelect" prefHeight="36.0" prefWidth="98.0" text="Select FIles">
+      <Button fx:id="btnFileSelect" layoutX="448.0" layoutY="247.0" mnemonicParsing="false" onAction="#actBtnFileSelect" prefHeight="36.0" prefWidth="111.0" text="Select File(s)">
          <font>
             <Font size="15.0" />
          </font></Button>
@@ -27,16 +27,19 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Label layoutX="137.0" layoutY="217.0" text="Selected Input Search  Files">
+      <Label layoutX="137.0" layoutY="217.0" text="Select File(s) to be Searched">
          <font>
             <Font name="System Bold" size="20.0" />
          </font></Label>
-      <Label contentDisplay="CENTER" layoutX="157.0" layoutY="42.0" prefHeight="36.0" prefWidth="287.0" text="Seek-N-Shall Find" wrapText="true">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="157.0" layoutY="46.0" prefHeight="36.0" prefWidth="287.0" text="Search-N-Find" textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Button fx:id="btnReturn" layoutX="466.0" layoutY="322.0" mnemonicParsing="false" onAction="#actReturn" prefHeight="30.0" prefWidth="75.0" text="Return" />
+      <Button fx:id="btnReturn" layoutX="445.0" layoutY="345.0" mnemonicParsing="false" onAction="#actReturn" prefHeight="36.0" prefWidth="111.0" text="Home">
+         <font>
+            <Font size="15.0" />
+         </font></Button>
       <Button fx:id="btnProcess" disable="true" layoutX="213.0" layoutY="315.0" mnemonicParsing="false" onAction="#actBtnProcess" prefHeight="44.0" prefWidth="111.0" text="Process" textFill="GREY">
          <font>
             <Font name="System Bold" size="20.0" />

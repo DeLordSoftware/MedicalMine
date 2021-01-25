@@ -41,17 +41,18 @@ public class CreateCategoryDisplayController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {        
-        cmbCatogeryType.getItems().add("Follow");
+        
         cmbCatogeryType.getItems().add("Name");
         cmbCatogeryType.getItems().add("Date");
-        cmbCatogeryType.getItems().add("Gender");       
+        cmbCatogeryType.getItems().add("Gender");   
+        cmbCatogeryType.getItems().add("Follow");
     }    
 
     @FXML
     private void actEnter(ActionEvent event) {
          try {             
              
-            CreateFileClass.setCatogery(txtCatogery.getText() + "(" + cmbCatogeryType.getValue() + ")");            
+            CreateFileClass.setCatogery(txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + ")");            
             AnchorPane paneFields = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlAddFields));
             if(paneFields != null){
                 CatogeryNameDisplay.getChildren().setAll(paneFields);             
