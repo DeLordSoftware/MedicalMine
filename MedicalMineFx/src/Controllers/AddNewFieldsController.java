@@ -90,23 +90,7 @@ public class AddNewFieldsController implements Initializable {
     @FXML
     private void actEdit(ActionEvent event) {
     }
-/*
-    private void actNextCategory(ActionEvent event) {
-        try {
-            if(!txtSearchWord.getText().isEmpty()){
-                CreateFileClass.setCatogeryWord(txtSearchWord.getText());
-            }
-            
-            CreateFileClass.addNewCategory();
-            AnchorPane paneWelcome = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlCategory));
-            if(paneWelcome != null){
-                paneAddSearchWord.getChildren().setAll(paneWelcome);
-            }
-        } catch (Exception e) {
-            System.out.println("Error CreateCategoryDisplayController with Return button:: " + e.toString());
-        }
-    }
-*/
+
     @FXML
     private void btnNextCategory(ActionEvent event) {
         try {

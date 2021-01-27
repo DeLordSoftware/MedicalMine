@@ -11,6 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.io.FileWriter;   // Import the FileWriter class
+import java.io.IOException;  // Import the IOException class to handle errors
+
 
 /**
  *
@@ -69,6 +72,24 @@ public class CreateFileClass {
         return strFileName;        
     }
     
+    
+    public static void WriteToFile (){
+        convertRowsToColumnMap();
+        try {
+            FileWriter myWriter = new FileWriter(strFileName);
+            myWriter.write("Files in Java might be tricky, but it is fun enough!");
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    private static void convertRowsToColumnMap(){
+        
+    
+    }
     private static void tester(){
         
          // using iterators 
