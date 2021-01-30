@@ -55,9 +55,12 @@ public class AddNewFieldsController implements Initializable {
     @FXML
     private void actFinish(ActionEvent event) {        
         try {
-            AnchorPane paneSelect = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlSelectInput));
-            if(paneSelect != null){                
-                paneAddSearchWord.getChildren().setAll(paneSelect);
+            if(CreateFileClass.isFileMapComplete()){
+                CreateFileClass.WriteToFile();
+                AnchorPane paneSelect = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlSelectInput));
+                if(paneSelect != null){                
+                    paneAddSearchWord.getChildren().setAll(paneSelect);
+                }
             }
         } catch (Exception e) {
             System.out.println("Error CreateCategoryDisplayController with Return button:: " + e.toString());
