@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -21,8 +22,8 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author RW Simmons
  */
-public class ProjectNameDisplayController implements Initializable {   
-   
+public class ProjectNameDisplayController implements Initializable {
+
     @FXML
     private AnchorPane ProjectNameDisplay;
     @FXML
@@ -36,28 +37,36 @@ public class ProjectNameDisplayController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {        
-    }    
+    public void initialize(URL url, ResourceBundle rb) {
+        btnEnter.setDisable(true);
+    }
 
     @FXML
     private void btnReturn(ActionEvent event) {
-         try {
+        try {
             AnchorPane pane = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlWelcome));
             ProjectNameDisplay.getChildren().setAll(pane);
         } catch (Exception e) {
             System.out.println("Error ProjectNameDisplayController with Return button:: " + e.toString());
-        }//*/
+        }
     }
 
     @FXML
     private void actEnter(ActionEvent event) {
-       try {
-            CreateFileClass.initialize();
-            CreateFileClass.setFileName(txtFileName.getText());
-            AnchorPane pane = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlCategory));
-            ProjectNameDisplay.getChildren().setAll(pane);
+        try {
+            if (txtFileName.getText().length() > 0) {
+                CreateFileClass.initialize();
+                CreateFileClass.setFileName(txtFileName.getText());
+                AnchorPane pane = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlCategory));
+                ProjectNameDisplay.getChildren().setAll(pane);
+            }
         } catch (Exception e) {
             System.out.println("Error ProjectNameDisplayController with Enter button: " + e.toString());
         }
-    }  
+    }
+
+    @FXML
+    private void actKeyTyped(KeyEvent event) {
+        btnEnter.setDisable(false);
+    }
 }

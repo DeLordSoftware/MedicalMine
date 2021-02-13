@@ -76,18 +76,19 @@ public class CreateFileClass {
     }
 
     public static boolean isFileMapComplete() {
+        System.out.println(mpCreateFile.size());
         return !mpCreateFile.isEmpty();
     }
 
     public static void WriteToFile() {
         convertRowsToColumnMap();
         try {
-            FileWriter wrtCreateCsvFile = new FileWriter(strFileName);            
+            FileWriter wrtCreateCsvFile = new FileWriter(strFileName + ".csv");
             // using iterators 
             Iterator<Map.Entry<Integer, ArrayList>> itr = mpNewCreateFile.entrySet().iterator();
 
             while (itr.hasNext()) {
-                Map.Entry<Integer, ArrayList> entry = itr.next();            
+                Map.Entry<Integer, ArrayList> entry = itr.next();
                 ArrayList list = entry.getValue();
 
                 for (int ii = 0; ii < list.size(); ii++) {
@@ -97,12 +98,11 @@ public class CreateFileClass {
                 }
                 wrtCreateCsvFile.write("\n");
             }
-                    
-            wrtCreateCsvFile.close();
+            
+            wrtCreateCsvFile.close();            
             System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Error in CreateFileClass in method WriteToFile : " + e.toString());
         }
 
     }
@@ -111,29 +111,32 @@ public class CreateFileClass {
         mpNewCreateFile = new LinkedHashMap<Integer, ArrayList>();
         lstSearchWords = new ArrayList<String>();
         int iiNumberOfRows = setFirstRowNewMap();
-
-        // Populate new map  
-        ArrayList<String> lstSearchWord;
-        for (int ii = 1; ii < iiNumberOfRows; ii++) {
-            lstSearchWord = new ArrayList<String>();
-            Iterator<Map.Entry<String, ArrayList>> itr2 = mpCreateFile.entrySet().iterator();
-            while (itr2.hasNext()) {
-                Map.Entry<String, ArrayList> entry = itr2.next();
-                ArrayList list = entry.getValue();
-                if (list.size() > ii) {
-                    String strSearchWord = (String) list.get(ii);
-                    lstSearchWord.add(strSearchWord);
-                    System.out.println("Index " + ii + " Search word " + strSearchWord);//                
-                } else {
-                    lstSearchWord.add("");
+        try {
+            // Populate new map  
+            ArrayList<String> lstSearchWord;
+            for (int ii = 1; ii < iiNumberOfRows; ii++) {
+                lstSearchWord = new ArrayList<String>();
+                Iterator<Map.Entry<String, ArrayList>> itr2 = mpCreateFile.entrySet().iterator();
+                while (itr2.hasNext()) {
+                    Map.Entry<String, ArrayList> entry = itr2.next();
+                    ArrayList list = entry.getValue();
+                    if (list.size() > ii) {
+                        String strSearchWord = (String) list.get(ii);
+                        lstSearchWord.add(strSearchWord);
+                        System.out.println("Index " + ii + " Search word " + strSearchWord);//                
+                    } else {
+                        lstSearchWord.add("");
+                    }
                 }
+
+                mpNewCreateFile.put(ii, lstSearchWord);
+                System.out.println("**New Row**");
             }
 
-            mpNewCreateFile.put(ii, lstSearchWord);
-            System.out.println("**New Row**");
+            testerNewMap();
+        } catch (Exception e) {
+            System.out.println("Error in CreateFileClass in method convertRowsToColumnMap : " + e.toString());
         }
-
-        testerNewMap();
     }
 
     private static int setFirstRowNewMap() {
@@ -143,35 +146,40 @@ public class CreateFileClass {
         ArrayList lstKeyCategory = new ArrayList<String>();
         int current = 0;
         int iNumOfRows = 0;
+        try {
+            while (itr.hasNext()) {
+                // Get First row which is category names (keys)
+                Map.Entry<String, ArrayList> entry = itr.next();
+                lstKeyCategory.add(entry.getKey());
 
-        while (itr.hasNext()) {
-            // Get First row which is category names (keys)
-            Map.Entry<String, ArrayList> entry = itr.next();
-            lstKeyCategory.add(entry.getKey());
-
-            // Get longest array to determine number of rows
-            current = entry.getValue().size();
-            if (current > iNumOfRows) {
-                iNumOfRows = current;
+                // Get longest array to determine number of rows
+                current = entry.getValue().size();
+                if (current > iNumOfRows) {
+                    iNumOfRows = current;
+                }
             }
-        }
 
-        // Set up new map with each row
-        lstNewSearchWords = new ArrayList<String>();
-        ;
-        for (int ii = 0; ii < iNumOfRows; ii++) {
+            // Set up new map with each row
             lstNewSearchWords = new ArrayList<String>();
-            mpNewCreateFile.put(ii, lstNewSearchWords);
+            ;
+            for (int ii = 0; ii < iNumOfRows; ii++) {
+                lstNewSearchWords = new ArrayList<String>();
+                mpNewCreateFile.put(ii, lstNewSearchWords);
+            }
+
+            // Set first row with the category data 
+            if (!mpNewCreateFile.isEmpty()) {
+                ArrayList<String> lstFristRow = mpNewCreateFile.get(0);
+                for (int jj = 0; jj < lstKeyCategory.size(); jj++) {
+                    lstFristRow.add((String) lstKeyCategory.get(jj));
+                }
+            } else {
+                
+            }
+            mpNewCreateFile.put(FIRST_ROW, lstKeyCategory);
+        } catch (Exception e) {
+            System.out.println("Error in CreateFileClass in method setFirstRowNewMap : " + e.toString());
         }
-
-        // Set first row with the category data 
-        ArrayList<String> lstFristRow = mpNewCreateFile.get(0);
-        for (int jj = 0; jj < lstKeyCategory.size(); jj++) {
-            lstFristRow.add((String) lstKeyCategory.get(jj));
-        }
-
-        mpNewCreateFile.put(FIRST_ROW, lstKeyCategory);
-
         //testerList(lstFristRow);
         return iNumOfRows;
     }

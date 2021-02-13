@@ -8,6 +8,7 @@ package Controllers;
 import MedicalMineFxMain.UtlityClass;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -24,7 +31,6 @@ import javafx.scene.layout.AnchorPane;
  */
 public class CreateCategoryDisplayController implements Initializable {
 
-    
     @FXML
     private Button btnEnter;
     @FXML
@@ -36,26 +42,66 @@ public class CreateCategoryDisplayController implements Initializable {
     @FXML
     private TextField txtCatogery;
 
+    final private String CATEGORY_TYPE = "Follow"; 
+    
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {        
-        
+    public void initialize(URL url, ResourceBundle rb) {
+
+        btnEnter.setDisable(true);
         cmbCatogeryType.getItems().add("Name");
         cmbCatogeryType.getItems().add("Date");
-        cmbCatogeryType.getItems().add("Gender");   
+        cmbCatogeryType.getItems().add("Gender");
         cmbCatogeryType.getItems().add("Follow");
-    }    
+    }
 
     @FXML
     private void actEnter(ActionEvent event) {
-         try {             
-             
-            CreateFileClass.setCatogery(txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + ")");            
+        try {
+            String strNumberToFollow = "";
+            if(cmbCatogeryType.getValue() != null){
+                if (cmbCatogeryType.getValue().contains(CATEGORY_TYPE)) {
+                    JFrame frame = new JFrame();
+                    Pattern pattern = Pattern.compile("[a-zA-Z]");
+                    boolean hasNoLetters = false;
+                    do {
+                        // Only allow numbers
+                        try {
+                            strNumberToFollow = JOptionPane.showInputDialog(frame, "Enter words to follow").trim();
+                        } catch (NullPointerException e) {
+                            // If cancel is clicked (default)
+                            strNumberToFollow = "all";
+                            break;
+                        }
+                        if (!strNumberToFollow.trim().isEmpty()){
+                            if (pattern.matcher(strNumberToFollow).find()) {
+                                // If letter is inputed, display message to try again
+                                hasNoLetters = false;
+                                JOptionPane.showMessageDialog(frame, "Only enter numbers. Please Try again.");//TODO: add error symbol
+                            } else {
+                                // Only has numbers
+                                hasNoLetters = true;
+                            }
+                        } else {
+                            // If on value entered, set to default
+                            strNumberToFollow = "all";
+                            break;
+                        }
+                    } while (!hasNoLetters);
+                }
+            }else{
+                // Default
+                strNumberToFollow = "all";
+                cmbCatogeryType.setValue(CATEGORY_TYPE); 
+            }
+
+            String strCategory = txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + " " + strNumberToFollow + ")";
+            CreateFileClass.setCatogery(strCategory);
             AnchorPane paneFields = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlAddFields));
-            if(paneFields != null){
-                CatogeryNameDisplay.getChildren().setAll(paneFields);             
+            if (paneFields != null) {
+                CatogeryNameDisplay.getChildren().setAll(paneFields);
             }
         } catch (Exception e) {
             System.out.println("ERROR In CreateCategoryDisplayController with enter button: " + e.toString());
@@ -65,19 +111,27 @@ public class CreateCategoryDisplayController implements Initializable {
     @FXML
     private void btnReturn(ActionEvent event) {
         try {
+            // Go to Welcome page
             AnchorPane paneWelcome = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlWelcome));
-            if(paneWelcome != null){
+            if (paneWelcome != null) {
                 CatogeryNameDisplay.getChildren().setAll(paneWelcome);
             }
         } catch (Exception e) {
             System.out.println("Error CreateCategoryDisplayController with Return button:: " + e.toString());
         }
-        
-    }
 
-
-    @FXML
-    private void actCmbCatogery(ActionEvent event) {
     }
     
+    @FXML
+    private void actKeyTyped(KeyEvent event) {        
+        btnEnter.setDisable(false);               
+    }
+    @FXML
+    private void actCmbCatogery(ActionEvent event) {}   
+    @FXML
+    private void cmbClicked(ContextMenuEvent event) {}
+
+   
+    
+
 }

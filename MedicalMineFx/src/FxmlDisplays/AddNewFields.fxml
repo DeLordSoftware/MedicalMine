@@ -10,7 +10,7 @@
 
 <AnchorPane fx:id="paneAddSearchWord" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AddNewFieldsController">
    <children>
-      <TextField fx:id="txtSearchWord" layoutX="199.0" layoutY="125.0" prefHeight="29.0" prefWidth="209.0" />
+      <TextField fx:id="txtSearchWord" layoutX="199.0" layoutY="125.0" onKeyTyped="#keyTypedTextField" prefHeight="29.0" prefWidth="209.0" />
       <TextArea fx:id="txtAreaWordReview" layoutX="158.0" layoutY="177.0" prefHeight="200.0" prefWidth="285.0" />
       <Label layoutX="215.0" layoutY="58.0" text="Search Word">
          <font>
