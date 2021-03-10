@@ -59,7 +59,7 @@ public class ProcessInputFiles extends SelectInputDataController {
             // Set Custom list for searching
             CustomData.setCustomDataList();
 
-            // Cycle through files selected
+            // Cycle through files (.txt) selected
             for (File file : lstFileReturned) {
                 System.out.println("\n\n-----------------------File number " + iFileNum++ + " -----------------------");
                 ParseInputFiles parseInputFiles = new ParseInputFiles(true);
@@ -85,11 +85,11 @@ public class ProcessInputFiles extends SelectInputDataController {
 
     /**
      *
-     * @param isetValue
+     * @param iSetFileType
      * @return
      * @throws IOException
      */
-    public static String selectProcessFiles(final int isetValue) throws IOException {
+    public static String selectProcessFiles(final int iSetFileType) throws IOException {
         FileChooser fileChooser = new FileChooser();
         String strDialogTitle = null;
         String strExtention = null;
@@ -102,7 +102,7 @@ public class ProcessInputFiles extends SelectInputDataController {
         String jsonKeyValue = null;
 
         // Set String values according to selection
-        switch (isetValue) {
+        switch (iSetFileType) {
             case CSV_FILE:
                 jsonKeyValue = KEY_CSV_VAL;
                 strDialogTitle = "Select Search Criteria CSV";
@@ -138,16 +138,16 @@ public class ProcessInputFiles extends SelectInputDataController {
                     // Display dialog with selected location
                     strFilePathFromDoc = locationJson.get(jsonKeyValue).toString();
                     fileChooser.setInitialDirectory(new File(strFilePathFromDoc));
-                    fileInput = displayFileDialog(fileChooser, isetValue, fileInput, stageParent);
+                    fileInput = displayFileDialog(fileChooser, iSetFileType, fileInput, stageParent);
                 } else {
                     //Display dialog with default location           
                     fileChooser.setInitialDirectory(new File("c:/"));
-                    fileInput = displayFileDialog(fileChooser, isetValue, fileInput, stageParent);
+                    fileInput = displayFileDialog(fileChooser, iSetFileType, fileInput, stageParent);
                 }
             } else {
                 // Display dialog with default location  
                 fileChooser.setInitialDirectory(new File("c:/"));
-                fileInput = displayFileDialog(fileChooser, isetValue, fileInput, stageParent);
+                fileInput = displayFileDialog(fileChooser, iSetFileType, fileInput, stageParent);
             }
 
             // Set label and process button
@@ -160,7 +160,7 @@ public class ProcessInputFiles extends SelectInputDataController {
 
                 // Save file location and enable button
                 strFilePath = strFilePath.substring(0, iSetPosition);
-                switch (isetValue) {
+                switch (iSetFileType) {
                     case CSV_FILE:
                         strSaveCsvLocal = strFilePath;
                         bHasCsvFile = true;

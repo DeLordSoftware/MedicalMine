@@ -42,8 +42,8 @@ public class CreateCategoryDisplayController implements Initializable {
     @FXML
     private TextField txtCatogery;
 
-    final private String CATEGORY_TYPE = "Follow"; 
-    
+    final private String CATEGORY_TYPE = "Follow";
+
     /**
      * Initializes the controller class.
      */
@@ -61,7 +61,7 @@ public class CreateCategoryDisplayController implements Initializable {
     private void actEnter(ActionEvent event) {
         try {
             String strNumberToFollow = "";
-            if(cmbCatogeryType.getValue() != null){
+            if (cmbCatogeryType.getValue() != null) {
                 if (cmbCatogeryType.getValue().contains(CATEGORY_TYPE)) {
                     JFrame frame = new JFrame();
                     Pattern pattern = Pattern.compile("[a-zA-Z]");
@@ -75,7 +75,7 @@ public class CreateCategoryDisplayController implements Initializable {
                             strNumberToFollow = "all";
                             break;
                         }
-                        if (!strNumberToFollow.trim().isEmpty()){
+                        if (!strNumberToFollow.trim().isEmpty()) {
                             if (pattern.matcher(strNumberToFollow).find()) {
                                 // If letter is inputed, display message to try again
                                 hasNoLetters = false;
@@ -91,13 +91,20 @@ public class CreateCategoryDisplayController implements Initializable {
                         }
                     } while (!hasNoLetters);
                 }
-            }else{
+            } else {
                 // Default
                 strNumberToFollow = "all";
-                cmbCatogeryType.setValue(CATEGORY_TYPE); 
+                cmbCatogeryType.setValue(CATEGORY_TYPE);
             }
-
-            String strCategory = txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + " " + strNumberToFollow + ")";
+            
+            String strCategory = null;
+            if (strNumberToFollow.isEmpty()) {
+                // Prevent space in category type
+                strCategory = txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + strNumberToFollow + ")";
+            } else {
+                // Add space if category type is (follow)
+                strCategory = txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + " " + strNumberToFollow + ")";
+            }
             CreateFileClass.setCatogery(strCategory);
             AnchorPane paneFields = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlAddFields));
             if (paneFields != null) {
@@ -121,17 +128,18 @@ public class CreateCategoryDisplayController implements Initializable {
         }
 
     }
-    
-    @FXML
-    private void actKeyTyped(KeyEvent event) {        
-        btnEnter.setDisable(false);               
-    }
-    @FXML
-    private void actCmbCatogery(ActionEvent event) {}   
-    @FXML
-    private void cmbClicked(ContextMenuEvent event) {}
 
-   
-    
+    @FXML
+    private void actKeyTyped(KeyEvent event) {
+        btnEnter.setDisable(false);
+    }
+
+    @FXML
+    private void actCmbCatogery(ActionEvent event) {
+    }
+
+    @FXML
+    private void cmbClicked(ContextMenuEvent event) {
+    }
 
 }

@@ -5,6 +5,7 @@
  */
 package Controllers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -19,14 +20,15 @@ import java.io.IOException;  // Import the IOException class to handle errors
  * @author RW Simmons
  */
 public class CreateFileClass {
-
+    private static File flCsvSearchData = null;
     private static Map<String, ArrayList> mpCreateFile;
+    private static Map<Integer, ArrayList> mpNewCreateFile;
+    private static ArrayList<String> lstNewSearchWords;
     private static ArrayList<String> lstSearchWords;
     private static String strFileName;
     private static String strCatogeryName;
     private static boolean bHasBeenInitialize = false;
-    private static Map<Integer, ArrayList> mpNewCreateFile;
-    private static ArrayList<String> lstNewSearchWords;
+   
     final static int FIRST_ROW = 0;
 
     CreateFileClass() {
@@ -57,6 +59,7 @@ public class CreateFileClass {
     public static void setCatogeryWord(String word) {
         if (bHasBeenInitialize && !strCatogeryName.isEmpty()) {
             mpCreateFile.get(strCatogeryName).add(word);
+            System.out.println("------------setCatogeryWord " + word);
         }
         tester();
     }
@@ -71,7 +74,7 @@ public class CreateFileClass {
     }
 
     public static String getFileName() {
-        System.out.println("------------Return = " + strFileName);
+        System.out.println("------------------getFileName " + strFileName);
         return strFileName;
     }
 
@@ -82,8 +85,10 @@ public class CreateFileClass {
 
     public static void WriteToFile() {
         convertRowsToColumnMap();
+        FileWriter wrtCreateCsvFile = null;
+        String strCsvSearchData = strFileName + ".csv";
         try {
-            FileWriter wrtCreateCsvFile = new FileWriter(strFileName + ".csv");
+            wrtCreateCsvFile = new FileWriter(strCsvSearchData);
             // using iterators 
             Iterator<Map.Entry<Integer, ArrayList>> itr = mpNewCreateFile.entrySet().iterator();
 
@@ -98,9 +103,17 @@ public class CreateFileClass {
                 }
                 wrtCreateCsvFile.write("\n");
             }
-            
-            wrtCreateCsvFile.close();            
+
+            wrtCreateCsvFile.close();
             System.out.println("Successfully wrote to the file.");
+            
+            // Create file to display in select input data class
+            flCsvSearchData = new File(strCsvSearchData);
+            
+            if (flCsvSearchData.exists()){                
+                System.out.println("File exist " +  flCsvSearchData.getAbsolutePath().toString());
+            }
+           
         } catch (Exception e) {
             System.out.println("Error in CreateFileClass in method WriteToFile : " + e.toString());
         }
@@ -114,14 +127,14 @@ public class CreateFileClass {
         try {
             // Populate new map  
             ArrayList<String> lstSearchWord;
-            for (int ii = 1; ii < iiNumberOfRows; ii++) {
+            for (int ii = 1; ii <= iiNumberOfRows; ii++) {
                 lstSearchWord = new ArrayList<String>();
                 Iterator<Map.Entry<String, ArrayList>> itr2 = mpCreateFile.entrySet().iterator();
                 while (itr2.hasNext()) {
                     Map.Entry<String, ArrayList> entry = itr2.next();
                     ArrayList list = entry.getValue();
-                    if (list.size() > ii) {
-                        String strSearchWord = (String) list.get(ii);
+                    if (list.size() >= ii) {
+                        String strSearchWord = (String) list.get(ii-1);
                         lstSearchWord.add(strSearchWord);
                         System.out.println("Index " + ii + " Search word " + strSearchWord);//                
                     } else {
@@ -161,7 +174,7 @@ public class CreateFileClass {
 
             // Set up new map with each row
             lstNewSearchWords = new ArrayList<String>();
-            ;
+            
             for (int ii = 0; ii < iNumOfRows; ii++) {
                 lstNewSearchWords = new ArrayList<String>();
                 mpNewCreateFile.put(ii, lstNewSearchWords);
@@ -174,7 +187,7 @@ public class CreateFileClass {
                     lstFristRow.add((String) lstKeyCategory.get(jj));
                 }
             } else {
-                
+
             }
             mpNewCreateFile.put(FIRST_ROW, lstKeyCategory);
         } catch (Exception e) {
@@ -182,6 +195,10 @@ public class CreateFileClass {
         }
         //testerList(lstFristRow);
         return iNumOfRows;
+    }
+    
+    public File getSearchFile(){
+        return flCsvSearchData;
     }
 
     private static void tester() {
