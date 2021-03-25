@@ -35,7 +35,7 @@ public class SelectInputDataController implements Initializable, ControlledScree
     //final private static String strWelcome = "/FxmlDisplays/WelcomeSelectDisplay.fxml";
     final private String CLR_GREEN = "-fx-text-fill: green";
     final private String CLR_GRAY = "-fx-text-fill: gray";
-    
+    private static boolean doCsvProcessing = false;  
 
     /**
      * Initializes the controller class.
@@ -43,7 +43,16 @@ public class SelectInputDataController implements Initializable, ControlledScree
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         btnProcess.setStyle(CLR_GRAY);
+        if (doCsvProcessing) {
+            // Set CSV lable with file name
+            lblShowCsv.setText(CreateFileClass.getFileName());
+        }
     }
+    
+    public static void setCsvFileLabel() {
+        doCsvProcessing = true;
+    }
+
 
     /**
      * ***************************************
@@ -51,7 +60,6 @@ public class SelectInputDataController implements Initializable, ControlledScree
      */
     @FXML
     private void actBtnCsvSelect(ActionEvent event) throws IOException {
-
         String strDisplay = ProcessInputFiles.selectProcessFiles(CSV_FILE);
 
         // Enable process button  
@@ -63,11 +71,11 @@ public class SelectInputDataController implements Initializable, ControlledScree
 
     /**
      * ***************************************
-     * Method : Input : Return : Purpose: **************************************
+     * Method : Input : Return : Purpose: 
+     **************************************
      */
     @FXML
     private void actBtnFileSelect(ActionEvent event) throws IOException {
-
         String strDisplay = ProcessInputFiles.selectProcessFiles(SEARCH_FILE);
 
         // Enable process button      
@@ -76,8 +84,12 @@ public class SelectInputDataController implements Initializable, ControlledScree
             readyToProcess();
         }
     }
-    private void readyToProcess(){
-        
+     /**
+     * ***************************************
+     * Method : Input : Return : Purpose: 
+     **************************************
+     */
+    private void readyToProcess(){        
         if (bHasSearchFile && bHasCsvFile) {
             btnProcess.setDisable(false);
             btnProcess.setStyle(CLR_GREEN);
@@ -94,7 +106,7 @@ public class SelectInputDataController implements Initializable, ControlledScree
             panelSelect.getChildren().setAll(pane);
         } catch (Exception e) {
             System.out.println("Error with Select return button: " + e.getMessage());
-        }//*/
+        }
     }    
     /**
      * ***************************************

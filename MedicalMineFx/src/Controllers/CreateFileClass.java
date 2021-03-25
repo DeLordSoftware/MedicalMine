@@ -5,6 +5,8 @@
  */
 package Controllers;
 
+import static Controllers.SelectInputDataController.bHasCsvFile;
+import MedicalMineFxMain.ParseInputFiles;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,6 +22,7 @@ import java.io.IOException;  // Import the IOException class to handle errors
  * @author RW Simmons
  */
 public class CreateFileClass {
+
     private static File flCsvSearchData = null;
     private static Map<String, ArrayList> mpCreateFile;
     private static Map<Integer, ArrayList> mpNewCreateFile;
@@ -28,12 +31,16 @@ public class CreateFileClass {
     private static String strFileName;
     private static String strCatogeryName;
     private static boolean bHasBeenInitialize = false;
-   
+
     final static int FIRST_ROW = 0;
 
     CreateFileClass() {
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     public static void initialize() {
         mpCreateFile = new LinkedHashMap<String, ArrayList>();
         lstSearchWords = new ArrayList<String>();
@@ -42,20 +49,36 @@ public class CreateFileClass {
         System.out.println(bHasBeenInitialize);
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     public static void setCatogery(String catogery) {
         strCatogeryName = catogery;
         mpCreateFile.put(strCatogeryName, lstSearchWords);
         System.out.println("------------Set catogery = " + strCatogeryName);
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     public static String getCategory() {
         return strCatogeryName;
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     public static void addNewCategory() {
         lstSearchWords = new ArrayList<String>();
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     public static void setCatogeryWord(String word) {
         if (bHasBeenInitialize && !strCatogeryName.isEmpty()) {
             mpCreateFile.get(strCatogeryName).add(word);
@@ -64,6 +87,10 @@ public class CreateFileClass {
         tester();
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     public static void setFileName(String name) {
         if (!name.isEmpty() && bHasBeenInitialize) {
             strFileName = name;
@@ -73,53 +100,66 @@ public class CreateFileClass {
         }
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     public static String getFileName() {
         System.out.println("------------------getFileName " + strFileName);
         return strFileName;
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     public static boolean isFileMapComplete() {
         System.out.println(mpCreateFile.size());
         return !mpCreateFile.isEmpty();
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     public static void WriteToFile() {
         convertRowsToColumnMap();
         FileWriter wrtCreateCsvFile = null;
         String strCsvSearchData = strFileName + ".csv";
         try {
             wrtCreateCsvFile = new FileWriter(strCsvSearchData);
-            // using iterators 
+            // Cycle through newly created map of data 
             Iterator<Map.Entry<Integer, ArrayList>> itr = mpNewCreateFile.entrySet().iterator();
 
             while (itr.hasNext()) {
                 Map.Entry<Integer, ArrayList> entry = itr.next();
                 ArrayList list = entry.getValue();
-
+                // Place data in csv file
                 for (int ii = 0; ii < list.size(); ii++) {
                     String value = (String) list.get(ii);
                     wrtCreateCsvFile.write(value + ",");
                     System.out.println("Map Value = " + value);
                 }
+                // Go to next line
                 wrtCreateCsvFile.write("\n");
             }
 
             wrtCreateCsvFile.close();
             System.out.println("Successfully wrote to the file.");
-            
+
             // Create file to display in select input data class
             flCsvSearchData = new File(strCsvSearchData);
-            
-            if (flCsvSearchData.exists()){                
-                System.out.println("File exist " +  flCsvSearchData.getAbsolutePath().toString());
-            }
-           
+
         } catch (Exception e) {
             System.out.println("Error in CreateFileClass in method WriteToFile : " + e.toString());
         }
 
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     private static void convertRowsToColumnMap() {
         mpNewCreateFile = new LinkedHashMap<Integer, ArrayList>();
         lstSearchWords = new ArrayList<String>();
@@ -129,12 +169,12 @@ public class CreateFileClass {
             ArrayList<String> lstSearchWord;
             for (int ii = 1; ii <= iiNumberOfRows; ii++) {
                 lstSearchWord = new ArrayList<String>();
-                Iterator<Map.Entry<String, ArrayList>> itr2 = mpCreateFile.entrySet().iterator();
-                while (itr2.hasNext()) {
-                    Map.Entry<String, ArrayList> entry = itr2.next();
+                Iterator<Map.Entry<String, ArrayList>> itrMap = mpCreateFile.entrySet().iterator();
+                while (itrMap.hasNext()) {
+                    Map.Entry<String, ArrayList> entry = itrMap.next();
                     ArrayList list = entry.getValue();
                     if (list.size() >= ii) {
-                        String strSearchWord = (String) list.get(ii-1);
+                        String strSearchWord = (String) list.get(ii - 1);
                         lstSearchWord.add(strSearchWord);
                         System.out.println("Index " + ii + " Search word " + strSearchWord);//                
                     } else {
@@ -152,6 +192,10 @@ public class CreateFileClass {
         }
     }
 
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
     private static int setFirstRowNewMap() {
 
         // Get First row which is category names
@@ -174,7 +218,7 @@ public class CreateFileClass {
 
             // Set up new map with each row
             lstNewSearchWords = new ArrayList<String>();
-            
+
             for (int ii = 0; ii < iNumOfRows; ii++) {
                 lstNewSearchWords = new ArrayList<String>();
                 mpNewCreateFile.put(ii, lstNewSearchWords);
@@ -196,9 +240,25 @@ public class CreateFileClass {
         //testerList(lstFristRow);
         return iNumOfRows;
     }
-    
-    public File getSearchFile(){
-        return flCsvSearchData;
+
+    /**
+     * ***************************************
+     * Method : Input : Return : Purpose: *************************************
+     */
+    public static File setSearchFileForProcessing() {
+        // This is error check... TODO: create a catch
+        if (flCsvSearchData.exists()) {
+            // Set search file for processing
+            if (ParseInputFiles.setCsvSearchData(flCsvSearchData)) {
+                System.out.println("File exist " + flCsvSearchData.getAbsolutePath().toString());
+                bHasCsvFile = true;
+                // TODO: Send string name of file to lblShowCsv
+                return flCsvSearchData;
+            }
+        } else {
+            System.out.println("NO File exist ");
+        }
+        return null;
     }
 
     private static void tester() {

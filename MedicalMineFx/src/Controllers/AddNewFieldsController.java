@@ -5,6 +5,7 @@
  */
 package Controllers;
 
+import MedicalMineFxMain.ProcessInputFiles;
 import MedicalMineFxMain.UtlityClass;
 import java.awt.Frame;
 import java.net.URL;
@@ -28,6 +29,7 @@ import javax.swing.JOptionPane;
  */
 public class AddNewFieldsController implements Initializable {    
    
+    
     @FXML
     private AnchorPane paneAddSearchWord;
     @FXML
@@ -59,15 +61,23 @@ public class AddNewFieldsController implements Initializable {
         
         // Disable buttons
         btnFinish.setDisable(true);
-        btnNextCategory.setDisable(true);
+        btnNextCategory.setDisable(true);     
     }    
+    
+   
 
     @FXML
     private void actFinish(ActionEvent event) {        
         try {
             // Verify that file map is populated
             if(CreateFileClass.isFileMapComplete()){
+                // Write to File
                 CreateFileClass.WriteToFile();
+                // Set the search file for processing
+                CreateFileClass.setSearchFileForProcessing();
+                // Set label for csv file name
+                SelectInputDataController.setCsvFileLabel();
+                
                 AnchorPane paneSelect = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlSelectInput));
                 if(paneSelect != null){                
                     paneAddSearchWord.getChildren().setAll(paneSelect);

@@ -215,7 +215,7 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     * Store values for dialog location
+     * Set current location of directory of selected file to allow dialog to open at that location when selected again
      */
     public static void setJsonLocationFile() {
         // Set values
