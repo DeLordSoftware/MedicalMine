@@ -581,6 +581,12 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                 // Place search data in final map               
                 String strFinalCategory = lstCategory.get(iCategory);
+                
+                // Remove capital letters in custom value... bug prevent
+                String[] strRemoveCapital = strFinalCategory.split("\\(");
+                strRemoveCapital[1] = strRemoveCapital[1].toLowerCase();
+                strFinalCategory = strRemoveCapital[0] + " (" + strRemoveCapital[1];
+                
                 if (strFinalCategory.contains(CustomData.CUST_FOLLOW)) {
                     // If the (follow) custom tag is used must have digits
                     if (strFinalCategory.matches(".*\\d.*")) {

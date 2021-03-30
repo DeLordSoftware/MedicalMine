@@ -133,17 +133,22 @@ public class ProcessInputFiles extends SelectInputDataController {
                 JSONParser jsonParser = new JSONParser();
                 Object jsonObj = jsonParser.parse(reader);
                 JSONObject locationJson = (JSONObject) jsonObj;
-
-                if (locationJson.containsKey(jsonKeyValue)) {
-                    // Display dialog with selected location
+                // TODO: create logic to know when csv was created by user in this GUI instead of selected by user
+                if (locationJson.containsKey(jsonKeyValue)) {                    
                     strFilePathFromDoc = locationJson.get(jsonKeyValue).toString();
-                    fileChooser.setInitialDirectory(new File(strFilePathFromDoc));
-                    fileInput = displayFileDialog(fileChooser, iSetFileType, fileInput, stageParent);
+                    if (!strFilePathFromDoc.isEmpty()) {
+                        // Display dialog with selected location
+                        fileChooser.setInitialDirectory(new File(strFilePathFromDoc));
+                    } else {
+                        //Display dialog with default location           
+                        fileChooser.setInitialDirectory(new File("c:/"));
+                    }
                 } else {
                     //Display dialog with default location           
                     fileChooser.setInitialDirectory(new File("c:/"));
-                    fileInput = displayFileDialog(fileChooser, iSetFileType, fileInput, stageParent);
                 }
+                // Open dialog box
+                fileInput = displayFileDialog(fileChooser, iSetFileType, fileInput, stageParent);
             } else {
                 // Display dialog with default location  
                 fileChooser.setInitialDirectory(new File("c:/"));
