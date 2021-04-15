@@ -46,6 +46,7 @@ public class SelectInputDataController implements Initializable, ControlledScree
         if (doCsvProcessing) {
             // Set CSV lable with file name
             lblShowCsv.setText(CreateFileClass.getFileName());
+            bHasSearchFile = false;
         }
     }
     

@@ -27,9 +27,8 @@ import javax.swing.JOptionPane;
  *
  * @author RW Simmons
  */
-public class AddNewFieldsController implements Initializable {    
-   
-    
+public class AddNewFieldsController implements Initializable {
+
     @FXML
     private AnchorPane paneAddSearchWord;
     @FXML
@@ -37,7 +36,7 @@ public class AddNewFieldsController implements Initializable {
     @FXML
     private Button btnEdit;
     @FXML
-    private Button btnNextCategory;   
+    private Button btnNextCategory;
     @FXML
     private Button btnFinish;
     @FXML
@@ -46,7 +45,6 @@ public class AddNewFieldsController implements Initializable {
     private TextField txtSearchWord;
     @FXML
     private Label lblCategory;
-   
 
     /**
      * Initializes the controller class.
@@ -55,35 +53,35 @@ public class AddNewFieldsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // Disable Text Area review 
         txtAreaWordReview.setEditable(false);
-        
+
         // Display Category text 
         lblCategory.setText(CreateFileClass.getCategory());
-        
+
         // Disable buttons
         btnFinish.setDisable(true);
-        btnNextCategory.setDisable(true);     
-    }    
-    
-   
+        btnNextCategory.setDisable(true);
+    }
 
     @FXML
-    private void actFinish(ActionEvent event) {        
+    private void actFinish(ActionEvent event) {
         try {
+            // Add search word before completing creation of csv file
+            addSearchWord();
+            
             // Verify that file map is populated
-            if(CreateFileClass.isFileMapComplete()){
+            if (CreateFileClass.isFileMapComplete()) {
                 // Write to File
                 CreateFileClass.WriteToFile();
                 // Set the search file for processing
                 CreateFileClass.setSearchFileForProcessing();
                 // Set label for csv file name
                 SelectInputDataController.setCsvFileLabel();
-                
+
                 AnchorPane paneSelect = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlSelectInput));
-                if(paneSelect != null){                
+                if (paneSelect != null) {
                     paneAddSearchWord.getChildren().setAll(paneSelect);
                 }
-            }
-            else{
+            } else {
                 // Display error message
                 Frame frame = new Frame();
                 JOptionPane.showMessageDialog(frame, "Project is incomplete");// TODo: add error symbol
@@ -97,7 +95,7 @@ public class AddNewFieldsController implements Initializable {
         try {
             // Return to welcome page
             AnchorPane paneWelcome = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlWelcome));
-            if(paneWelcome != null){
+            if (paneWelcome != null) {
                 paneAddSearchWord.getChildren().setAll(paneWelcome);
             }
         } catch (Exception e) {
@@ -107,45 +105,32 @@ public class AddNewFieldsController implements Initializable {
 
     @FXML
     private void actAddWord(ActionEvent event) {
-        // Set search work in file map
-        CreateFileClass.setCatogeryWord(txtSearchWord.getText());
-        
-        // Verify that search word has been entered
-        if(!txtAreaWordReview.getText().isEmpty()){
-            // Add search word to text area 
-           txtAreaWordReview.setText(txtAreaWordReview.getText() + "\n" + txtSearchWord.getText());
-        }
-        else{
-            // Add first search word to text area
-             txtAreaWordReview.setText(txtSearchWord.getText());
-        }
-        // Clear search word text
-        txtSearchWord.setText("");
+        // Add Search word 
+        addSearchWord();        
     }
 
-    @FXML    
+    @FXML
     private void actEdit(ActionEvent event) {
-           // TODO: Create a way for user to edit search words 
+        // TODO: Create a way for user to edit search words 
     }
 
     /**
      * Create next Category
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnNextCategory(ActionEvent event) {
         try {
             // Add search word before going to get next category
-            if(!txtSearchWord.getText().isEmpty()){
-                CreateFileClass.setCatogeryWord(txtSearchWord.getText());
-            }
-            
+            addSearchWord();
+
             // Setup next category word
             CreateFileClass.addNewCategory();
             
-            
+            // Go to Category page
             AnchorPane paneCategory = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlCategory));
-            if(paneCategory != null){
+            if (paneCategory != null) {
                 paneAddSearchWord.getChildren().setAll(paneCategory);
             }
         } catch (Exception e) {
@@ -154,14 +139,33 @@ public class AddNewFieldsController implements Initializable {
     }
 
     /**
-     *  Check to see if text has been entered into text field to enable buttons
-     * @param event 
+     * Check to see if text has been entered into text field to enable buttons
+     *
+     * @param event
      */
     @FXML
-    private void keyTypedTextField(KeyEvent event) {        
+    private void keyTypedTextField(KeyEvent event) {
         // Enable buttons once search word entered
         btnFinish.setDisable(false);
         btnNextCategory.setDisable(false);
     }
-    
+
+    private void addSearchWord() {
+
+        if(!txtSearchWord.getText().isEmpty()){
+            CreateFileClass.setCatogeryWord(txtSearchWord.getText());
+
+            // Verify that search word has been entered
+            if (!txtAreaWordReview.getText().isEmpty()) {
+                // Add search word to text area 
+                txtAreaWordReview.setText(txtAreaWordReview.getText() + "\n" + txtSearchWord.getText());
+            } else {
+                // Add first search word to text area
+                txtAreaWordReview.setText(txtSearchWord.getText());
+            }
+            // Clear search word text
+            txtSearchWord.setText("");
+        }
+    }
+
 }
