@@ -38,8 +38,6 @@ public class ProcessInputFiles extends SelectInputDataController {
     private final static String KEY_CSV_VAL = "CSV_Location";
     private final static String KEY_FILES_VAL = "FILE_Location";
     private final static String JSON_DATA_FILE = "MedicalMineData.json";
-
-    protected final static String RESULT_FOLDER_LOC = "C:/Search Results/";
     protected static String resultTime;
 
     /**
@@ -72,7 +70,7 @@ public class ProcessInputFiles extends SelectInputDataController {
             String strReturnExcelLoc = writeDataToExcel.SaveExcelSpreadSheet(mpFinalSaveToExcel);
 
             // Create Gui message
-            strDisplayMessage = "Number of files searched: " + iFileNum + ".\nProcess complete...\nExcel file located at " + RESULT_FOLDER_LOC;
+            strDisplayMessage = "Number of files searched: " + iFileNum + ".\nProcess complete...\nExcel file located at:\n" + UtlityClass.RESULT_FOLDER_LOC + UtlityClass.SEARCH_FILE_LOC;
             displayMsg(strDisplayMessage, JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             System.out.println("IOException " + e.getMessage());

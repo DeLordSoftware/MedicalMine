@@ -5,6 +5,7 @@
  */
 package Controllers;
 
+import static MedicalMineFxMain.ProcessInputFiles.displayMsg;
 import MedicalMineFxMain.UtlityClass;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -112,6 +113,7 @@ public class CreateCategoryDisplayController implements Initializable {
             }
         } catch (Exception e) {
             System.out.println("ERROR In CreateCategoryDisplayController with enter button: " + e.toString());
+            displayMsg(e.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -125,6 +127,7 @@ public class CreateCategoryDisplayController implements Initializable {
             }
         } catch (Exception e) {
             System.out.println("Error CreateCategoryDisplayController with Return button:: " + e.toString());
+            displayMsg(e.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
 
     }

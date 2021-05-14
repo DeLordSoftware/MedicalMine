@@ -73,16 +73,8 @@ public class WriteDataToExcel extends ProcessInputFiles {
         // Write content to file in current directory and close workbook:
         File currDir = new File(".");
         String path = currDir.getAbsolutePath();
-        String fileLocation = RESULT_FOLDER_LOC + "/Search Result" + resultTime + ".xlsx";    
-        //String fileLocation = path.substring(0, path.length() - 1) + "C:/MedicalMineResults/MedicalTest.xlsx";    
-        File flOrginalFile =  new File(fileLocation);
-        flOrginalFile.mkdirs();
-        // Delete Orginal Exile file
-        if (flOrginalFile.exists())
-        {
-           flOrginalFile.delete();
-        }
-
+        String fileLocation = UtlityClass.RESULT_FOLDER_LOC + UtlityClass.SEARCH_FILE_LOC + "Search Result" + resultTime + ".xlsx";    
+       
         // Write and close excel file
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         outputStream.flush();
@@ -92,29 +84,3 @@ public class WriteDataToExcel extends ProcessInputFiles {
         return path;
     }       
 }
-/*  PDF to Text
-We created a method named generateTxtFromPDF(…) and divided it into three main parts: loading of the PDF file, extraction of text, and final file creation.
-
-Let’s start with loading part:
-
-File f = new File(filename);
-String parsedText;
-PDFParser parser = new PDFParser(new RandomAccessFile(f, "r"));
-parser.parse();
-In order to read a PDF file, we use PDFParser, with an “r” (read) option. Moreover, we need to use the parser.parse() method that will cause the PDF to be parsed as a stream and populated into the COSDocument object.
-
-Let’s take a look at the extracting text part:
-
-COSDocument cosDoc = parser.getDocument();
-PDFTextStripper pdfStripper = new PDFTextStripper();
-PDDocument pdDoc = new PDDocument(cosDoc);
-parsedText = pdfStripper.getText(pdDoc);
-In the first line, we’ll save COSDocument inside the cosDoc variable. It will be then used to construct PDocument, which is the in-memory representation of the PDF document. Finally, we will use PDFTextStripper to return the raw text of a document. After all of those operations, we’ll need to use close() method to close all the used streams.
-
-In the last part, we’ll save text into the newly created file using the simple Java PrintWriter:
-
-PrintWriter pw = new PrintWriter("src/output/pdf.txt");
-pw.print(parsedText);
-pw.close();
-Please note that you cannot preserve formatting in a plain text file because it contains text only.
-*/

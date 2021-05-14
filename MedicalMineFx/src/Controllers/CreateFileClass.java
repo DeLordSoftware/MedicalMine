@@ -7,6 +7,9 @@ package Controllers;
 
 import static Controllers.SelectInputDataController.bHasCsvFile;
 import MedicalMineFxMain.ParseInputFiles;
+import MedicalMineFxMain.ProcessInputFiles;
+import static MedicalMineFxMain.ProcessInputFiles.displayMsg;
+import MedicalMineFxMain.UtlityClass;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.io.FileWriter;   // Import the FileWriter class
 import java.io.IOException;  // Import the IOException class to handle errors
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -106,7 +110,7 @@ public class CreateFileClass {
      */
     public static String getFileName() {
         System.out.println("------------------getFileName " + strFileName);
-        return strFileName;
+        return " " + strFileName + ".csv";
     }
 
     /**
@@ -124,8 +128,8 @@ public class CreateFileClass {
      */
     public static void WriteToFile() {
         convertRowsToColumnMap();
-        FileWriter wrtCreateCsvFile = null;
-        String strCsvSearchData = strFileName + ".csv";
+        FileWriter wrtCreateCsvFile = null;        
+        String strCsvSearchData = UtlityClass.RESULT_FOLDER_LOC + UtlityClass.CVS_FILE_LOC + strFileName + ".csv";
         try {
             wrtCreateCsvFile = new FileWriter(strCsvSearchData);
             // Cycle through newly created map of data 
@@ -152,6 +156,7 @@ public class CreateFileClass {
 
         } catch (Exception e) {
             System.out.println("Error in CreateFileClass in method WriteToFile : " + e.toString());
+            displayMsg(e.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
 
     }

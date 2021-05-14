@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author RW Simmons
@@ -59,7 +60,9 @@ public class MedicalMineFx extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        if (checkLicense()) {
+        if (UtlityClass.checkLicense()) {
+           
+            
             launch(args);
         } else {
             // Display error message and close application 
@@ -81,11 +84,12 @@ public class MedicalMineFx extends Application {
         CreateStage createStage = new CreateStage();
         progessStage = createStage.setStage(currentStage, ProgessResource, "");
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
+    /*
     private static boolean checkLicense() {
         boolean returnVal = false;
         File file;
@@ -180,7 +184,7 @@ public class MedicalMineFx extends Application {
         }
         return returnVal;
     }
-
+     */
     /**
      *
      * @throws InterruptedException
@@ -191,5 +195,3 @@ public class MedicalMineFx extends Application {
         mainStage.show();
     }
 }
-
-

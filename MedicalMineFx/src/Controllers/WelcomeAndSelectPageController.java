@@ -5,6 +5,7 @@
  */
 package Controllers;
 
+import static MedicalMineFxMain.ProcessInputFiles.displayMsg;
 import MedicalMineFxMain.UtlityClass;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -22,10 +24,9 @@ import javafx.stage.Stage;
  * @author RW Simmons
  */
 public class WelcomeAndSelectPageController implements Initializable {
-   
 
-    private static Stage currentStage;  
-    
+    private static Stage currentStage;
+
     @FXML
     private AnchorPane panelWelcome;
     @FXML
@@ -40,14 +41,16 @@ public class WelcomeAndSelectPageController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        if (!UtlityClass.checkDirectory()) {
+            displayMsg("Error with Directories", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     @FXML
     private void actCreateSearch(ActionEvent event) {
-        try {            
+        try {
             AnchorPane createPane = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlCreateProject));
-            panelWelcome.getChildren().setAll(createPane);             
+            panelWelcome.getChildren().setAll(createPane);
         } catch (Exception e) {
             System.out.println("ERROR In Welcome create display: " + e.toString());
         }
@@ -55,9 +58,9 @@ public class WelcomeAndSelectPageController implements Initializable {
 
     @FXML
     private void actSelectSearchList(ActionEvent event) {
-         try {            
+        try {
             AnchorPane selectPane = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlSelectInput));
-            panelWelcome.getChildren().setAll(selectPane);             
+            panelWelcome.getChildren().setAll(selectPane);
         } catch (Exception e) {
             System.out.println("ERROR In Welcome select display: " + e.getMessage());
         }
@@ -67,5 +70,5 @@ public class WelcomeAndSelectPageController implements Initializable {
     private void actExit(ActionEvent event) {
         System.exit(0);
     }
-    
+
 }

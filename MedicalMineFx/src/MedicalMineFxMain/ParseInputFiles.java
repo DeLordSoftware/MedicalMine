@@ -70,16 +70,8 @@ public class ParseInputFiles extends ProcessInputFiles {
         FileReader flInputFile = null;
         FileWriter flOutputFile = null;
 
-        String strResultFile = RESULT_FOLDER_LOC + "Search Result" + resultTime + ".txt";
-
-        // Check result folder 
-        // TODO: Ackward. Have to have delete file or unable to run software multiple times without restarting
-        File file = new File(RESULT_FOLDER_LOC);
-        if (!file.exists()) {
-            file.mkdirs();
-        } else {
-            file.delete();
-        }
+        String strResultFile = UtlityClass.RESULT_FOLDER_LOC + UtlityClass.SEARCH_FILE_LOC + "Search Result" + resultTime + ".txt";
+        
 
         try {
             // Create files
