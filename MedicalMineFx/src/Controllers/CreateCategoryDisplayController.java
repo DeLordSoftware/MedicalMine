@@ -43,7 +43,7 @@ public class CreateCategoryDisplayController implements Initializable {
     @FXML
     private TextField txtCatogery;
 
-    final private String CATEGORY_TYPE = "Follow";
+    final private String CATEGORY_FOLLOW = "Follow";
 
     /**
      * Initializes the controller class.
@@ -56,26 +56,24 @@ public class CreateCategoryDisplayController implements Initializable {
         cmbCatogeryType.getItems().add("Date");
         cmbCatogeryType.getItems().add("Gender");
         cmbCatogeryType.getItems().add("Follow");
+        cmbCatogeryType.getItems().add("All");
     }
 
     @FXML
     private void actEnter(ActionEvent event) {
+
+        String strNumberToFollow = "";
+
         try {
-            String strNumberToFollow = "";
             if (cmbCatogeryType.getValue() != null) {
-                if (cmbCatogeryType.getValue().contains(CATEGORY_TYPE)) {
+                if (cmbCatogeryType.getValue().contains(CATEGORY_FOLLOW)) {
                     JFrame frame = new JFrame();
                     Pattern pattern = Pattern.compile("[a-zA-Z]");
                     boolean hasNoLetters = false;
                     do {
-                        // Only allow numbers
-                        try {
-                            strNumberToFollow = JOptionPane.showInputDialog(frame, "Enter words to follow").trim();
-                        } catch (NullPointerException e) {
-                            // If cancel is clicked (default)
-                            strNumberToFollow = "all";
-                            break;
-                        }
+                        // Only allow numbers                       
+                        strNumberToFollow = JOptionPane.showInputDialog(frame, "Enter number of words to follow\nOr hit CANCEL to select all words in sentence.").trim();
+
                         if (!strNumberToFollow.trim().isEmpty()) {
                             if (pattern.matcher(strNumberToFollow).find()) {
                                 // If letter is inputed, display message to try again
@@ -92,24 +90,27 @@ public class CreateCategoryDisplayController implements Initializable {
                         }
                     } while (!hasNoLetters);
                 }
-            } else {
-                // Default
-                strNumberToFollow = "all";
-                cmbCatogeryType.setValue(CATEGORY_TYPE);
-            }
-            
-            String strCategory = null;
-            if (strNumberToFollow.isEmpty()) {
-                // Prevent space in category type
-                strCategory = txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + strNumberToFollow + ")";
-            } else {
-                // Add space if category type is (follow)
-                strCategory = txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + " " + strNumberToFollow + ")";
-            }
-            CreateFileClass.setCatogery(strCategory);
-            AnchorPane paneFields = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlAddFields));
-            if (paneFields != null) {
-                CatogeryNameDisplay.getChildren().setAll(paneFields);
+//                } else if (cmbCatogeryType.getValue().contains(CATEGORY_FOLLOW)) {
+//                    // Default
+//                    strNumberToFollow = "all";
+//                    cmbCatogeryType.setValue(CATEGORY_FOLLOW);
+//                }
+
+                String strCategory = null;
+                if (strNumberToFollow.isEmpty()) {
+                    // Prevent space in category type
+                    strCategory = txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + ")";
+                } else {
+                    // Add space if category type is (follow)
+                    strCategory = txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + " " + strNumberToFollow + ")";
+                }
+                CreateFileClass.setCatogery(strCategory);
+
+                // Goto Add Field display
+                AnchorPane paneFields = FXMLLoader.load(getClass().getResource(UtlityClass.strFxmlAddFields));
+                if (paneFields != null) {
+                    CatogeryNameDisplay.getChildren().setAll(paneFields);
+                }
             }
         } catch (Exception e) {
             System.out.println("ERROR In CreateCategoryDisplayController with enter button: " + e.toString());

@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 /**
  * Class CustomData
+ *
  * @author RW Simmons
  */
 public class CustomData {
@@ -52,6 +53,7 @@ public class CustomData {
 
     /**
      * checkCustomData
+     *
      * @param categoryStr
      * @return
      */
@@ -93,6 +95,7 @@ public class CustomData {
 
     /**
      * getDateFormat
+     *
      * @param strCustom
      * @return
      */
@@ -103,15 +106,15 @@ public class CustomData {
 
         // Clean string and create list
         strCustom = cleanString(strCustom);
-        
+
         // Only select segment of string pertaining to actual search word(s) 
-        String[] lstSegmentsTest = strCustom.split(strFind);        
-        if(lstSegmentsTest.length > 1){
-            strCustom = lstSegmentsTest[1];           
-        }        
-        
+        String[] lstSegmentsTest = strCustom.split(strFind);
+        if (lstSegmentsTest.length > 1) {
+            strCustom = lstSegmentsTest[1];
+        }
+
         // Cycle throught segments of data to find date  
-        String[] lstStringSegments = strCustom.split(" ");        
+        String[] lstStringSegments = strCustom.split(" ");
         Matcher matcher;
         String strReturnVal = null;
         int iIndex = 0;
@@ -145,6 +148,7 @@ public class CustomData {
 
     /**
      * getNameFormat
+     *
      * @param strSearchLine
      * @param searchWords
      * @return
@@ -152,26 +156,29 @@ public class CustomData {
     public static String getNameFormat(String strSearchLine, String searchWords) {
         // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
-        
+        searchWords = cleanString(searchWords).toLowerCase();
+          final int  FIRST_NAME = 1;
+          final int  LAST_NAME = 2;
+
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
-        List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
+        List<String> lstSearchLine = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
 
         // Remove empty element
         lstCatWords = removeEmptyElements(lstCatWords);
-        lstWords = removeEmptyElements(lstWords);
+        lstSearchLine = removeEmptyElements(lstSearchLine);
 
         String strReturnVal = "";
         for (String catWords : lstCatWords) {
             catWords = catWords.replace(" ", "").toLowerCase();
             // Collect Name
-            if (lstWords.contains(catWords)) {
-                int iCatWords = lstWords.indexOf(catWords);
+            if (lstSearchLine.contains(catWords)) {
+                int iCatWords = lstSearchLine.indexOf(catWords);
                 // Make sure string contains enough elements
-                if (lstWords.size() > iCatWords + 2) {
+                if (lstSearchLine.size() > iCatWords + 2) {
                     // Get the first and last name and capitallize first letter of each
-                    String strFirst = lstWords.get(iCatWords + 1);
-                    String strSecond = lstWords.get(iCatWords + 2);
+                    String strFirst = lstSearchLine.get(iCatWords + FIRST_NAME);
+                    String strSecond = lstSearchLine.get(iCatWords + LAST_NAME);
                     strFirst = strFirst.substring(0, 1).toUpperCase() + strFirst.substring(1).toLowerCase();
                     strSecond = strSecond.substring(0, 1).toUpperCase() + strSecond.substring(1).toLowerCase();
                     strReturnVal = strFirst + " " + strSecond;
@@ -184,36 +191,38 @@ public class CustomData {
 
     /**
      * getGender
+     *
      * @param searchLine
      * @param find
-     * @return 
+     * @return
      */
     public static String getGender(String searchLine, String find) {
         // Remove unwanted values set to lower case for easy of match
         String strSearchLine = cleanString(searchLine).toLowerCase();
         String strFind = find.toLowerCase().trim();
-        
+
         // Only select segment of string pertaining to actual search word(s) 
-        String[] lstSegmentsTest = strSearchLine.split(strFind);        
-        if(lstSegmentsTest.length > 1){
-            strSearchLine = lstSegmentsTest[1].trim();           
-        }   
-        
+        String[] lstSegmentsTest = strSearchLine.split(strFind);
+        if (lstSegmentsTest.length > 1) {
+            strSearchLine = lstSegmentsTest[1].trim();
+        }
+
         // Turn string into list 
         List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
         lstWords = removeEmptyElements(lstWords);
-        
+
         // Select first element which cantains gender
         String strGender = "";
-        int iSize = lstWords.size();        
-        if (iSize >= 1){
-            strGender = lstWords.get(0); 
-        }        
-        return strGender;         
+        int iSize = lstWords.size();
+        if (iSize >= 1) {
+            strGender = lstWords.get(0);
+        }
+        return strGender;
     }
-    
+
     /**
      * getAllFormat
+     *
      * @param strSearchLine
      * @param searchWords
      * @return
@@ -221,7 +230,7 @@ public class CustomData {
     public static String getAllFormat(String strSearchLine, String searchWords) {
         // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
-        
+
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
 
@@ -240,6 +249,7 @@ public class CustomData {
 
     /**
      * getFollowFormat
+     *
      * @param strSearchLine
      * @param searchWords
      * @return
@@ -247,7 +257,7 @@ public class CustomData {
     public static String getFollowFormat(String strSearchLine, String searchWords, int numWords) {
         // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
-        
+
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
         List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
@@ -266,20 +276,29 @@ public class CustomData {
 
         int iCounter = 0;
         String strReturnVal = "";
+
         for (String words : lstWords) {
-            // Get the number of words to display
-            if (iCounter < numWords && !words.isEmpty()) {
+
+            if (numWords == 0) {
+                // Get all the words in sentence
                 strReturnVal += words + " ";
-                iCounter++;
             } else {
-                break;
+                // Get the number of words to display
+                if (iCounter < numWords && !words.isEmpty()) {
+                    strReturnVal += words + " ";
+                    iCounter++;
+                } else {
+                    break;
+                }
             }
         }
+
         return strReturnVal;
-    }    
+    }
 
     /**
      * checkMatch
+     *
      * @param value
      * @param match
      * @return
@@ -293,6 +312,7 @@ public class CustomData {
 
     /**
      * removeEmptyElements
+     *
      * @param list
      * @return
      */
@@ -311,6 +331,7 @@ public class CustomData {
 
     /**
      * cleanString
+     *
      * @param clean
      * @return
      */

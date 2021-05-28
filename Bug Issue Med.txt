@@ -1,0 +1,179 @@
+Result type:  Outpatient Visit Summary  
+Result date:  Jan 21, 2020, 02:17 p.m.  
+Result status:  authenticated  
+Performed by:  JEANETTE SADLER  
+Verified by:  JEANETTE SADLER  
+Modified by:  JEANETTE SADLER  
+
+
+Outpatient Visit Summary 
+
+Patient: ALICE HOWARD DOB: Oct 25, 1945 
+
+Outpatient Visit Summary 
+
+
+Emory Healthcare Patient Visit Summary 
+We appreciate that you have chosen Emory Healthcare for your healthcare needs. The following information includes a summary of your visit today. 
+Visit Summary forHOWARD, ALICE D DOB:10/25/1945 Visit Date:1/21/2020 14:17:32 Provider:Pakkala, Suchita 
+Follow Up Appointment(s):If not otherwise indicated below, please contact your physician in one to two business days to schedule a follow-up appointment. 
+Your Emory provider may have ordered additional radiology procedures for you. If you see tests below that have not been scheduled yet, please contact radiology scheduling at 404-778-9729 to book your appointment. 
+Radiology Orders This Visit 
+CT Chest w/o Contrast 
+Appointments Scheduled For the Next 6 Months: 
+Rad MOT ECLH 
+Patel, Pretesh R MD 
+04/20/20 10:00 am Radiation Oncology Building C ESTABLISHED 30 Tunnel -TEC 
+EUHM 18th FL Winship Lab 
+04/24/20 10:00 am INF Lab Pakkala, Suchita 
+Infusion Center ECLH 
+Pakkala, Suchita MD 
+04/24/20 10:40 am Medical Oncology MOT 18FL -ESTABLISHED PATIENT TEC 
+
+
+Vitals & Measurements: 
+The following vital signs and measurements were recorded at today's visit. 
+Vital Signs  Latest  
+Temp(Oral)  98.6 Fahrenheit  
+Oxygen Saturation  98%  
+Respiratory Rate  16 breaths per minute  
+Last Charted Weight  138.8 pounds  
+Last Charted Height  66.0 inches  
+Body Mass Index (BMI)  22.5kg/m2  
+Blood Pressure  149/92mmHg  
+Heart Rate  83 beats per  
+
+minute Blood Pressure Sitting 149/92mmHg 
+
+Diagnoses &Problems: 
+Date/Time 
+01/21/20 13:18 01/21/20 13:18 01/21/20 13:18 01/21/20 13:18 01/21/20 13:18 01/21/20 13:18 01/21/20 13:19 01/21/20 13:18 01/21/20 13:19 
+The following diagnoses/problems were recorded at today's visit. 
+Discharge Diagnosis:1:Cancer of upper lobe of left lung; Abnormal tissue in the uterus 
+
+Discharge Diagnosis:
+2:Cancer of upper lobe of left lung; Abnormal tissue in the uterus 
+
+Allergies, Medications, & Immunizations: Allergies 
+ASA (nose bleed) 
+Home Medication List:This is your current Medication & Allergy List. Please review it to 
+make sure it is correct, keep it with you, and share it if you have medical needs outside the Emory Healthcare system. Medications in bold font were prescribed today. Today's provider has updated your list to reflect any changes that he or she has made in your 
+medications. Your provider may not have actively managed medications prescribed by providers in other specialties. If you have questions regarding medications prescribed by 
+one of your other providers, please contact them directly. For renewals, you may call our office, make a request on the Emory Healthcare Patient Portal, or ask your pharmacy to submit a request directly to the prescribing provider. 
+These medications were not acted upon today. Please contact the ordering 
+provider(s) for any questions 
+MEDICATION 
+amLODIPine(amLODIPin e 10 mg oral tablet) 
+atorvastatin(atorvastatin 10 mg oral tablet) 
+omeprazole(omeprazole 20 mg oral delayed release tablet) 
+sucralfate(Carafate 1 g/10 mL oral suspension) 
+Comment: 
+
+
+Orders this Visit 
+AMB Patient Care 
+Follow Up AMB 
+
+Referral 
+Internal Referral 
+
+INSTRUCTIONS 
+1tab(s) by mouth Once a Day 
+1tab(s) by mouth Once a Day 
+1tab(s) by mouth Twice a Day 
+10mL by mouth Four times a day 
+Prescribed EMMI Patient Education Health Screening: 
+COMPLIANCE 
+Still taking, as prescribed 
+Still taking, as prescribed 
+Still taking, as prescribed 
+Still taking, as prescribed 
+DETAILS 
+Prescribed By: 
+Black, Brenton Lamar 
+Routed To: 
+CVS/pharmacy #4717 
+Prescribed By: 
+Black, Brenton Lamar 
+Routed To: 
+CVS/pharmacy #4717 
+Prescribed By: 
+Shah, Rushikesh H 
+Prescribed By: 
+Shah, Rushikesh H 
+Recommendatio Last Done  Frequency  Next Due  Additional  
+n  Information  
+Bone Density Screening  Variable  Now  
+Colonoscopy  Variable  Now  
+DM-Eye Exam  Variable  Now  
+DM-Foot Exam  1 year(s)  Now  
+DM-LDL High Result  4/25/2016  1 year(s)  4/25/2017  
+DM-HbA1C  9/20/2016  1 year(s)  9/20/2017  
+Influenza Vaccine  1 year(s)  3/16/2019  
+Tetanus Vaccine - 
+Tdap (One Time  One Time Only  3/16/2019  
+Only)  
+Breast Cancer Screening  5/15/2017  2 year(s)  5/15/2019  
+DM-Microalbumin 10/6/2019  1 year(s)  10/6/2020  
+HTN-Urine Protein  10/6/2019  1 year(s)  10/6/2020  
+Depression Screening  10/24/2019  1 year(s)  10/24/2020  
+DM-Sys/Dias BP 1/21/2020  1 year(s)  1/21/2021  
+HTN-EKG Done  10/6/2019  5 year(s)  10/6/2024  
+Education:  
+Educational Materials:  
+Medication Leaflets:  
+
+01/21/2020 12:18 Sodium level 138 mmol/L [Ref. Range: 136-145] 
+01/21/2020 12:18 Potassium level 3.5 mmol/L [Ref. Range: 3.5-5.1] 
+01/21/2020 12:18 Chloride level 100 mmol/L [Ref. Range: 98-107] 
+01/21/2020 12:18 Anion gap 12 mmol/L [HI] [Ref. Range: 2-11] 
+01/21/2020 12:18 Osmolality, calculated 275 mOsm/kg [Ref. Range: 275-295] 
+01/21/2020 12:18 Glucose 97 mg/dL [Ref. Range: 70-105] 
+01/21/2020 12:18 Blood urea nitrogen 9 mg/dL [Ref. Range: 7-25] 
+01/21/2020 12:18 Estimated gfr, non african 45 mL/min/1.73m2 [LOW] ­american 
+01/21/2020 12:18 Protein total 7.1 gm/dL [Ref. Range: 6.4-8.9] 
+01/21/2020 12:18 Albumin level 4.2 gm/dL [Ref. Range: 3.5-5.7] 
+01/21/2020 12:18 Bilirubin total 0.4 mg/dL [Ref. Range: 0.3-1.0] 
+01/21/2020 12:18 Calcium level total 9.2 mg/dL [Ref. Range: 8.6-10.3] 
+Enzymes other 
+01/21/2020 12:18 Alanine aminotransferase 9 unit/L [Ref. Range: 7-52] 
+01/21/2020 12:18 Alkaline phosphatase 88 unit/L [Ref. Range: 34-104] 
+01/21/2020 12:18 Aspartate aminotransferase 16 unit/L [Ref. Range: 13-39] 
+Thyroid studies 
+01/21/2020 12:18 Tsh reflex order 9.79 mcIU/mL [HI] [Ref. Range: 0.45-5.33] 
+Hematology 
+01/21/2020 12:18 White blood cell count 4.3 10E3/mcL [Ref. Range: 4.0-10.0] 
+01/21/2020 12:18 Red blood cell count 4.31 10E6/mcL [Ref. Range: 3.93-5.22] 
+01/21/2020 12:18 Hemoglobin 12.1 gm/dL [Ref. Range: 11.4-14.4] 
+01/21/2020 12:18 Hematocrit 39.1 % [Ref. Range: 33.3-41.4] 
+01/21/2020 12:18 Mcv 90.7 fL [Ref. Range: 79.4-94.8] 
+01/21/2020 12:18 Mch 28.1 pg [Ref. Range: 25.6-32.2] 
+01/21/2020 12:18 Mchc 30.9 gm/dL [Ref. Range: 30.0-36.0] 
+01/21/2020 12:18 Red cell distribution width-cv 13.8 % [Ref. Range: 11.7-14.4] 
+01/21/2020 12:18 Red cell distribution width-sd 46.0 fL [HI] [Ref. Range: 35.1-43.9] 
+01/21/2020 12:18 Nucleated rbc count 0 % [NA] ­
+01/21/2020 12:18 Platelet count 229 10E3/mcL [Ref. Range: 150-400] 
+01/21/2020 12:18 Mean platelet volume 9.9 fL [Ref. Range: 9.4-12.3] 
+Automated differential 
+01/21/2020 12:18 Neutrophil 63 % [NA] ­
+01/21/2020 12:18 Immature granulocyte 1 % [NA] ­
+01/21/2020 12:18 Absolute neutrophil 2.77 10E3/mcL [Ref. Range: 0.91-5.53] 
+01/21/2020 12:18 Absolute eosinophils 0.08 10E3/mcL ­
+01/21/2020 12:18 Absolute immature 0.02 10E3/mcL [Ref. Range: 0.00-0.09] granulocyte 
+Blood pressure 
+Emory Healthcare Laboratory Directors: 
+Emory Medical Laboratory at Emory University Hospital 
+1364 Clifton Rd, NE, Atlanta, GA 30322 John D Roback, MD, PhD-Laboratory Medical Director ­
+Emory Johns Creek Hospital Laboratory At Emory Johns Creek Hospital 
+6325 Hospital Parkway Johns Creek, GA 30097 R. Kevin Harrell, MD-Laboratory Medical Director Emory Medical Laboratory at Emory University Hospital Midtown 550 Peachtree St, NE, Atlanta, GA 30308 Jeannette Guarner, MD-Laboratory Medical Director ­Emory University Orthopaedics and Spine Hospital Laboratory 1455 Montreal Road; Tucker, GA 30084 Sean Stowell, MD-Laboratory Medical Director Saint Joseph's Hospital Laboratory at Saint Joseph's Hospital 5665 Peachtree Dunwoody Road NE Atlanta, GA 30342 Donald L. Sears, MD-Laboratory Medical Director Emory University Wesley Woods Hospital Laboratory at Wesley Woods Geriatric Hospital 1821 Clifton Rd, NE, Atlanta, GA 30329-Alexander Duncan, MD Emory University Hospital Smyrna Laboratory 3949 S Cobb Dr, Smyrna, GA 30080 Charles Hill, MD-Laboratory Medical Director Emory Medical Laboratory Emory University Hospital Midtown at McDonough 249 Jonesboro Rd, McDonough, GA 30253 Maria Piraner, MD Laboratory Medical Director Emory Medical Laboratory at Buford 3726 Buford Drive, Buford, GA 30519 Sadaf Ilyas, MD Laboratory Medical Director Emory Rehabilitation Hospital Select Specialty Laboratory 1441 Clifton Road, NE Atlanta, GA 30322 James C. Ritchie, PhD-Laboratory Medical Director 
+You can view this visit summary in the Emory BLUE Patient Portal. Don’t have a patient portal account? Call your provider’s office, request a portal account at your next appointment or call 404-727-8820, 7:30 a.m.-5 p.m., Monday-Friday. Portal enrollment not only grants you access to the Patient Portal and its many features (e.g., secure messaging, prescription renewal, portions of your record), but it also provides the ability to connect your health record to some of the health management apps (i.e., software applications) you may use – provided they are set up correctly. If you would like to request that an app be connected to your health record, please call 404-727-8820, 7:30 a.m.-5 p.m., Monday-Friday. Remember, you should always consider the protection of your personal data. When you connect your health record to the app of your choice, you 
+are responsible for protecting that data. Emory is then no longer managing the security and use of your data. Read all policies in full and ensure you manage your data appropriately. 
+Your Emory Healthcare Provider may have prescribed EMMI patient education. Please view and complete the material when you receive it through your Patient Portal or personal email. 
+With a focus on providing the "Ideal Patient and Family Experience" we strive to deliver outstanding patient care to you. Please consider sharing your feedback through a Press 
+Ganey survey or contacting us at 1-404-778-7777 or 1-800-75-EMORY 
+~ End of Emory Visit Summary ~ 
+
+
+
+
+

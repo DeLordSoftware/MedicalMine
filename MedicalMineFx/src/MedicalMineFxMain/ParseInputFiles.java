@@ -70,8 +70,7 @@ public class ParseInputFiles extends ProcessInputFiles {
         FileReader flInputFile = null;
         FileWriter flOutputFile = null;
 
-        String strResultFile = UtlityClass.RESULT_FOLDER_LOC + UtlityClass.SEARCH_FILE_LOC + "Search Result" + resultTime + ".txt";
-        
+        String strResultFile = UtlityClass.RESULT_FOLDER_LOC + UtlityClass.SEARCH_FILE_LOC + "Search Result" + resultTime + ".txt";        
 
         try {
             // Create files
@@ -539,15 +538,15 @@ public class ParseInputFiles extends ProcessInputFiles {
             mpSearchData = new LinkedHashMap();
             Map<Integer, List<String>> mpTransferData = new LinkedHashMap();
             Scanner scan = new Scanner(file);
-            int count = 0;
+            int iCount = 0;
             // Collect category data from csv file (first row)
             while (scan.hasNext()) {
                 lstCategory = new ArrayList<String>();
                 String[] aryData = scan.nextLine().split(",");
                 // Place category data in map
                 if (lstCategory.addAll(Arrays.asList(aryData))) {
-                    mpTransferData.put(count, lstCategory);
-                    count++;
+                    mpTransferData.put(iCount, lstCategory);
+                    iCount++;
                 }
             }
 
@@ -581,9 +580,9 @@ public class ParseInputFiles extends ProcessInputFiles {
                 
                 if (strFinalCategory.contains(CustomData.CUST_FOLLOW)) {
                     // If the (follow) custom tag is used must have digits
-                    if (strFinalCategory.matches(".*\\d.*")) {
+                    if (strFinalCategory.matches(".*\\d.*") || strFinalCategory.contains("all")) {
                         mpSearchData.put(strFinalCategory, lstData);
-                        System.out.println("Column file " + strFinalCategory + " -- lstCategory -- " + lstData);
+                        System.out.println("Column file " + strFinalCategory + " -- lstCategory -- " + lstData);                   
                     } else {
                         // error in input file
                         ProcessInputFiles.displayMsg("Incorrect input file (follow 0-9). Correct and retry.", JOptionPane.ERROR_MESSAGE);
