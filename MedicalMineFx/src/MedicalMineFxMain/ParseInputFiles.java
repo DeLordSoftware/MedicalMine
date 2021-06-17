@@ -442,7 +442,7 @@ public class ParseInputFiles extends ProcessInputFiles {
         // Save Date format
         String strDateFormated = CustomData.getDateFormat(searchLine, find);
         if (strDateFormated != null) {
-            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated);
+            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated); // Reference value
             hasDate = false;
         }
         return hasDate;

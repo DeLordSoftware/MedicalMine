@@ -15,10 +15,12 @@ public class CustomData {
 
     private static List<String> lstCustomData = null;
     private static List<String> lstMonthsName = null;
+    private static List<String> lstMonthsAbbrName = null;
     private final static String CUST_DATE = "(date)";
     private final static String CUST_NAME = "(name)";
     private final static String CUST_GENDER = "(gender)";
     private final static String CUST_ALL = "(all)";
+    private final static String CUST_ONLY = "(only)";
     public final static String CUST_FOLLOW = "(follow"; // ')' intentional missing
     private final static String CUST_KEY = "(key)";
 
@@ -49,6 +51,21 @@ public class CustomData {
         lstMonthsName.add("october");
         lstMonthsName.add("november");
         lstMonthsName.add("december");
+
+        // List of months abbreviation for date format
+        lstMonthsAbbrName = new ArrayList<>();
+        lstMonthsAbbrName.add("jan");
+        lstMonthsAbbrName.add("feb");
+        lstMonthsAbbrName.add("mar");
+        lstMonthsAbbrName.add("apr");
+        lstMonthsAbbrName.add("may");
+        lstMonthsAbbrName.add("jun");
+        lstMonthsAbbrName.add("jul");
+        lstMonthsAbbrName.add("aug");
+        lstMonthsAbbrName.add("sept");
+        lstMonthsAbbrName.add("oct");
+        lstMonthsAbbrName.add("nov");
+        lstMonthsAbbrName.add("dec");
     }
 
     /**
@@ -58,8 +75,14 @@ public class CustomData {
      * @return
      */
     public static CustomVals checkCustomData(String categoryStr) {
+        int iFirstParm = categoryStr.indexOf("(");
+        int iSecondParm = categoryStr.indexOf(")");
+
         // Remove format trigger from category word
         CustomVals customVals = new CustomVals();
+        //String strRemove = categoryStr.substring(iFirstParm);
+        //customVals.category = categoryStr.replace(strRemove, "").tr;
+
         if (categoryStr.contains(CUST_DATE)) {
             // Remove(date)           
             customVals.category = categoryStr.replace(CUST_DATE, "");
@@ -89,7 +112,7 @@ public class CustomData {
             // Remove(key)              
             customVals.category = categoryStr.replace(CUST_KEY, "");
             customVals.HasKey = true;
-        }
+        }//*/
         return customVals;
     }
 
@@ -100,9 +123,8 @@ public class CustomData {
      * @return
      */
     public static String getDateFormat(String strCustom, String strFind) {
-        // Get exact date        
-        final String DATE_FORMAT = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
-        Pattern pattern = Pattern.compile(DATE_FORMAT);
+
+        final String DATE_FORMAT = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$"; // xx/xx/xxxx       
 
         // Clean string and create list
         strCustom = cleanString(strCustom);
@@ -115,14 +137,23 @@ public class CustomData {
 
         // Cycle throught segments of data to find date  
         String[] lstStringSegments = strCustom.split(" ");
+        Pattern pattern = Pattern.compile(DATE_FORMAT);
         Matcher matcher;
         String strReturnVal = null;
         int iIndex = 0;
-        for (String segment : lstStringSegments) {
-            String Month = segment.toLowerCase();
-            if (lstMonthsName.contains(Month)) {
+        for (String word : lstStringSegments) {
+            String Month = word.toLowerCase();
+            matcher = pattern.matcher(word.trim());
+            // Determing if word is a month in normal spelling or abbreviation 
+            if (lstMonthsName.contains(Month) || lstMonthsAbbrName.contains(Month)) {
+                List<String> lstMonth = null;
+                if (lstMonthsName.contains(Month)) {
+                    lstMonth = lstMonthsName;
+                } else if (lstMonthsAbbrName.contains(Month)) {
+                    lstMonth = lstMonthsAbbrName;
+                }
                 // Get date if Month is in word format
-                int iMonth = lstMonthsName.indexOf(Month) + 1;
+                int iMonth = lstMonth.indexOf(Month) + 1;
                 String strMonth = String.valueOf(iMonth);
                 strMonth = strMonth.length() < 2 ? "0" + strMonth : strMonth;  // Add zero if only one digit                         
                 // Date
@@ -132,14 +163,15 @@ public class CustomData {
                 String strYear = lstStringSegments[iIndex + 2].replaceAll("[^0-9]", "");
                 strReturnVal = strMonth + "/" + strDay + "/" + strYear;
                 break;
-            } else {
-                // Get date if in numeric format
-                matcher = pattern.matcher(segment.trim());
-                if (matcher.matches()) {
-                    // Store date format
-                    strReturnVal = segment;
-                    break;
+            } else if (matcher.matches()) {
+                // Get date if in numeric format and Store date format                
+                int val = word.indexOf("/");
+                if (val < 2) {
+                    strReturnVal = "0" + word;
+                } else {
+                    strReturnVal = word;
                 }
+                break;
             }
             iIndex++;
         }
@@ -157,8 +189,8 @@ public class CustomData {
         // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
         searchWords = cleanString(searchWords).toLowerCase();
-          final int  FIRST_NAME = 1;
-          final int  LAST_NAME = 2;
+        final int FIRST_NAME = 1;
+        final int LAST_NAME = 2;
 
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
@@ -251,15 +283,15 @@ public class CustomData {
      * getFollowFormat
      *
      * @param strSearchLine
-     * @param searchWords
+     * @param strSearchWords
      * @return
      */
-    public static String getFollowFormat(String strSearchLine, String searchWords, int numWords) {
+    public static String getFollowFormat(String strSearchLine, String strSearchWords, int iNumWords) {
         // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
 
         // Collect list of search string and category word 
-        List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
+        List<String> lstCatWords = new ArrayList<>(Arrays.asList(strSearchWords.split(" ")));
         List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
 
         // Remove empty element
@@ -279,12 +311,12 @@ public class CustomData {
 
         for (String words : lstWords) {
 
-            if (numWords == 0) {
+            if (iNumWords == 0) {
                 // Get all the words in sentence
                 strReturnVal += words + " ";
             } else {
                 // Get the number of words to display
-                if (iCounter < numWords && !words.isEmpty()) {
+                if (iCounter < iNumWords && !words.isEmpty()) {
                     strReturnVal += words + " ";
                     iCounter++;
                 } else {

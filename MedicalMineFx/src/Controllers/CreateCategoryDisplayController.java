@@ -52,11 +52,12 @@ public class CreateCategoryDisplayController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         btnEnter.setDisable(true);
+        cmbCatogeryType.getItems().add("All");
+        cmbCatogeryType.getItems().add("Only");
         cmbCatogeryType.getItems().add("Name");
         cmbCatogeryType.getItems().add("Date");
         cmbCatogeryType.getItems().add("Gender");
-        cmbCatogeryType.getItems().add("Follow");
-        cmbCatogeryType.getItems().add("All");
+        cmbCatogeryType.getItems().add("Follow");       
     }
 
     @FXML
