@@ -6,7 +6,7 @@
 package Controllers;
 
 import static Controllers.SelectInputDataController.bHasCsvFile;
-import MedicalMineFxMain.ParseInputFiles;
+import MedicalMineFxMain.ParseInputData;
 import MedicalMineFxMain.ProcessInputFiles;
 import static MedicalMineFxMain.ProcessInputFiles.displayMsg;
 import MedicalMineFxMain.UtlityClass;
@@ -254,7 +254,7 @@ public class CreateFileClass {
         // This is error check... TODO: create a catch
         if (flCsvSearchData.exists()) {
             // Set search file for processing
-            if (ParseInputFiles.setCsvSearchData(flCsvSearchData)) {
+            if (ParseInputData.setCsvSearchData(flCsvSearchData)) {
                 System.out.println("File exist " + flCsvSearchData.getAbsolutePath().toString());
                 bHasCsvFile = true;
                 // TODO: Send string name of file to lblShowCsv

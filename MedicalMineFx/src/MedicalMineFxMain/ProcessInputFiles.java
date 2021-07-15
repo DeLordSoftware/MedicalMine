@@ -60,8 +60,8 @@ public class ProcessInputFiles extends SelectInputDataController {
             // Cycle through files (.txt) selected
             for (File file : lstFileReturned) {
                 System.out.println("\n\n-----------------------File number " + iFileNum++ + " -----------------------");
-                ParseInputFiles parseInputFiles = new ParseInputFiles(true);
-                mpSaveToExcel = parseInputFiles.TextParsing(file);
+                ParseInputData ParseInputData = new ParseInputData(true);
+                mpSaveToExcel = ParseInputData.TextParsing(file);
                 mpFinalSaveToExcel.put(iFileNum, mpSaveToExcel);
             }
 
@@ -195,7 +195,7 @@ public class ProcessInputFiles extends SelectInputDataController {
             case CSV_FILE:
                 fileInpt[0] = fileChser.showOpenDialog(stagePrat);
                 // Store search critia file
-                if (!ParseInputFiles.setCsvSearchData(fileInpt[0])) {
+                if (!ParseInputData.setCsvSearchData(fileInpt[0])) {
                     // If error with input file, set file array to null
                     fileInpt = null;
                 }

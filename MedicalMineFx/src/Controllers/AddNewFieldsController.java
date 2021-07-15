@@ -151,17 +151,17 @@ public class AddNewFieldsController implements Initializable {
     }
 
     private void addSearchWord() {
-
-        if(!txtSearchWord.getText().isEmpty()){
-            CreateFileClass.setCatogeryWord(txtSearchWord.getText());
-
+        String strSearchWord = txtSearchWord.getText();        
+        strSearchWord = strSearchWord.replace(",", ""); // Remove comma - cause 
+        if(!strSearchWord.isEmpty()){
+            CreateFileClass.setCatogeryWord(strSearchWord);
             // Verify that search word has been entered
             if (!txtAreaWordReview.getText().isEmpty()) {
                 // Add search word to text area 
-                txtAreaWordReview.setText(txtAreaWordReview.getText() + "\n" + txtSearchWord.getText());
+                txtAreaWordReview.setText(txtAreaWordReview.getText() + "\n" + strSearchWord);
             } else {
                 // Add first search word to text area
-                txtAreaWordReview.setText(txtSearchWord.getText());
+                txtAreaWordReview.setText(strSearchWord);
             }
             // Clear search word text
             txtSearchWord.setText("");

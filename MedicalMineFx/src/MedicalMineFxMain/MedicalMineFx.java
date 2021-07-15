@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
  */
 public class MedicalMineFx extends Application {
 
-    private static final String VERSION = "2.1.2";
+    private static final String VERSION = "2.1.3";
     private static final String TITLE_NAME = "Search-N-Find by DSC ver ";
     public static String MainScreen = "main";
     public static String MainResource = "/FxmlDisplays/WelcomeSelectDisplay.fxml";

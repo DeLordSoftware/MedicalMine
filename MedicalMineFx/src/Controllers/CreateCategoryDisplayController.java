@@ -73,7 +73,7 @@ public class CreateCategoryDisplayController implements Initializable {
                     boolean hasNoLetters = false;
                     do {
                         // Only allow numbers                       
-                        strNumberToFollow = JOptionPane.showInputDialog(frame, "Enter number of words to follow\nOr hit CANCEL to select all words in sentence.").trim();
+                        strNumberToFollow = JOptionPane.showInputDialog(frame, "Enter number of words to follow.").trim();
 
                         if (!strNumberToFollow.trim().isEmpty()) {
                             if (pattern.matcher(strNumberToFollow).find()) {

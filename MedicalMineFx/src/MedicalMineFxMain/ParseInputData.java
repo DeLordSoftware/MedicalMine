@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
 /**
  * Class : TextParsingMedicalMine Purpose : To read selected text files and search for specific medical data. Author : Robert Wendell Simmons Created : 3/30/2018
  */
-public class ParseInputFiles extends ProcessInputFiles {
+public class ParseInputData extends ProcessInputFiles {
 
     private static Map<String, List<String>> mpSearchData;
     private static int count = 1;
@@ -40,7 +40,7 @@ public class ParseInputFiles extends ProcessInputFiles {
      *
      * @param check
      */
-    ParseInputFiles(boolean check) {
+    ParseInputData(boolean check) {
         bDebug = check;
 
         // Set a list to check for special characters
@@ -169,8 +169,7 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                         // Search input file line by line
                         for (String strSearchLine : strArray) {
-                            strSearchLine = strSearchLine.trim();
-                            
+                            strSearchLine = strSearchLine.trim();                            
                             
                             //Create a list of multiple word search                            
                             String[] lstFind = strKeyWordFind.split(" ");
@@ -322,7 +321,12 @@ public class ParseInputFiles extends ProcessInputFiles {
                 saveFollowValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind, customVals.iWords);
             }
             return EnumCustomType.FOLLOW;
-        } else {
+        }
+        else if (customVals.HasOnly) {
+            SetMapForExcel(mpSaveToExcel, strCategory, strFind);
+            return EnumCustomType.ONLY;
+        }
+        else {
             SetMapForExcel(mpSaveToExcel, strCategory, strFind);
             return EnumCustomType.NONE;
         }
@@ -623,6 +627,6 @@ public class ParseInputFiles extends ProcessInputFiles {
      * Enum of custom types
      */
     enum EnumCustomType {
-        DATE, NAME, GENDER, FOLLOW, KEY, ALL, NONE
+        DATE, NAME, GENDER, FOLLOW, ONLY, ALL, NONE
     }
 }

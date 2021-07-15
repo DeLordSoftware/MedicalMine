@@ -23,6 +23,7 @@ public class CustomData {
     private final static String CUST_ONLY = "(only)";
     public final static String CUST_FOLLOW = "(follow"; // ')' intentional missing
     private final static String CUST_KEY = "(key)";
+    private final static String BLANK = "";
 
     /**
      * setCustomDataList
@@ -35,7 +36,7 @@ public class CustomData {
         lstCustomData.add(CUST_GENDER);
         lstCustomData.add(CUST_ALL);
         lstCustomData.add(CUST_FOLLOW);
-        lstCustomData.add(CUST_KEY);
+        lstCustomData.add(CUST_ONLY);
 
         // List of months for date format
         lstMonthsName = new ArrayList<>();
@@ -85,19 +86,19 @@ public class CustomData {
 
         if (categoryStr.contains(CUST_DATE)) {
             // Remove(date)           
-            customVals.category = categoryStr.replace(CUST_DATE, "");
+            customVals.category = categoryStr.replace(CUST_DATE, BLANK);
             customVals.HasDate = true;
         } else if (categoryStr.contains(CUST_NAME)) {
             // Remove(name)            
-            customVals.category = categoryStr.replace(CUST_NAME, "");
+            customVals.category = categoryStr.replace(CUST_NAME, BLANK);
             customVals.HasName = true;
         } else if (categoryStr.contains(CUST_GENDER)) {
             // Remove(gender)             
-            customVals.category = categoryStr.replace(CUST_GENDER, "");
+            customVals.category = categoryStr.replace(CUST_GENDER, BLANK);
             customVals.HasGender = true;
         } else if (categoryStr.contains(CUST_ALL)) {
             // Remove(all)              
-            customVals.category = categoryStr.replace(CUST_ALL, "");
+            customVals.category = categoryStr.replace(CUST_ALL, BLANK);
             customVals.HasAll = true;
         } else if (categoryStr.contains(CUST_FOLLOW)) {
             // Remove(follow)             
@@ -105,13 +106,13 @@ public class CustomData {
             int indexEnd = categoryStr.indexOf(")");
             String strRemove = categoryStr.substring(index, indexEnd + 1);
             // Retrieve number of words to display
-            customVals.iWords = Integer.valueOf(strRemove.replaceAll("[^0-9]", ""));
-            customVals.category = categoryStr.replace(strRemove, "");
+            customVals.iWords = Integer.valueOf(strRemove.replaceAll("[^0-9]", BLANK));
+            customVals.category = categoryStr.replace(strRemove, BLANK);
             customVals.HasFollow = true;
-        } else if (categoryStr.contains(CUST_KEY)) {
-            // Remove(key)              
-            customVals.category = categoryStr.replace(CUST_KEY, "");
-            customVals.HasKey = true;
+        } else if (categoryStr.contains(CUST_ONLY)) {
+            // Remove(Only)              
+            customVals.category = categoryStr.replace(CUST_ONLY, BLANK);
+            customVals.HasOnly = true;
         }//*/
         return customVals;
     }
@@ -157,16 +158,17 @@ public class CustomData {
                 String strMonth = String.valueOf(iMonth);
                 strMonth = strMonth.length() < 2 ? "0" + strMonth : strMonth;  // Add zero if only one digit                         
                 // Date
-                String strDay = lstStringSegments[iIndex + 1].replaceAll("[^0-9]", "");
+                String strDay = lstStringSegments[iIndex + 1].replaceAll("[^0-9]", BLANK);
                 strDay = strDay.length() < 2 ? "0" + strDay : strDay; // Add zero if only one digit                        
                 // Year
-                String strYear = lstStringSegments[iIndex + 2].replaceAll("[^0-9]", "");
+                String strYear = lstStringSegments[iIndex + 2].replaceAll("[^0-9]", BLANK);
                 strReturnVal = strMonth + "/" + strDay + "/" + strYear;
                 break;
             } else if (matcher.matches()) {
                 // Get date if in numeric format and Store date format                
                 int val = word.indexOf("/");
                 if (val < 2) {
+                    // Add zero to beginning for consistent date format xx/xx/xxxx
                     strReturnVal = "0" + word;
                 } else {
                     strReturnVal = word;
@@ -200,9 +202,9 @@ public class CustomData {
         lstCatWords = removeEmptyElements(lstCatWords);
         lstSearchLine = removeEmptyElements(lstSearchLine);
 
-        String strReturnVal = "";
+        String strReturnVal = BLANK;
         for (String catWords : lstCatWords) {
-            catWords = catWords.replace(" ", "").toLowerCase();
+            catWords = catWords.replace(" ", BLANK).toLowerCase();
             // Collect Name
             if (lstSearchLine.contains(catWords)) {
                 int iCatWords = lstSearchLine.indexOf(catWords);
@@ -244,7 +246,7 @@ public class CustomData {
         lstWords = removeEmptyElements(lstWords);
 
         // Select first element which cantains gender
-        String strGender = "";
+        String strGender = BLANK;
         int iSize = lstWords.size();
         if (iSize >= 1) {
             strGender = lstWords.get(0);
@@ -264,18 +266,25 @@ public class CustomData {
         strSearchLine = cleanString(strSearchLine).toLowerCase();
 
         // Collect list of search string and category word 
-        List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
+        List<String> lstCategoryWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
 
         // Remove empty element
-        lstCatWords = removeEmptyElements(lstCatWords);
+        lstCategoryWords = removeEmptyElements(lstCategoryWords);       
 
-        // Remove category words from search string
         String strReturnVal = strSearchLine;
-        for (String val : lstCatWords) {
-            val = val.replace(" ", "").toLowerCase();
-            // Save new string
-            strReturnVal = strReturnVal.replace(val, "");
+        
+        // Remove any words in front of first category word        
+        String strFirstWordSearch = lstCategoryWords.get(0).toLowerCase();
+        int iGetDataBefore = strReturnVal.indexOf(strFirstWordSearch);
+        if (iGetDataBefore > 1) {
+            strReturnVal = strReturnVal.replace(strReturnVal.substring(0, iGetDataBefore), BLANK);
         }
+
+        // Remove category words from search string and return string
+        for (String val : lstCategoryWords) {
+            val = val.replace(" ", BLANK).toLowerCase();            
+            strReturnVal = strReturnVal.replace(val, BLANK);
+        }        
         return strReturnVal.trim();
     }
 
@@ -300,7 +309,7 @@ public class CustomData {
 
         // Remove category words from search string
         for (String catWord : lstCatWords) {
-            catWord = catWord.replace(" ", "").toLowerCase();
+            catWord = catWord.replace(" ", BLANK).toLowerCase();
             if (lstWords.contains(catWord)) {
                 lstWords.remove(lstWords.indexOf(catWord));
             }
@@ -369,7 +378,7 @@ public class CustomData {
      */
     private static String cleanString(String clean) {
         final String DOULBE_SPC = "  ";
-        return clean.replace("·", "").replace(";", "").replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ").trim();
+        return clean.replace("·", BLANK).replace(";", BLANK).replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ").trim();
     }
 
     /**
@@ -392,7 +401,7 @@ final class CustomVals {
     boolean HasGender = false;
     boolean HasAll = false;
     boolean HasFollow = false;
-    boolean HasKey = false;
+    boolean HasOnly = false;
     String category = "";
     int iWords = 0;
 }
