@@ -57,7 +57,7 @@ public class CreateCategoryDisplayController implements Initializable {
         cmbCatogeryType.getItems().add("Name");
         cmbCatogeryType.getItems().add("Date");
         cmbCatogeryType.getItems().add("Gender");
-        cmbCatogeryType.getItems().add("Follow");       
+        cmbCatogeryType.getItems().add("Follow");
     }
 
     @FXML
@@ -72,20 +72,33 @@ public class CreateCategoryDisplayController implements Initializable {
                     Pattern pattern = Pattern.compile("[a-zA-Z]");
                     boolean hasNoLetters = false;
                     do {
-                        // Only allow numbers                       
-                        strNumberToFollow = JOptionPane.showInputDialog(frame, "Enter number of words to follow.").trim();
-
+                        // Only allow numbers 
+                        try {
+                            strNumberToFollow = JOptionPane.showInputDialog(frame, "Enter number of words to follow.").trim();
+                        } catch (NullPointerException e) {
+                            String strError = "Must enter a value or click OK on input dialog.";
+                            System.out.println(strError);
+                            displayMsg(strError, JOptionPane.ERROR_MESSAGE);
+                            continue;
+                        }
+                        
                         if (!strNumberToFollow.trim().isEmpty()) {
                             if (pattern.matcher(strNumberToFollow).find()) {
                                 // If letter is inputed, display message to try again
                                 hasNoLetters = false;
-                                JOptionPane.showMessageDialog(frame, "Only enter numbers. Please Try again.");//TODO: add error symbol
+                                try {
+                                    JOptionPane.showMessageDialog(frame, "Only enter numbers. Please Try again.");//TODO: add error symbol
+                                } catch (NullPointerException e) {
+                                    String strError = "Must enter a value";
+                                    System.out.println(strError);
+                                    displayMsg(strError, JOptionPane.ERROR_MESSAGE);
+                                }
                             } else {
                                 // Only has numbers
                                 hasNoLetters = true;
                             }
                         } else {
-                            // If on value entered, set to default
+                            // If NO value is entered, set to default
                             strNumberToFollow = "all";
                             break;
                         }
@@ -103,7 +116,7 @@ public class CreateCategoryDisplayController implements Initializable {
                     strCategory = txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + ")";
                 } else {
                     // Add space if category type is (follow)
-                    strCategory = txtCatogery.getText() + " (" + cmbCatogeryType.getValue() + " " + strNumberToFollow + ")";
+                    strCategory = txtCatogery.getText() + " (" + strNumberToFollow + ")";
                 }
                 CreateFileClass.setCatogery(strCategory);
 

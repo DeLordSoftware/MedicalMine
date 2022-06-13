@@ -31,21 +31,21 @@ public class UtlityClass {
     public static final String SEARCH_FILE_LOC = "Search Result/";
 
     public static boolean checkDirectory() {
-        File file = new File(RESULT_FOLDER_LOC);
-        File file1 = new File(RESULT_FOLDER_LOC + SEARCH_FILE_LOC);
-        File file2 = new File(RESULT_FOLDER_LOC + CVS_FILE_LOC);
-        
+        File file_Result = new File(RESULT_FOLDER_LOC);
+        File file_Search = new File(RESULT_FOLDER_LOC + SEARCH_FILE_LOC);
+        File file_CVS = new File(RESULT_FOLDER_LOC + CVS_FILE_LOC);
+
         try {
-            if (!file.exists()) {
-                file.mkdirs();
+            if (!file_Result.exists()) {
+                file_Result.mkdirs();
             }
 
-            if (!file1.exists()) {
-                file1.mkdirs();
+            if (!file_Search.exists()) {
+                file_Search.mkdirs();
             }
 
-            if (!file2.exists()) {
-                file2.mkdirs();
+            if (!file_CVS.exists()) {
+                file_CVS.mkdirs();
             }
         } catch (Exception e) {
             System.out.println("Error in with making application directories " + e.toString());
@@ -56,6 +56,10 @@ public class UtlityClass {
         return true;
     }
 
+    /**
+     * Check license to run program
+     *
+     */
     public static boolean checkLicense() {
         boolean returnVal = false;
         File file;
@@ -151,7 +155,7 @@ public class UtlityClass {
         }
         return returnVal;
     }
-    
+
     /*  PDF to Text
 We created a method named generateTxtFromPDF(…) and divided it into three main parts: loading of the PDF file, extraction of text, and final file creation.
 
@@ -177,5 +181,5 @@ PrintWriter pw = new PrintWriter("src/output/pdf.txt");
 pw.print(parsedText);
 pw.close();
 Please note that you cannot preserve formatting in a plain text file because it contains text only.
-*/
+     */
 }

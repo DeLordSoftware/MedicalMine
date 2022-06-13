@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package MedicalMineFxMain;
 
 import Controllers.SelectInputDataController;
@@ -41,7 +37,7 @@ public class ProcessInputFiles extends SelectInputDataController {
     protected static String resultTime;
 
     /**
-     *
+     * Process Input files for analysis
      */
     public void processFiles() {
         try {
@@ -82,9 +78,9 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     *
+     * Setup dialog box parameters to select files
      * @param iSetFileType
-     * @return
+     * @return String
      * @throws IOException
      */
     public static String selectProcessFiles(final int iSetFileType) throws IOException {
@@ -184,7 +180,7 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     *
+     * Display Dialog box
      * @param fileChooser
      * @param isetVal
      * @param fileInpt
@@ -218,7 +214,8 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     * Set current location of directory of selected file to allow dialog to open at that location when selected again
+     * Set current location of directory of selected file to allow dialog to open
+     * at that location when selected again
      */
     public static void setJsonLocationFile() {
         // Set values
@@ -257,15 +254,15 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     *
-     * @return
+     * Get Message
+     * @return String
      */
     public String getMessage() {
         return strDisplayMessage;
     }
 
     /**
-     *
+     * Set list for search
      * @param list
      */
     private static void setListSearchFiles(List<File> list) {
