@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package MedicalMineFxMain;
 
 import Controllers.SelectInputDataController;
@@ -38,12 +34,10 @@ public class ProcessInputFiles extends SelectInputDataController {
     private final static String KEY_CSV_VAL = "CSV_Location";
     private final static String KEY_FILES_VAL = "FILE_Location";
     private final static String JSON_DATA_FILE = "MedicalMineData.json";
-
-    protected final static String RESULT_FOLDER_LOC = "C:/Search Results/";
     protected static String resultTime;
 
     /**
-     *
+     * Process Input files for analysis
      */
     public void processFiles() {
         try {
@@ -54,16 +48,16 @@ public class ProcessInputFiles extends SelectInputDataController {
             // Set time stamp for files
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_HH_mm_ss");
             LocalDateTime time = LocalDateTime.now();
-            resultTime = dtf.format(time);         
+            resultTime = dtf.format(time);
 
             // Set Custom list for searching
             CustomData.setCustomDataList();
 
-            // Cycle through files seleced
+            // Cycle through files (.txt) selected
             for (File file : lstFileReturned) {
                 System.out.println("\n\n-----------------------File number " + iFileNum++ + " -----------------------");
-                ParseInputFiles parseInputFiles = new ParseInputFiles(true);
-                mpSaveToExcel = parseInputFiles.TextParsing(file);
+                ParseInputData ParseInputData = new ParseInputData(true);
+                mpSaveToExcel = ParseInputData.TextParsing(file);
                 mpFinalSaveToExcel.put(iFileNum, mpSaveToExcel);
             }
 
@@ -72,7 +66,7 @@ public class ProcessInputFiles extends SelectInputDataController {
             String strReturnExcelLoc = writeDataToExcel.SaveExcelSpreadSheet(mpFinalSaveToExcel);
 
             // Create Gui message
-            strDisplayMessage = "Number of files searched: " + iFileNum + ".\nProcess complete...\nExcel file located at " + RESULT_FOLDER_LOC;
+            strDisplayMessage = "Number of files searched: " + iFileNum + ".\nProcess complete...\nExcel file located at:\n" + UtlityClass.RESULT_FOLDER_LOC + UtlityClass.SEARCH_FILE_LOC;
             displayMsg(strDisplayMessage, JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             System.out.println("IOException " + e.getMessage());
@@ -84,12 +78,12 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     *
-     * @param isetValue
-     * @return
+     * Setup dialog box parameters to select files
+     * @param iSetFileType
+     * @return String
      * @throws IOException
      */
-    public static String selectProcessFiles(final int isetValue) throws IOException {
+    public static String selectProcessFiles(final int iSetFileType) throws IOException {
         FileChooser fileChooser = new FileChooser();
         String strDialogTitle = null;
         String strExtention = null;
@@ -102,7 +96,7 @@ public class ProcessInputFiles extends SelectInputDataController {
         String jsonKeyValue = null;
 
         // Set String values according to selection
-        switch (isetValue) {
+        switch (iSetFileType) {
             case CSV_FILE:
                 jsonKeyValue = KEY_CSV_VAL;
                 strDialogTitle = "Select Search Criteria CSV";
@@ -133,21 +127,26 @@ public class ProcessInputFiles extends SelectInputDataController {
                 JSONParser jsonParser = new JSONParser();
                 Object jsonObj = jsonParser.parse(reader);
                 JSONObject locationJson = (JSONObject) jsonObj;
-
-                if (locationJson.containsKey(jsonKeyValue)) {
-                    // Display dialog with selected location
+                // TODO: create logic to know when csv was created by user in this GUI instead of selected by user
+                if (locationJson.containsKey(jsonKeyValue)) {                    
                     strFilePathFromDoc = locationJson.get(jsonKeyValue).toString();
-                    fileChooser.setInitialDirectory(new File(strFilePathFromDoc));
-                    fileInput = displayFileDialog(fileChooser, isetValue, fileInput, stageParent);
+                    if (!strFilePathFromDoc.isEmpty()) {
+                        // Display dialog with selected location
+                        fileChooser.setInitialDirectory(new File(strFilePathFromDoc));
+                    } else {
+                        //Display dialog with default location           
+                        fileChooser.setInitialDirectory(new File("c:/"));
+                    }
                 } else {
                     //Display dialog with default location           
                     fileChooser.setInitialDirectory(new File("c:/"));
-                    fileInput = displayFileDialog(fileChooser, isetValue, fileInput, stageParent);
                 }
+                // Open dialog box
+                fileInput = displayFileDialog(fileChooser, iSetFileType, fileInput, stageParent);
             } else {
                 // Display dialog with default location  
                 fileChooser.setInitialDirectory(new File("c:/"));
-                fileInput = displayFileDialog(fileChooser, isetValue, fileInput, stageParent);
+                fileInput = displayFileDialog(fileChooser, iSetFileType, fileInput, stageParent);
             }
 
             // Set label and process button
@@ -160,7 +159,7 @@ public class ProcessInputFiles extends SelectInputDataController {
 
                 // Save file location and enable button
                 strFilePath = strFilePath.substring(0, iSetPosition);
-                switch (isetValue) {
+                switch (iSetFileType) {
                     case CSV_FILE:
                         strSaveCsvLocal = strFilePath;
                         bHasCsvFile = true;
@@ -181,7 +180,7 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     *
+     * Display Dialog box
      * @param fileChooser
      * @param isetVal
      * @param fileInpt
@@ -192,7 +191,10 @@ public class ProcessInputFiles extends SelectInputDataController {
             case CSV_FILE:
                 fileInpt[0] = fileChser.showOpenDialog(stagePrat);
                 // Store search critia file
-                ParseInputFiles.setCsvSearchData(fileInpt[0]);
+                if (!ParseInputData.setCsvSearchData(fileInpt[0])) {
+                    // If error with input file, set file array to null
+                    fileInpt = null;
+                }
                 break;
             case SEARCH_FILE:
                 List<File> fileList = fileChser.showOpenMultipleDialog(stagePrat);
@@ -212,7 +214,8 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     * Store values for dialog location
+     * Set current location of directory of selected file to allow dialog to open
+     * at that location when selected again
      */
     public static void setJsonLocationFile() {
         // Set values
@@ -251,15 +254,15 @@ public class ProcessInputFiles extends SelectInputDataController {
     }
 
     /**
-     *
-     * @return
+     * Get Message
+     * @return String
      */
     public String getMessage() {
         return strDisplayMessage;
     }
 
     /**
-     *
+     * Set list for search
      * @param list
      */
     private static void setListSearchFiles(List<File> list) {

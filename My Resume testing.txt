@@ -1,0 +1,119 @@
+E-mail: robwsimm1297@gmail.com								               470-588-2422
+Grayson, GA. 						Linkedin: https://www.linkedin.com/in/robert-simmons-6528886a/
+Software Engineer Professional
+Well-rounded, Creative, Common-Sense Software Engineer
+
+Over eighteen years of creating robust, innovative, and user-friendly software applications. Worked for various companies, embedded systems, products, and customers. Knowledgeable of C#, C++, Java, Python, Visual Basic, C and Ruby languages and a variety of databases. 
+
+Job Type: Full time/Direct hire position. 
+Desired Location: Northern Atlanta GA Area
+
+Core Software Skills
+• C++ - 8 yrs.	• Java - 6 yrs. 	• Python – 2 yrs. 	• Master’s degree in software system
+• C# 1 yrs.	• Visual Basic - 5 yrs.	• SQL - 4 yrs.	• Kafka Streaming Processing	
+• C - 2 yrs.	• Embedded System 	• Ruby 	• Bash Shell Scripting	
+• C# online course of over 16 hrs. (Udemy)
+• C++ online course of over 10 hrs. (Udemy)
+Other Software Skills
+• Proficient in OOP / OOD	• Solid Refactoring Skills 	• Full Cycle Development 	
+• Excellent Debugging	• Database Management	• Unit Testing and Design Analysis
+Computer Proficiencies 
+• Linux (Redhat, Ubuntu, Fedora & QNX)	• Windows (Embedded / Win32)	• Visual Studio 13, 15 & 19	
+• VMware / Virtual Box	• JSON / XML / HTML / CSS	• GUI Creation/ QT Creator	
+Databases
+• Microsoft Access - 2 yrs.	• SQLite - 2 yrs.	• Oracle - 1 yr. 	• MySQL
+Miscellaneous 
+• Works well in team environment	• Strong communication skills	• Agile/Jira/TFS/GIT/SourceTree
+• Leadership potential and organizational skills	• Good problem-solving skills	• TCP/IP and Serial Communication 
+• Experience as Electronic Engineer and Technician 	• Confidential Clearance (2009-2013)	• Beyond Compare merging tool
+Experience
+Diebold Nixdorf inc.										         Oct 2020 - Present
+Senior Software Engineer (Contractor)							          Canton Ohio (Remote GA)
+•	Maintained company ATM software components which include applications in both C# and C++. 
+•	Worked closely with Architects, Quality Assurance, other senior level developers to analyze, evaluate and improve company software. 
+•	Executed a team project that analyzed messages from ATM to backend server to validate happy path and sad path scenarios. 
+•	Debug, refactored and merged C# and C++ code for current company software. 
+•	Worked 100% remote which required effective communication between team members and efficiently working autonomously with little to no supervision. 
+•	Worked with GIT, Bitbucket and JIRA to manage source code and for software and system documentation. 
+
+SpaceWorks Enterprises	 Inc.									March 2019 – Feb 2020	
+Senior Software Engineer										       Atlanta, GA
+•	Developed a Java Graphical User Interface (GUI) that controlled a hypersonic rocket test vehicle developed for the Air Force Research Laboratory. 
+•	The GUI allowed the propulsion engineers to turn off and on fluid values, measure various parameters such as temperature and pressure, as well as display critical errors and alerts.
+•	Developed the GUI using Java Swing that used Kafka stream-processing via UDP/IP that would transmit JSON formatted messages. Used Python for system simulation and testing. 
+•	Collaborated with Propulsion engineers, Avionics engineers and Embedded engineers to create requirements, execute architecture of system and implement testing.
+•	Assisted management and leadership with screening and selecting new hires.
+
+Verifone											 April 2018 – Sept 2018
+Senior Software Developer (Contractor)									Alpharetta, GA
+•	Responsible for analyzing, debugging and resolving software issues for company’s new Payment Evolution platform software.
+•	Resolved over 30 bug issues within 4 months without reworks. Working with other engineers from different teams.
+•	Worked with a variety of software languages such as C++, HTML, XML and BPEL (Business Process Execution Language).
+•	Developed a customized Java software program tool to improve analysis of software log files which reduced bugging time and helped verify bug fixes.
+•	Coordinated with offshore team, software architects and QA for tasking and managing of JIRA defect tickets.
+•	Perform regular updates, downloads and completed testing on company new payment terminals which ran on a proprietary embedded Linux type operating system.
+
+Qualitee 360 (Part Time/Freelance)								        Jan 2018 – July 2020
+Software Architect / Developer										     Lithonia, GA
+•	Develop Java software that is used to search through documents to extract key medical data and information. (Data Warehouse)
+•	Implemented a User Interface using JavaFx and Java Swing to allow user to load and process data.
+•	Directly interacted with customer to develop software concepts and requirements.
+•	Project consist of GUI, CSV, Regular Express API and outputed data to a Microsoft Excel spreadsheet.
+•	Accountable for creating new features and improving quality of software.
+
+FDS Avionics											      May 2017-Oct 2017
+Software Engineer											  Alpharetta, GA
+•	Responsible for maintaining and improving a legacy flight navigational C# embedded software that uses ARINC data communication protocol which required extensive refactoring, OOD and logic flow re-work.
+•	Collaborated with team members such as sales team, software engineers and QA to implemented new product features, update current software and improved software capabilities.
+•	Directly involved with fixing issues and bugs found in the field which required immediate response and tight deadlines to resolve.
+•	Created software utilities tools to improve software testing, to assist the production team with new unit set-up and streamline software development.
+•	Became eligible for company Employee Bonus Program after only three months of service.
+
+NCR												     Oct 2015 - Feb 2017
+Software Engineer											  Alpharetta, GA
+•	Developed C/C++ and Python software applications using Behavior Drive Development to perform automation software validations of new and current software development on company Pay at Pump systems.
+•	Involved with the Continues Improvement team to resolve bugs, investigate defects and improve overall functionality of company Point Of Sale (POS) software embedded system.
+•	Created unit testing software to verify bug fixes and improve general efficiency of POS software using company proprietary software. 
+•	Experience with integrating of fuel control, payment and fuel deliver systems using complex computer networks which include both WAN and LAN.
+•	Performed remote debugging of POS software using VirtualBox virtual machine and company proprietary software. 
+•	Involvement with highly inspected and examined code reviews with architect and team software engineers.
+•	Assisted development and QA team in investigating issues with company’s new pay-at-pump chip card reader system (EMV) which include collaborating with sub-contractor. 
+
+The Coca Cola Company									April 2014 - Sept 2015
+Embedded Software Engineer (Contractor)							                Atlanta, GA
+•	Responsible for developing C++ embedded software using TCP/IP protocol and bash shell scripting that would be used to send a XML file of system information to a customize website using mobile device technology.
+•	Developed a test tool application that used C# and Python to test and verify an embedded system touch screen operation which included image icon recognition, screen navigation and collection of SQLite database information.  
+•	Implemented software code that connected to a USB cell modem that retrieved device information including signal strength, modem phone number, IP address and other vital information.
+•	Created bash shell scripts that configured a QNX embedded system that perform simple diagnostics which reduce system setup time by 90%.
+•	Collaborated with team members using Scrum Agile mythology to create Use Cases and User Stories.  
+
+Northrop Grumman Incorporation							           April 2008 - August 2013
+Software Engineer I & II 									       Warner Robins, GA
+•	Developed, designed and implemented software for the U.S. Air Force to support a Radar Warning Receiver, Line Replacement Unit and its Integrated Support Station. 
+•	Created a sophisticate algorithm to determine priority, type and category of missile threats and displayed the collected data in comprehensible GUI pages that allowed user to add, edit, update and remove specific data.
+•	Executed a C++ QT GUI application that generated a Pilots Handbook used to help aircrews identify enemy missile threats on an Early Radar Warning System.
+•	Implemented a SQL application feature that consisted of reading a 1000-page text file and retrieved various mission data and parsed that data into a Microsoft Access database.
+•	Developed a document processing and tracking Java software program used by J-S.T.A.R.S personnel. 
+•	Duties entailed writing Java software that developed an intricate User Interface that allowed military and government personnel to modify, update and review important Technical Order information.
+•	Implemented Java software that included complex SQL statements that searched, selected, updated and inserted data into an Oracle database.
+
+ARINC, Inc.										             Nov 2002 - Jan 2008
+System/Software Engineer 									  Warner Robins, GA
+•	Developed, maintained and improved a Visual Basic stand-alone training computer application called PC Self-Teach used to train airman on how to use a navigational system used in the C-130 cargo planes.
+•	Preformed tasking that included requirements analysis, design analysis and developing test procedures.
+•	Created a demonstrational GUI software for the C-5 Avionics Modernization Program cockpit and C-130 Self Contained Navigational System. 
+•	Executed over 20 different customer software changes and preformed requirements analysis which lead to over 575 new lines of code, improving performance on current software methods, debugged and removed existing software bugs and anomalies. 
+•	Developed a training tutorial courseware for C-130 maintenance and navigation personnel on using the Enhance Traffic Collision Avoidance System.
+
+Scientific Atlanta, Inc.  									           Feb 2001 - Oct 2001
+Test Engineer											 Lawrenceville, GA
+	Implemented Visual Basic advanced programming techniques such as using script text, JPEG picture manipulation and Access database development for testing purposes. 
+Crane Nuclear, Inc.									          Feb 1998 - Feb 2001
+Service Engineer			      Kennesaw, GA
+•	Developed and designed test procedures using both software and hardware for the Calibration and the Manufacturing Department which minimized test time by an average of 45%.
+
+Education:
+	Master of Science Degree in Software System - Mercer University - December 2009.
+	Bachelor of Science Degree in Electrical Engineering Technology - Southern Polytechnic State University
+	Associate of Science Degree in Electronic Technology - DeVry Institute of Technology 
+	Certificate in Biblical Studies – Hopewell Bible

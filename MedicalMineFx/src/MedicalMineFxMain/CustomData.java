@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Class CustomData
  *
  * @author RW Simmons
  */
@@ -14,15 +15,18 @@ public class CustomData {
 
     private static List<String> lstCustomData = null;
     private static List<String> lstMonthsName = null;
+    private static List<String> lstMonthsAbbrName = null;
     private final static String CUST_DATE = "(date)";
     private final static String CUST_NAME = "(name)";
     private final static String CUST_GENDER = "(gender)";
     private final static String CUST_ALL = "(all)";
-    private final static String CUST_FOLLOW = "(follow"; // ')' intentional missing
+    private final static String CUST_ONLY = "(only)";
+    public final static String CUST_FOLLOW = "(follow"; // ')' intentional missing
     private final static String CUST_KEY = "(key)";
+    private final static String BLANK = "";
 
     /**
-     *
+     * setCustomDataList
      */
     public static void setCustomDataList() {
         // List of custom formats
@@ -32,7 +36,7 @@ public class CustomData {
         lstCustomData.add(CUST_GENDER);
         lstCustomData.add(CUST_ALL);
         lstCustomData.add(CUST_FOLLOW);
-        lstCustomData.add(CUST_KEY);
+        lstCustomData.add(CUST_ONLY);
 
         // List of months for date format
         lstMonthsName = new ArrayList<>();
@@ -48,31 +52,53 @@ public class CustomData {
         lstMonthsName.add("october");
         lstMonthsName.add("november");
         lstMonthsName.add("december");
+
+        // List of months abbreviation for date format
+        lstMonthsAbbrName = new ArrayList<>();
+        lstMonthsAbbrName.add("jan");
+        lstMonthsAbbrName.add("feb");
+        lstMonthsAbbrName.add("mar");
+        lstMonthsAbbrName.add("apr");
+        lstMonthsAbbrName.add("may");
+        lstMonthsAbbrName.add("jun");
+        lstMonthsAbbrName.add("jul");
+        lstMonthsAbbrName.add("aug");
+        lstMonthsAbbrName.add("sept");
+        lstMonthsAbbrName.add("oct");
+        lstMonthsAbbrName.add("nov");
+        lstMonthsAbbrName.add("dec");
     }
 
     /**
+     * checkCustomData
      *
      * @param categoryStr
      * @return
      */
     public static CustomVals checkCustomData(String categoryStr) {
+        int iFirstParm = categoryStr.indexOf("(");
+        int iSecondParm = categoryStr.indexOf(")");
+
         // Remove format trigger from category word
         CustomVals customVals = new CustomVals();
+        //String strRemove = categoryStr.substring(iFirstParm);
+        //customVals.category = categoryStr.replace(strRemove, "").tr;
+
         if (categoryStr.contains(CUST_DATE)) {
             // Remove(date)           
-            customVals.category = categoryStr.replace(CUST_DATE, "");
+            customVals.category = categoryStr.replace(CUST_DATE, BLANK);
             customVals.HasDate = true;
         } else if (categoryStr.contains(CUST_NAME)) {
             // Remove(name)            
-            customVals.category = categoryStr.replace(CUST_NAME, "");
+            customVals.category = categoryStr.replace(CUST_NAME, BLANK);
             customVals.HasName = true;
         } else if (categoryStr.contains(CUST_GENDER)) {
             // Remove(gender)             
-            customVals.category = categoryStr.replace(CUST_GENDER, "");
+            customVals.category = categoryStr.replace(CUST_GENDER, BLANK);
             customVals.HasGender = true;
         } else if (categoryStr.contains(CUST_ALL)) {
             // Remove(all)              
-            customVals.category = categoryStr.replace(CUST_ALL, "");
+            customVals.category = categoryStr.replace(CUST_ALL, BLANK);
             customVals.HasAll = true;
         } else if (categoryStr.contains(CUST_FOLLOW)) {
             // Remove(follow)             
@@ -80,57 +106,74 @@ public class CustomData {
             int indexEnd = categoryStr.indexOf(")");
             String strRemove = categoryStr.substring(index, indexEnd + 1);
             // Retrieve number of words to display
-            customVals.iWords = Integer.valueOf(strRemove.replaceAll("[^0-9]", ""));
-            customVals.category = categoryStr.replace(strRemove, "");           
+            customVals.iWords = Integer.valueOf(strRemove.replaceAll("[^0-9]", BLANK));
+            customVals.category = categoryStr.replace(strRemove, BLANK);
             customVals.HasFollow = true;
-        } else if (categoryStr.contains(CUST_KEY)) {
-            // Remove(key)              
-            customVals.category = categoryStr.replace(CUST_KEY, "");
-            customVals.HasKey = true;
-        }
+        } else if (categoryStr.contains(CUST_ONLY)) {
+            // Remove(Only)              
+            customVals.category = categoryStr.replace(CUST_ONLY, BLANK);
+            customVals.HasOnly = true;
+        }//*/
         return customVals;
     }
 
     /**
+     * getDateFormat
      *
      * @param strCustom
      * @return
      */
-    public static String getDateFormat(String strCustom) {
-        // Get exact date        
-        final String DATE_FORMAT = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
-        Pattern pattern = Pattern.compile(DATE_FORMAT);
+    public static String getDateFormat(String strCustom, String strFind) {
+
+        final String DATE_FORMAT = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$"; // xx/xx/xxxx       
 
         // Clean string and create list
         strCustom = cleanString(strCustom);
-        String[] lstStringSegments = strCustom.split(" ");
+
+        // Only select segment of string pertaining to actual search word(s) 
+        String[] lstSegmentsTest = strCustom.split(strFind);
+        if (lstSegmentsTest.length > 1) {
+            strCustom = lstSegmentsTest[1];
+        }
 
         // Cycle throught segments of data to find date  
+        String[] lstStringSegments = strCustom.split(" ");
+        Pattern pattern = Pattern.compile(DATE_FORMAT);
         Matcher matcher;
         String strReturnVal = null;
         int iIndex = 0;
-        for (String segment : lstStringSegments) {
-            String Month = segment.toLowerCase();
-            if (lstMonthsName.contains(Month)) {
+        for (String word : lstStringSegments) {
+            String Month = word.toLowerCase();
+            matcher = pattern.matcher(word.trim());
+            // Determing if word is a month in normal spelling or abbreviation 
+            if (lstMonthsName.contains(Month) || lstMonthsAbbrName.contains(Month)) {
+                List<String> lstMonth = null;
+                if (lstMonthsName.contains(Month)) {
+                    lstMonth = lstMonthsName;
+                } else if (lstMonthsAbbrName.contains(Month)) {
+                    lstMonth = lstMonthsAbbrName;
+                }
                 // Get date if Month is in word format
-                int iMonth = lstMonthsName.indexOf(Month) + 1;
+                int iMonth = lstMonth.indexOf(Month) + 1;
                 String strMonth = String.valueOf(iMonth);
                 strMonth = strMonth.length() < 2 ? "0" + strMonth : strMonth;  // Add zero if only one digit                         
                 // Date
-                String strDay = lstStringSegments[iIndex + 1].replaceAll("[^0-9]", "");
+                String strDay = lstStringSegments[iIndex + 1].replaceAll("[^0-9]", BLANK);
                 strDay = strDay.length() < 2 ? "0" + strDay : strDay; // Add zero if only one digit                        
                 // Year
-                String strYear = lstStringSegments[iIndex + 2].replaceAll("[^0-9]", "");
+                String strYear = lstStringSegments[iIndex + 2].replaceAll("[^0-9]", BLANK);
                 strReturnVal = strMonth + "/" + strDay + "/" + strYear;
                 break;
-            } else {
-                // Get date if in numeric format
-                matcher = pattern.matcher(segment.trim());
-                if (matcher.matches()) {
-                    // Store date format
-                    strReturnVal = segment;
-                    break;
+            } else if (matcher.matches()) {
+                // Get date if in numeric format and Store date format                
+                int val = word.indexOf("/");
+                if (val < 2) {
+                    // Add zero to beginning for consistent date format xx/xx/xxxx
+                    strReturnVal = "0" + word;
+                } else {
+                    strReturnVal = word;
                 }
+                break;
             }
             iIndex++;
         }
@@ -138,88 +181,126 @@ public class CustomData {
     }
 
     /**
+     * getNameFormat
      *
      * @param strSearchLine
      * @param searchWords
      * @return
      */
     public static String getNameFormat(String strSearchLine, String searchWords) {
+        // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
+        searchWords = cleanString(searchWords).toLowerCase();
+        final int FIRST_NAME = 1;
+        final int LAST_NAME = 2;
+
         // Collect list of search string and category word 
         List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
-        List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
+        List<String> lstSearchLine = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
 
         // Remove empty element
         lstCatWords = removeEmptyElements(lstCatWords);
-        lstWords = removeEmptyElements(lstWords);
+        lstSearchLine = removeEmptyElements(lstSearchLine);
 
-        // Remove category words from search string
+        String strReturnVal = BLANK;
         for (String catWords : lstCatWords) {
-            catWords = catWords.replace(" ", "").toLowerCase();
-            if (lstWords.contains(catWords)) {
-                lstWords.remove(lstWords.indexOf(catWords));
-            }
-        }
-
-        int iCounter = 0;
-        String strReturnVal = "";
-        for (String words : lstWords) {
-            // Get the next two words which should be name
-            if (iCounter < 2 && !words.isEmpty()) {
-                // Store and capitalize first letter
-                String strFirst = words.substring(0, 1);
-                if (checkMatch(strFirst, "[a-z]")) {
-                    strReturnVal += strFirst.toUpperCase() + words.substring(1).toLowerCase() + " ";
-                    iCounter++;
-                } else {
-                    // If first char isn't a letter, check next char in string 
-                    strFirst = words.substring(1, 2);
-                    if (checkMatch(strFirst, "[a-z]")) {
-                        strReturnVal += strFirst.toUpperCase() + words.substring(2).toLowerCase() + " ";
-                        iCounter++;
-                    }
+            catWords = catWords.replace(" ", BLANK).toLowerCase();
+            // Collect Name
+            if (lstSearchLine.contains(catWords)) {
+                int iCatWords = lstSearchLine.indexOf(catWords);
+                // Make sure string contains enough elements
+                if (lstSearchLine.size() > iCatWords + 2) {
+                    // Get the first and last name and capitallize first letter of each
+                    String strFirst = lstSearchLine.get(iCatWords + FIRST_NAME);
+                    String strSecond = lstSearchLine.get(iCatWords + LAST_NAME);
+                    strFirst = strFirst.substring(0, 1).toUpperCase() + strFirst.substring(1).toLowerCase();
+                    strSecond = strSecond.substring(0, 1).toUpperCase() + strSecond.substring(1).toLowerCase();
+                    strReturnVal = strFirst + " " + strSecond;
+                    break;
                 }
-            } else {
-                break;
             }
         }
         return strReturnVal;
     }
 
     /**
+     * getGender
+     *
+     * @param searchLine
+     * @param find
+     * @return
+     */
+    public static String getGender(String searchLine, String find) {
+        // Remove unwanted values set to lower case for easy of match
+        String strSearchLine = cleanString(searchLine).toLowerCase();
+        String strFind = find.toLowerCase().trim();
+
+        // Only select segment of string pertaining to actual search word(s) 
+        String[] lstSegmentsTest = strSearchLine.split(strFind);
+        if (lstSegmentsTest.length > 1) {
+            strSearchLine = lstSegmentsTest[1].trim();
+        }
+
+        // Turn string into list 
+        List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
+        lstWords = removeEmptyElements(lstWords);
+
+        // Select first element which cantains gender
+        String strGender = BLANK;
+        int iSize = lstWords.size();
+        if (iSize >= 1) {
+            strGender = lstWords.get(0);
+        }
+        return strGender;
+    }
+
+    /**
+     * getAllFormat
      *
      * @param strSearchLine
      * @param searchWords
      * @return
      */
     public static String getAllFormat(String strSearchLine, String searchWords) {
+        // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
+
         // Collect list of search string and category word 
-        List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
+        List<String> lstCategoryWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
 
         // Remove empty element
-        lstCatWords = removeEmptyElements(lstCatWords);
+        lstCategoryWords = removeEmptyElements(lstCategoryWords);       
 
-        // Remove category words from search string
         String strReturnVal = strSearchLine;
-        for (String val : lstCatWords) {
-            val = val.replace(" ", "").toLowerCase();
-            // Save new string
-            strReturnVal = strReturnVal.replace(val, "");
+        
+        // Remove any words in front of first category word        
+        String strFirstWordSearch = lstCategoryWords.get(0).toLowerCase();
+        int iGetDataBefore = strReturnVal.indexOf(strFirstWordSearch);
+        if (iGetDataBefore > 1) {
+            strReturnVal = strReturnVal.replace(strReturnVal.substring(0, iGetDataBefore), BLANK);
         }
+
+        // Remove category words from search string and return string
+        for (String val : lstCategoryWords) {
+            val = val.replace(" ", BLANK).toLowerCase();            
+            strReturnVal = strReturnVal.replace(val, BLANK);
+        }        
         return strReturnVal.trim();
     }
 
     /**
+     * getFollowFormat
      *
      * @param strSearchLine
-     * @param searchWords
+     * @param strSearchWords
      * @return
      */
-    public static String getFollowFormat(String strSearchLine, String searchWords, int numWords) {
+    public static String getFollowFormat(String strSearchLine, String strSearchWords, int iNumWords) {
+        // Remove unwanted values
         strSearchLine = cleanString(strSearchLine).toLowerCase();
+
         // Collect list of search string and category word 
-        List<String> lstCatWords = new ArrayList<>(Arrays.asList(searchWords.split(" ")));
+        List<String> lstCatWords = new ArrayList<>(Arrays.asList(strSearchWords.split(" ")));
         List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
 
         // Remove empty element
@@ -228,7 +309,7 @@ public class CustomData {
 
         // Remove category words from search string
         for (String catWord : lstCatWords) {
-            catWord = catWord.replace(" ", "").toLowerCase();
+            catWord = catWord.replace(" ", BLANK).toLowerCase();
             if (lstWords.contains(catWord)) {
                 lstWords.remove(lstWords.indexOf(catWord));
             }
@@ -236,47 +317,28 @@ public class CustomData {
 
         int iCounter = 0;
         String strReturnVal = "";
+
         for (String words : lstWords) {
-            // Get the number of words to display
-            if (iCounter < numWords && !words.isEmpty()) {
+
+            if (iNumWords == 0) {
+                // Get all the words in sentence
                 strReturnVal += words + " ";
-                iCounter++;
             } else {
-                break;
+                // Get the number of words to display
+                if (iCounter < iNumWords && !words.isEmpty()) {
+                    strReturnVal += words + " ";
+                    iCounter++;
+                } else {
+                    break;
+                }
             }
         }
+
         return strReturnVal;
     }
 
     /**
-     *
-     * @param strSearchLine
-     * @return
-     */
-    public static String getGender(String strSearchLine) {
-        // Get exact gender 
-        strSearchLine = cleanString(strSearchLine);
-        String strGender = null;
-        List<String> lstWords = new ArrayList<>(Arrays.asList(strSearchLine.split(" ")));
-        lstWords = removeEmptyElements(lstWords);
-
-        for (String val : lstWords) {
-            strGender = val.toLowerCase();
-            if (checkMatch(strGender, "\\b(male| m |female| f )\\b")) {
-                if (strGender.equals(" m ") || strGender.equals("male")) {
-                    strGender = "Male";
-                } else if (strGender.equals(" f ") || strGender.equals("female")) {
-                    strGender = "Female";
-                } else {
-                    strGender = "Not located";
-                }
-                break;
-            }
-        }
-        return strGender;
-    }
-
-    /**
+     * checkMatch
      *
      * @param value
      * @param match
@@ -290,6 +352,7 @@ public class CustomData {
     }
 
     /**
+     * removeEmptyElements
      *
      * @param list
      * @return
@@ -308,13 +371,14 @@ public class CustomData {
     }
 
     /**
+     * cleanString
      *
      * @param clean
      * @return
      */
     private static String cleanString(String clean) {
         final String DOULBE_SPC = "  ";
-        return clean.replace(";", "").replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ");
+        return clean.replace("·", BLANK).replace(";", BLANK).replaceAll(DOULBE_SPC, " ").replace(":", " ").replace(".", "/").replace("\t", " ").trim();
     }
 
     /**
@@ -337,7 +401,7 @@ final class CustomVals {
     boolean HasGender = false;
     boolean HasAll = false;
     boolean HasFollow = false;
-    boolean HasKey = false;
+    boolean HasOnly = false;
     String category = "";
     int iWords = 0;
 }

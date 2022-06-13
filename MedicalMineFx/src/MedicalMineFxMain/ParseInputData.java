@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
 /**
  * Class : TextParsingMedicalMine Purpose : To read selected text files and search for specific medical data. Author : Robert Wendell Simmons Created : 3/30/2018
  */
-public class ParseInputFiles extends ProcessInputFiles {
+public class ParseInputData extends ProcessInputFiles {
 
     private static Map<String, List<String>> mpSearchData;
     private static int count = 1;
@@ -40,9 +40,9 @@ public class ParseInputFiles extends ProcessInputFiles {
      *
      * @param check
      */
-    ParseInputFiles(boolean check) {
+    ParseInputData(boolean check) {
         bDebug = check;
-        
+
         // Set a list to check for special characters
         lsSpecialChar = new ArrayList();
         lsSpecialChar.add("@");
@@ -60,7 +60,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * TextParsing
      * @param flFileName
      * @return
      * @throws IOException
@@ -70,16 +70,7 @@ public class ParseInputFiles extends ProcessInputFiles {
         FileReader flInputFile = null;
         FileWriter flOutputFile = null;
 
-        String strResultFile = RESULT_FOLDER_LOC + "Search Result" + resultTime + ".txt";
-
-        // Check result folder 
-        // TODO: Ackward. Have to have delete file or unable to run software multiple times without restarting
-        File file = new File(RESULT_FOLDER_LOC);
-        if (!file.exists()) {
-            file.mkdirs();
-        } else {
-            file.delete();
-        }
+        String strResultFile = UtlityClass.RESULT_FOLDER_LOC + UtlityClass.SEARCH_FILE_LOC + "Search Result" + resultTime + ".txt";        
 
         try {
             // Create files
@@ -178,14 +169,15 @@ public class ParseInputFiles extends ProcessInputFiles {
 
                         // Search input file line by line
                         for (String strSearchLine : strArray) {
-                            strSearchLine = strSearchLine.trim();
+                            strSearchLine = strSearchLine.trim();                            
+                            
                             //Create a list of multiple word search                            
                             String[] lstFind = strKeyWordFind.split(" ");
                             boolean bWordMatch = false;
-                            
+
                             // Check for multiple words for search
                             for (String findStr : lstFind) {
-                                if (!findStr.isEmpty() && !strSearchLine.isEmpty()) {                                        
+                                if (!findStr.isEmpty() && !strSearchLine.isEmpty()) {
                                     if (lsSpecialChar.contains(findStr)) {
                                         // Check for special characters with spaces (e.g. ssss #)
                                         bWordMatch = strSearchLine.contains(findStr);
@@ -202,7 +194,7 @@ public class ParseInputFiles extends ProcessInputFiles {
                                     }
                                 }
                             }
-
+                            
                             // Word search match
                             if (bWordMatch) {
                                 // Collect specific word/phrase searched for to result file
@@ -286,7 +278,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * processExcelData
      * @param customVals
      * @param mpSaveToExcel
      * @param strSearchLine
@@ -302,7 +294,7 @@ public class ParseInputFiles extends ProcessInputFiles {
         if (customVals.HasDate) {
             // Save Date format           
             if (bIsValueEmpty) {
-                saveDateValExcel(mpSaveToExcel, strSearchLine, strCategory);
+                saveDateValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
             }
             return EnumCustomType.DATE;
         } else if (customVals.HasName) {
@@ -314,29 +306,34 @@ public class ParseInputFiles extends ProcessInputFiles {
         } else if (customVals.HasGender) {
             // Save gender format
             if (bIsValueEmpty) {
-                saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory);
+                saveGenderValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
             }
             return EnumCustomType.GENDER;
         } else if (customVals.HasAll) {
-            // Save gender format
+            // Save All format
             if (bIsValueEmpty) {
                 saveAllValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind);
             }
             return EnumCustomType.ALL;
         } else if (customVals.HasFollow) {
-            // Save gender format
+            // Save follow format
             if (bIsValueEmpty) {
                 saveFollowValExcel(mpSaveToExcel, strSearchLine, strCategory, strFind, customVals.iWords);
             }
             return EnumCustomType.FOLLOW;
-        } else {
+        }
+        else if (customVals.HasOnly) {
+            SetMapForExcel(mpSaveToExcel, strCategory, strFind);
+            return EnumCustomType.ONLY;
+        }
+        else {
             SetMapForExcel(mpSaveToExcel, strCategory, strFind);
             return EnumCustomType.NONE;
         }
     }
 
     /**
-     *
+     * findSearchWord
      * @param parseLine
      * @param strFind
      * @return
@@ -366,7 +363,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * parseChunkData
      * @param parseLine
      * @param strFindgit
      * @return
@@ -408,7 +405,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * SetMapForExcel
      * @param mpExcel
      * @param strCategory
      * @param strValue
@@ -438,25 +435,25 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * saveDateValExcel
      * @param mpSaveToExcel
      * @param searchLine
      * @param category
      * @return
      */
-    private boolean saveDateValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+    private boolean saveDateValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category, String find) {
         boolean hasDate = true;
         // Save Date format
-        String strDateFormated = CustomData.getDateFormat(searchLine);
+        String strDateFormated = CustomData.getDateFormat(searchLine, find);
         if (strDateFormated != null) {
-            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated);
+            mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strDateFormated); // Reference value
             hasDate = false;
         }
         return hasDate;
     }
 
     /**
-     *
+     * saveNameValExcel
      * @param mpSaveToExcel
      * @param searchLine
      * @param category
@@ -474,7 +471,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * saveAllValExcel
      * @param mpSaveToExcel
      * @param searchLine
      * @param category
@@ -492,7 +489,7 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * saveFollowValExcel
      * @param mpSaveToExcel
      * @param searchLine
      * @param category
@@ -510,16 +507,16 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
+     * saveGenderValExcel
      * @param mpSaveToExcel
      * @param searchLine
      * @param category
      * @return
      */
-    private boolean saveGenderValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category) {
+    private boolean saveGenderValExcel(Map<String, String> mpSaveToExcel, String searchLine, String category, String find) {
         boolean hasGender = true;
         // Save Geneder format
-        String strGenderFormated = CustomData.getGender(searchLine);
+        String strGenderFormated = CustomData.getGender(searchLine, find);
         if (strGenderFormated != null) {
             mpSaveToExcel = SetMapForExcel(mpSaveToExcel, category, strGenderFormated);
             hasGender = false;
@@ -528,16 +525,16 @@ public class ParseInputFiles extends ProcessInputFiles {
     }
 
     /**
-     *
-     *
+     * setCsvSearchData
      * @param file
      */
     @SuppressWarnings("null")
-    public static void setCsvSearchData(File file) {
+    public static boolean setCsvSearchData(File file) {
 
         boolean bUseRowFormat = false;
+        boolean bGoodInput = true;
         try {
-            
+
             /**
              * Parse CSV with Column format (Currently used)
              */
@@ -545,15 +542,15 @@ public class ParseInputFiles extends ProcessInputFiles {
             mpSearchData = new LinkedHashMap();
             Map<Integer, List<String>> mpTransferData = new LinkedHashMap();
             Scanner scan = new Scanner(file);
-            int count = 0;
+            int iCount = 0;
             // Collect category data from csv file (first row)
             while (scan.hasNext()) {
                 lstCategory = new ArrayList<String>();
                 String[] aryData = scan.nextLine().split(",");
                 // Place category data in map
                 if (lstCategory.addAll(Arrays.asList(aryData))) {
-                    mpTransferData.put(count, lstCategory);
-                    count++;
+                    mpTransferData.put(iCount, lstCategory);
+                    iCount++;
                 }
             }
 
@@ -578,14 +575,33 @@ public class ParseInputFiles extends ProcessInputFiles {
                 }
 
                 // Place search data in final map               
-                mpSearchData.put(lstCategory.get(iCategory), lstData);
-                System.out.println("Column file " + lstCategory.get(iCategory) + " -- lstCategory -- " + lstData);
+                String strFinalCategory = lstCategory.get(iCategory);
+                
+                // Remove capital letters in custom value... bug prevent
+                String[] strRemoveCapital = strFinalCategory.split("\\(");
+                strRemoveCapital[1] = strRemoveCapital[1].toLowerCase();
+                strFinalCategory = strRemoveCapital[0] + " (" + strRemoveCapital[1];
+                
+                if (strFinalCategory.contains(CustomData.CUST_FOLLOW)) {
+                    // If the (follow) custom tag is used must have digits
+                    if (strFinalCategory.matches(".*\\d.*") || strFinalCategory.contains("all")) {
+                        mpSearchData.put(strFinalCategory, lstData);
+                        System.out.println("Column file " + strFinalCategory + " -- lstCategory -- " + lstData);                   
+                    } else {
+                        // error in input file
+                        ProcessInputFiles.displayMsg("Incorrect input file (follow 0-9). Correct and retry.", JOptionPane.ERROR_MESSAGE);
+                        bGoodInput = false;
+                        break;
+                    }
+                } else {
+                    mpSearchData.put(strFinalCategory, lstData);
+                    System.out.println("Column file " + strFinalCategory + " -- lstCategory -- " + lstData);
+                }
             }
 
             /**
              * Parse CSV with Row format (Currently not used - DO NOT REMOVE)
              */
-            /*
             if (bUseRowFormat) {
                 mpSearchData = new LinkedHashMap();
                 scan = new Scanner(file);
@@ -600,16 +616,17 @@ public class ParseInputFiles extends ProcessInputFiles {
                     }
                 }
             }
-            */
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SelectInputDataController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        return bGoodInput;
     }
 
     /**
      * Enum of custom types
      */
     enum EnumCustomType {
-        DATE, NAME, GENDER, FOLLOW, KEY, ALL, NONE
+        DATE, NAME, GENDER, FOLLOW, ONLY, ALL, NONE
     }
 }

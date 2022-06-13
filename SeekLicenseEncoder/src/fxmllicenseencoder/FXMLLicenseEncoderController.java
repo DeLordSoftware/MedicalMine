@@ -266,7 +266,8 @@ public class FXMLLicenseEncoderController implements Initializable {
 
         // Display results
         txtEncoderResult.setText("Encoder # - " + strFinalEncoder);
-        String strExpire = lstEncoder[iMonth] + lstEncoder[iMonth + 1] + "/" + lstEncoder[iDay] + lstEncoder[iDay + 1] + "/" + lstEncoder[iYear] + lstEncoder[iYear + 1];
+        
+        String strExpire = String.valueOf(lstEncoder[iMonth]) + String.valueOf(lstEncoder[iMonth + 1]) + "/" + String.valueOf(lstEncoder[iDay]) + String.valueOf(lstEncoder[iDay + 1]) + "/" + String.valueOf(lstEncoder[iYear]) + String.valueOf(lstEncoder[iYear + 1]);
         txtExpire.setText("Expires: " + strExpire);
 
         // Print to file

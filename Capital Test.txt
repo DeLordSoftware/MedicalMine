@@ -1,0 +1,22 @@
+11 If you then, being eVil. know how to give good gifts to your chilDren. how much more will your FatheR who is in heAven give goOd things to those who ask HIm!
+
+
+
+
+if (!findStr.isEmpty() && !strSearchLine.isEmpty()) {
+                                    if (lsSpecialChar.contains(findStr) || !Pattern.matches("[a-zA-Z0-9]*", findStr)) {
+                                        // Check for special characters with spaces (e.g. ssss #)
+                                        // OR check for special characters with no spaces ( e.g. ssss@)                                        
+                                        bWordMatch = strSearchLine.compareToIgnoreCase(findStr) == 0;                                        
+                                    } else {
+                                        bWordMatch = findSearchWord(strSearchLine.toLowerCase(), findStr.toLowerCase());
+                                    }
+                                    if (!bWordMatch) {
+                                        break;
+                                    }
+                          ethigpen@gmail.com 
+
+fraz23ps@gmail.com
+
+
+saw3353@yahoo.com     }
